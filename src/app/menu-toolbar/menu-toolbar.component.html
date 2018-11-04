@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <img src="../../assets/mocked-logo.png" alt="" class="title-logo">
+    <button mat-button routerLink="/">Inicio</button>
+    <button mat-button [matMenuTriggerFor]="asig">Asignaturas</button>
+    <mat-menu #asig="matMenu">
+      <button mat-menu-item routerLink="/asignaturas">
+        <mat-icon>visibility</mat-icon>
+        Ver todas
+      </button>
+      <button mat-menu-item routerLink="#">
+        <mat-icon>add</mat-icon>
+        Añadir nueva
+      </button>
+    </mat-menu>
+    <button mat-button>Profesores</button>
+    <span class="spacer"></span>
+    <button mat-button class="exit">Salir</button>
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,10 @@
+.title-logo{
+    height: 100%;
+    margin-right: 15px;
+}
+.spacer{
+    flex: 1 1 auto;
+}
+button{
+    height: 80%;
+}

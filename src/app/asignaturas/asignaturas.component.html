@@ -1,0 +1,22 @@
+<button mat-button routerLink="/add-asignatura" class="addButton"><mat-icon>add</mat-icon>Añadir nueva asignatura</button>
+<mat-divider class="divider"></mat-divider>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let asignatura of asignaturas">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+          [{{asignatura.siglas}}] {{asignatura.nombre}}
+      
+      </mat-panel-title>
+      <mat-panel-description class="desc">
+          Grupo: {{asignatura.grupo}}
+          
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <h3>Datos generales de la asignatura</h3>
+    <mat-list role="list">
+      <mat-list-item role="listitem">Cuatrimestre: {{asignatura.cuatrimestre}}</mat-list-item>
+      <mat-list-item role="listitem">Código: {{asignatura.codigo}}</mat-list-item>
+      <mat-list-item role="listitem">Titulación: {{asignatura.titulacion}}</mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>

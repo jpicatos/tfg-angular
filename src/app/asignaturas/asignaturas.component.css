@@ -1,0 +1,11 @@
+.addButton{
+    float: right;
+    color: green;
+    margin:10px 0px 10px 0px;
+}
+.divider{
+    clear: both;
+}
+.desc{
+    display: block;
+}
