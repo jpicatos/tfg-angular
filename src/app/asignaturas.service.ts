@@ -16,7 +16,7 @@ const httpOptions = {
 })
 export class AsignaturasService {
 
-  private asignaturasUrl = 'http://http://tfg.davidarroyo.es/api/asignaturas/';
+  private asignaturasUrl = 'http://tfg.davidarroyo.es/api/asignaturas/';
   constructor() { }
 
   getAsignaturas(): Observable<Asignatura[]> {
@@ -25,5 +25,8 @@ export class AsignaturasService {
   }
   getAsignatura(id: number): Observable<Asignatura> {
     return of(ASIGNATURA.find(hero => hero.id === id));
+  }
+  saveAsignatura(asignatura: Asignatura):void{
+    console.log('[Smocked]Guardada')
   }
 }

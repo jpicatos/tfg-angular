@@ -39,7 +39,6 @@ export class AsignaturasComponent implements OnInit {
   ngOnInit() {
     this.getAsignaturas();
     console.log(this.asignaturas);
-    //this.selectedAsignatura = this.asignaturas[0]
   }
 
   getAsignaturas(): void{

@@ -1,4 +1,5 @@
 import { Horario } from "./horario";
+import { Desdoble } from "./desdoble";
 export class Asignatura{
     id: number;
     siglas: string;
@@ -9,7 +10,7 @@ export class Asignatura{
     curso: string;
     titulacion: string;
     departamento: {
-        siglas: string,
+        siglas: string;
         nombre: string;
         min_creditos: number;
         fecha_inicio_cuatri: string;
@@ -18,11 +19,6 @@ export class Asignatura{
         min_deuda_acumulable: number;
     };
     horario: Horario[]
-    desdobles: Desdobles[]
+    desdobles: Desdoble[]
 };
 
-class Desdobles{
-    id: number;
-    asignatura: number;
-    horario: number[];
-}

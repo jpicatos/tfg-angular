@@ -1,20 +1,62 @@
-<mat-toolbar color="warn">
-  <mat-toolbar-row>
-    <img src="../../assets/mocked-logo.png" alt="" class="title-logo">
-    <button mat-button routerLink="/">Inicio</button>
-    <button mat-button [matMenuTriggerFor]="asig">Asignaturas</button>
-    <mat-menu #asig="matMenu">
-      <button mat-menu-item routerLink="/asignaturas">
-        <mat-icon>visibility</mat-icon>
-        Ver todas
-      </button>
-      <button mat-menu-item routerLink="#">
-        <mat-icon>add</mat-icon>
-        Añadir nueva
-      </button>
-    </mat-menu>
-    <button mat-button>Profesores</button>
-    <span class="spacer"></span>
-    <button mat-button class="exit">Salir</button>
-  </mat-toolbar-row>
-</mat-toolbar>
+<mat-sidenav-container class="sidenav-container" color="primary">
+    <mat-sidenav #sidenav mode="side" opened="true" class="sidenav">
+        <div class="user-container">
+            <div class="icon-container">
+            <div class="user-icon"></div>
+            <!-- <span>Admin</span> -->
+            </div>
+            <div class="username-container">User-Name<div class="spacer"></div><button mat-icon-button><mat-icon>more_vert</mat-icon></button></div>
+        </div>
+        <mat-divider></mat-divider>
+        <mat-divider></mat-divider>
+
+        <div class="slidenav-buttons">
+            <button mat-button routerLink="/" class="dash-button" (click)='updateTitle("Dashboard")'>
+                <span class="menu-button-content">
+                    <mat-icon>home</mat-icon>
+                    DASHBOARD
+                </span>
+            </button>
+            <mat-divider></mat-divider>
+            <p class="menu-title">Listas</p>
+            <button mat-button routerLink="/asignaturas" (click)='updateTitle("Asignaturas")'>
+                <span class="menu-button-content">
+                    <mat-icon>visibility</mat-icon>
+                    ASIGNATURAS
+                </span>
+            </button>
+            <button mat-button (click)='updateTitle("Profesores")'>
+                <span class="menu-button-content">
+                    PROFESORES
+                </span>
+            </button>
+            <mat-divider></mat-divider>
+            <p class="menu-title">Configuración</p>
+            <button mat-button (click)='updateTitle("Configuración")'>
+                <span class="menu-button-content">
+                    CONFIGURACIÓN
+                </span>
+            </button>
+            <mat-divider></mat-divider>
+            <mat-divider></mat-divider>
+            <button mat-button class="dash-button" (click)='updateTitle("Dashboard")'>
+                <span class="menu-button-content">
+                    SALIR
+                </span>
+            </button>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar color="warn">
+        <mat-toolbar-row>
+            <button mat-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
+            <span>{{routeTitle}}</span>
+        </mat-toolbar-row>
+        </mat-toolbar>
+
+
+        <router-outlet></router-outlet>
+
+
+    </mat-sidenav-content>
+</mat-sidenav-container>

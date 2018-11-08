@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-menu-toolbar',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuToolbarComponent implements OnInit {
 
-  constructor() { }
+  routeTitle : string;
+
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.routeTitle = this.route.toString();
+  }
+  updateTitle(title: string) :void{
+    this.routeTitle = title;
   }
 
 }
