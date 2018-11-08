@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 
 import {
@@ -44,14 +45,19 @@ import { AppComponent } from './app.component';
 import { MenuToolbarComponent } from './menu-toolbar/menu-toolbar.component';
 import { AsignaturasComponent } from './asignaturas/asignaturas.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HorarioComponent } from './horario/horario.component';
+import { AsignaturaDetailsComponent } from './asignatura-details/asignatura-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuToolbarComponent,
-    AsignaturasComponent
+    AsignaturasComponent,
+    HorarioComponent,
+    AsignaturaDetailsComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatAutocompleteModule,

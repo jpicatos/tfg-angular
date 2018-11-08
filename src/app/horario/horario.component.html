@@ -1,0 +1,13 @@
+<!-- <mat-card> -->
+    <mat-grid-list cols="6">
+        <mat-grid-tile class="day wtf"></mat-grid-tile>
+        <mat-grid-tile class="day wtf">Lunes</mat-grid-tile>
+        <mat-grid-tile class="day wtf">Martes</mat-grid-tile>
+        <mat-grid-tile class="day wtf">Miercoles</mat-grid-tile>
+        <mat-grid-tile class="day wtf">Jueves</mat-grid-tile>
+        <mat-grid-tile class="day wtf">Viernes</mat-grid-tile>
+        <mat-grid-tile class="wtf" *ngFor="let dia of horarioOneDimension">
+          <div *ngIf='dia' class="clase">{{dia}}</div>
+        </mat-grid-tile>
+    </mat-grid-list>
+<!-- </mat-card> -->

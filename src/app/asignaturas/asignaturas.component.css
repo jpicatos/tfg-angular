@@ -1,11 +1,48 @@
 .addButton{
     float: right;
-    color: green;
+    /* color: green; */
     margin:10px 0px 10px 0px;
 }
 .divider{
     clear: both;
 }
-.desc{
-    display: block;
+.card{
+    margin: 10px;
 }
+.total-container{
+     display: flex;
+}
+.todo-content{
+    overflow: overlay;
+    height: 400px;
+}
+.lista{
+    display: block;
+    flex-grow: 3;
+}
+.content{
+    padding-left: 10px;
+}
+.asignatura{
+    padding: 0 15px;
+    flex-grow: 1; 
+    width: 200px;
+    /*background-color: #e0e0e0;*/
+}
+.content-row{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+button.content-row{
+    margin-left: 0;
+}
+.row{
+    cursor: pointer;
+}
+.row:hover{
+    background-color: lightgray;
+}
+

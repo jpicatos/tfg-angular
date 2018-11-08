@@ -1,0 +1,25 @@
+import { Component, OnInit, Input } from '@angular/core';
+import { Asignatura } from '../models/asignatura';
+import { AsignaturasService } from '../asignaturas.service';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-asignatura-details',
+  templateUrl: './asignatura-details.component.html',
+  styleUrls: ['./asignatura-details.component.css']
+})
+export class AsignaturaDetailsComponent implements OnInit {
+
+  @Input() asignatura: Asignatura;
+
+  constructor(private angularService: AsignaturasService,
+    private route: ActivatedRoute) {  }
+
+  ngOnInit() {
+    if(!this.asignatura){
+      const id =+ this.route.snapshot.paramMap.get('id');
+      this.angularService.getAsignatura(id).subscribe(asignatura => this.asignatura = asignatura);
+    }
+  }
+
+}

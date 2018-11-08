@@ -1,22 +1,72 @@
 <button mat-button routerLink="/add-asignatura" class="addButton"><mat-icon>add</mat-icon>Añadir nueva asignatura</button>
+
+<button mat-stroked-button class="addButton" color='warn' [matMenuTriggerFor]="displayed">Menu <mat-icon>keyboard_arrow_down</mat-icon></button>
+<mat-menu #displayed="matMenu">
+    <button mat-menu-item><mat-checkbox color='warn' [(ngModel)]="opts.codigo">Código</mat-checkbox></button>
+    <button mat-menu-item><mat-checkbox color='warn' [(ngModel)]="opts.cuatrimestre">Cuatrimestre</mat-checkbox></button>
+    <button mat-menu-item><mat-checkbox color='warn' [(ngModel)]="opts.curso">Curso</mat-checkbox></button>
+    <button mat-menu-item><mat-checkbox color='warn' [(ngModel)]="opts.departamento">Departamento</mat-checkbox></button>
+    <button mat-menu-item><mat-checkbox color='warn' [(ngModel)]="opts.identificador">Identificador</mat-checkbox></button>
+    <button mat-menu-item><mat-checkbox color='warn' [(ngModel)]="opts.nombre">Nombre</mat-checkbox></button>
+    <button mat-menu-item><mat-checkbox color='warn' [(ngModel)]="opts.titulacion">Titulación</mat-checkbox></button>
+    <button mat-menu-item><mat-checkbox color='warn' [(ngModel)]="opts.grupo">Grupo</mat-checkbox></button>
+
+  </mat-menu>
+
 <mat-divider class="divider"></mat-divider>
-<mat-accordion>
-  <mat-expansion-panel *ngFor="let asignatura of asignaturas">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-          [{{asignatura.siglas}}] {{asignatura.nombre}}
-      
-      </mat-panel-title>
-      <mat-panel-description class="desc">
-          Grupo: {{asignatura.grupo}}
-          
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <h3>Datos generales de la asignatura</h3>
-    <mat-list role="list">
-      <mat-list-item role="listitem">Cuatrimestre: {{asignatura.cuatrimestre}}</mat-list-item>
-      <mat-list-item role="listitem">Código: {{asignatura.codigo}}</mat-list-item>
-      <mat-list-item role="listitem">Titulación: {{asignatura.titulacion}}</mat-list-item>
-    </mat-list>
-  </mat-expansion-panel>
-</mat-accordion>
+<mat-card class="card">
+<div class="total-container">
+  <div class="lista">
+    <div class="content">
+        <mat-grid-list cols="3" rowHeight="50px"> 
+            <mat-grid-tile *ngIf="opts.nombre">
+                <button mat-raised-button color="primary" class="content-row">
+                  Siglas/Asignatura
+                  <!-- <mat-icon>keyboard_arrow_down</mat-icon> -->
+                </button>
+            </mat-grid-tile>
+            <mat-grid-tile *ngIf="opts.titulacion">
+              <button mat-raised-button color="primary" class="content-row">
+                Titulación
+                <!-- <mat-icon>keyboard_arrow_down</mat-icon> -->
+              </button>
+            </mat-grid-tile>
+            <mat-grid-tile *ngIf="opts.grupo">
+              <button mat-raised-button color="primary" class="content-row">
+                Grupo
+                <!-- <mat-icon>keyboard_arrow_down</mat-icon> -->
+              </button>
+            </mat-grid-tile>
+            
+        </mat-grid-list>
+        <div class="todo-content">
+        <div *ngFor="let asignatura of asignaturas">
+            <mat-grid-list cols="3" rowHeight="50px" (click)="onSelect(asignatura)" class="row">
+                <mat-grid-tile *ngIf="opts.nombre">
+                  <div class="content-row">
+                    [{{asignatura.siglas}}] {{asignatura.nombre}}
+                  </div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="opts.titulacion">
+                  <div class="content-row">
+                    {{asignatura.titulacion}}
+                  </div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="opts.grupo">
+                  <div class="content-row">
+                      {{asignatura.grupo}}
+                  </div>
+                </mat-grid-tile>
+                <mat-divider class="divider"></mat-divider>
+            </mat-grid-list>
+        </div>
+        </div>
+    </div>
+  </div>
+  <mat-card class="asignatura" *ngIf="selectedAsignatura" >
+  <div>
+      <app-asignatura-details [asignatura] = selectedAsignatura></app-asignatura-details>
+  </div>
+  </mat-card>
+</div>
+</mat-card>

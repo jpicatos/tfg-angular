@@ -1,0 +1,18 @@
+.title-asig{
+    display: flex;
+    align-items: center;
+}
+.custom-icon{
+    height: 65px;
+    margin-right: 10px;
+}
+.nombre-asig{
+    cursor: pointer;
+    color: blue;
+    /* text-align: center; */
+    margin: 0;
+    margin-top: 3px;
+}
+.nombre-asig:hover{
+    text-decoration: underline;
+}

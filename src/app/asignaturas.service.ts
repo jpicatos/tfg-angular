@@ -22,6 +22,8 @@ export class AsignaturasService {
   getAsignaturas(): Observable<Asignatura[]> {
     // return this.http.get<Asignatura[]>(this.asignaturasUrl)
     return of(ASIGNATURA);
-
+  }
+  getAsignatura(id: number): Observable<Asignatura> {
+    return of(ASIGNATURA.find(hero => hero.id === id));
   }
 }

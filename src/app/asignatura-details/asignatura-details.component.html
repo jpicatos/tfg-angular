@@ -1,0 +1,23 @@
+<span class="title-asig">
+  <img src="../../assets/books.png" class="custom-icon ">
+  <span>
+    <code><a routerLink="/asignaturas">asignaturas</a> / <a routerLink="/asignaturas/{{asignatura.id}}">{{asignatura.siglas}}</a></code>
+    <h2 routerLink="/asignaturas/{{asignatura.id}}" class="nombre-asig">[{{asignatura.siglas}}] {{asignatura.nombre}}</h2>
+  </span>
+</span>
+  
+
+<div *ngFor="let dia of asignatura.horario">
+  <code>
+    <strong>{{dia.aula}}: </strong>{{dia.dia}} <mat-icon>navigate_next</mat-icon> {{dia.hora_inicio}}/{{dia.hora_fin}}
+  </code>
+</div>
+<mat-grid-list cols="2">
+  <mat-grid-tile>
+    <mat-list role="list">
+      <mat-list-item role="listitem"><strong>Código de la asignatura: </strong> {{asignatura.codigo}}</mat-list-item>
+      <mat-list-item role="listitem"><strong>Cuatrimestre: </strong> {{asignatura.cuatrimestre}}</mat-list-item>
+      <mat-list-item role="listitem"><strong>Curso: </strong> {{asignatura.curso}}</mat-list-item>
+    </mat-list>
+  </mat-grid-tile>
+</mat-grid-list>

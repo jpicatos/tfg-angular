@@ -1,3 +1,4 @@
+import { Horario } from "./horario";
 export class Asignatura{
     id: number;
     siglas: string;
@@ -19,13 +20,7 @@ export class Asignatura{
     horario: Horario[]
     desdobles: Desdobles[]
 };
-class Horario{
-    id: number;
-    dia: string;
-    hora_inicio: string;
-    hora_fin: string;
-    aula: string;
-}
+
 class Desdobles{
     id: number;
     asignatura: number;

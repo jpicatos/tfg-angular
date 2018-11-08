@@ -10,16 +10,44 @@ import { AsignaturasService } from "../asignaturas.service";
 export class AsignaturasComponent implements OnInit {
 
   asignaturas: Asignatura[];
-  constructor(private asignaturasService: AsignaturasService) { }
+  selectedAsignatura: Asignatura;
+  selected: number;
+  opts : {
+    codigo: boolean,
+    cuatrimestre: boolean,
+    curso: boolean,
+    departamento: boolean,
+    id: boolean,
+    nombre: boolean,
+    titulacion: boolean,
+    grupo: boolean
+  };
+  constructor(private asignaturasService: AsignaturasService) {
+    this.selected = 1;
+    this.opts = {
+      codigo: false,
+      cuatrimestre: false,
+      curso: false,
+      departamento: false,
+      id: false,
+      nombre: true,
+      titulacion: true,
+      grupo: true
+    };
+   }
 
   ngOnInit() {
     this.getAsignaturas();
     console.log(this.asignaturas);
+    //this.selectedAsignatura = this.asignaturas[0]
   }
 
   getAsignaturas(): void{
     this.asignaturasService.getAsignaturas()
       .subscribe(asignaturas => this.asignaturas = asignaturas);
+  }
+  onSelect(asignatura: Asignatura){
+    this.selectedAsignatura = asignatura;
   }
 
 }
