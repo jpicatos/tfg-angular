@@ -18,7 +18,7 @@ export class AnadirEditarAsignaturaComponent implements OnInit {
   ngOnInit() {
     const id =+ this.route.snapshot.paramMap.get('id');
     if(id){
-      this.angularService.getAsignatura(id).subscribe(asignatura => this.asignatura = asignatura);
+      // this.angularService.getAsignatura(id).subscribe(asignatura => this.asignatura = asignatura);
     }
   }
   save():void{

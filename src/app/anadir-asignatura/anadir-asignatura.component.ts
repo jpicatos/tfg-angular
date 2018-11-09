@@ -46,7 +46,7 @@ export class AnadirAsignaturaComponent implements OnInit {
     });
     const id =+ this.route.snapshot.paramMap.get('id');
     if(id){
-      this.angularService.getAsignatura(id).subscribe(asignatura => this.asignatura = asignatura);
+      // this.angularService.getAsignatura(id).subscribe(asignatura => this.asignatura = asignatura);
       this.departamento = this.asignatura.departamento;
       this.desdobles = this.asignatura.desdobles;
       this.horario = this.asignatura.horario;

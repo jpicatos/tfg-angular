@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import { Asignatura } from "../models/asignatura";
 import { AsignaturasService } from "../asignaturas.service";
 
 @Component({
   selector: 'app-asignaturas',
   templateUrl: './asignaturas.component.html',
-  styleUrls: ['./asignaturas.component.css']
+  styleUrls: ['./asignaturas.component.css'],
+  
 })
-export class AsignaturasComponent implements OnInit {
 
+@NgModule({
+  providers: [AsignaturasService]
+})
+export class AsignaturasComponent implements OnInit { 
   asignaturas: Asignatura[];
   selectedAsignatura: Asignatura;
   selected: number;
@@ -43,7 +47,7 @@ export class AsignaturasComponent implements OnInit {
 
   getAsignaturas(): void{
     this.asignaturasService.getAsignaturas()
-      .subscribe(asignaturas => this.asignaturas = asignaturas);
+      .subscribe(asignaturas => {this.asignaturas = asignaturas});
   }
   onSelect(asignatura: Asignatura){
     this.selectedAsignatura = asignatura;

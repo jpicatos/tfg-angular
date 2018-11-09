@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import {
@@ -50,6 +51,7 @@ import { AsignaturaDetailsComponent } from './asignatura-details/asignatura-deta
 import { TestContainerComponent } from './test-container/test-container.component';
 import { AnadirEditarAsignaturaComponent } from './anadir-editar-asignatura/anadir-editar-asignatura.component';
 import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura.component';
+import { AsignaturasService } from './asignaturas.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura
     AnadirAsignaturaComponent
   ],
   imports: [
+    HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserModule,
@@ -104,7 +107,7 @@ import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura
   MatTreeModule,
   AppRoutingModule,
   ],
-  providers: [],
+  providers: [AsignaturasService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
