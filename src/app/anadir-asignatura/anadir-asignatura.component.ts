@@ -15,10 +15,6 @@ import { Horario } from '../models/horario';
 export class AnadirAsignaturaComponent implements OnInit {
 
   asignatura: Asignatura;
-  departamento: Departamento;
-  test: string;
-  desdobles: Desdoble[];
-  horario: Horario[];
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -28,7 +24,7 @@ export class AnadirAsignaturaComponent implements OnInit {
   
   constructor(private angularService: AsignaturasService,
     private route: ActivatedRoute, private _formBuilder: FormBuilder) {
-      
+      this.asignatura = new Asignatura;
     }
 
   ngOnInit() {
@@ -44,37 +40,30 @@ export class AnadirAsignaturaComponent implements OnInit {
     this.fourFormGroup = this._formBuilder.group({
       fourCtrl: ['', Validators.required]
     });
-    const id =+ this.route.snapshot.paramMap.get('id');
-    if(id){
-      // this.angularService.getAsignatura(id).subscribe(asignatura => this.asignatura = asignatura);
-      this.departamento = this.asignatura.departamento;
-      this.desdobles = this.asignatura.desdobles;
-      this.horario = this.asignatura.horario;
+
+
+    let id = this.route.snapshot.paramMap.get('id');
+
+    if(id != null){
+      this.angularService.getAsignatura(Number(id)).subscribe(
+        asignatura => this.asignatura = asignatura        
+        );
     }
-    else{
-      this.asignatura = new Asignatura;
-      this.departamento = new Departamento;
-      this.desdobles = [new Desdoble];
-      this.horario = [new Horario];
-    }
-    
+
   }
   newDesdoble():void{
-    this.desdobles.push(new Desdoble);
+    this.asignatura.desdobles.push(new Desdoble);
   }
   removeDesdoble():void{
-    this.desdobles.pop();
+    this.asignatura.desdobles.pop();
   }
   newHorario():void{
-    this.horario.push(new Horario);
+    this.asignatura.horario.push(new Horario);
   }
   removeHorario():void{
-    this.horario.pop();
+    this.asignatura.horario.pop();
   }
   save():void{
-    this.asignatura.departamento = this.departamento;
-    this.asignatura.desdobles = this.desdobles;
-    this.asignatura.horario = this.horario;
     this.angularService.saveAsignatura(this.asignatura);
   }
 

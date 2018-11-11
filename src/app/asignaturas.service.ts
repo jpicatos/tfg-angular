@@ -41,8 +41,11 @@ export class AsignaturasService {
     });
     return this.http.get<Asignatura[]>(this.asignaturasUrl+'?format=json'+params);
   }
-  saveAsignatura(asignatura: Asignatura):void{
-    console.log('[Smocked]Guardada')
+  saveAsignatura(asignatura: Asignatura): void {
+    this.http.post<Asignatura[]>(this.asignaturasUrl, asignatura)
+    .subscribe(data => {   // data is already a JSON object
+      console.log(data);
+  });
   }
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

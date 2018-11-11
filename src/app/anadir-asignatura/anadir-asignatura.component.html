@@ -22,6 +22,9 @@
                     <input matInput type="number" placeholder="Cuatrimestre" [(ngModel)]=asignatura.cuatrimestre [ngModelOptions]="{standalone: true}">
                   </mat-form-field>
                   <mat-form-field>
+                    <input matInput placeholder="Curso" [(ngModel)]=asignatura.curso [ngModelOptions]="{standalone: true}">
+                  </mat-form-field>
+                  <mat-form-field>
                     <input matInput placeholder="Grupo" [(ngModel)]=asignatura.grupo [ngModelOptions]="{standalone: true}">
                   </mat-form-field>
                   <mat-form-field>
@@ -31,7 +34,7 @@
                     <input matInput placeholder="Titulación" [(ngModel)]=asignatura.titulacion [ngModelOptions]="{standalone: true}">
                   </mat-form-field>
                 <div>
-                  <button mat-button matStepperNext>Next</button>
+                  <button mat-button matStepperNext>Siguiente</button>
                 </div>
               </form>
             </mat-step>
@@ -39,27 +42,7 @@
               <form [formGroup]="secondFormGroup" class="formulario">
                 <ng-template matStepLabel>Departamento</ng-template>
                 <mat-form-field>
-                  <input matInput [matDatepicker]="picker" placeholder="Fecha de inicio del cuatrimestre" [(ngModel)]=departamento.fecha_inicio_cuatri [ngModelOptions]="{standalone: true}">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field>
-                  <input matInput type="number" placeholder="Máximo de créditos de laboratorio" [(ngModel)]=departamento.max_creditos_lab [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <mat-form-field>
-                  <input matInput type="number" placeholder="Máximo de créditos de teoría" [(ngModel)]=departamento.max_creditos_teoria [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <mat-form-field>
-                  <input matInput type="number" placeholder="Mímimo de créditos" [(ngModel)]=departamento.min_creditos [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <mat-form-field>
-                  <input matInput type="number" placeholder="Mínima deuda acumulable" [(ngModel)]=departamento.min_deuda_acumulable [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <mat-form-field>
-                  <input matInput placeholder="Nombre del departamento" [(ngModel)]=departamento.nombre [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <mat-form-field>
-                  <input matInput placeholder="Siglas del departamento" [(ngModel)]=departamento.siglas [ngModelOptions]="{standalone: true}">
+                  <input matInput placeholder="Siglas del departamento" [(ngModel)]=asignatura.departamento [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <div>
                   <button mat-button matStepperPrevious>Atrás</button>
@@ -72,16 +55,31 @@
                 <ng-template matStepLabel>Desdobles</ng-template>
                 <button mat-button (click)="newDesdoble()">Añadir desdoble</button>
                 <button mat-button (click)="removeDesdoble()">Eliminar desdoble</button>
-                <div *ngFor="let desdoble of desdobles; let i = index"  class="formulario">
+                <div *ngFor="let desdoble of asignatura.desdobles; let i = index" class="formulario">
                   <h4>Desdoble {{i}}</h4>
+                  <div *ngFor="let horario of desdoble.horario" class="formulario">
                   <mat-form-field>
-                    <input matInput placeholder="No se que poner">
+                    <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=horario.aula [ngModelOptions]="{standalone: true}">
+                    <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4' ...</strong></mat-hint>
                   </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Día de la semana" [(ngModel)]=horario.dia [ngModelOptions]="{standalone: true}">
+                    <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Hora de inicio" [(ngModel)]=horario.hora_inicio [ngModelOptions]="{standalone: true}">
+                    <mat-hint align="start"><strong>Ej. '09:00:00', '11:00:00', '15:00:00' ...</strong></mat-hint>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Hora de fin" [(ngModel)]=horario.hora_fin [ngModelOptions]="{standalone: true}">
+                    <mat-hint align="start"><strong>Ej. '09:00:00', '11:00:00', '15:00:00' ...</strong></mat-hint>
+                  </mat-form-field>
+                  </div>
                 </div>
                 
                 <div>
                   <button mat-button matStepperPrevious>Atrás</button>
-                  <button mat-button matStepperNext>Next</button>
+                  <button mat-button matStepperNext>Siguiente</button>
                 </div>
               </form>
             </mat-step>
@@ -90,7 +88,7 @@
                 <ng-template matStepLabel>Horarios</ng-template>
                 <button mat-button (click)="newHorario()">Añadir desdoble</button>
                 <button mat-button (click)="removeHorario()">Eliminar desdoble</button>
-                <div *ngFor="let h of horario; let i = index" class="formulario">
+                <div *ngFor="let h of asignatura.horario; let i = index" class="formulario">
                   <h4>Horario {{i}}</h4>
                   <mat-form-field>
                     <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=h.aula [ngModelOptions]="{standalone: true}">
@@ -112,7 +110,7 @@
                 
                 <div>
                   <button mat-button matStepperPrevious>Atrás</button>
-                  <button mat-button matStepperNext>Next</button>
+                  <button mat-button matStepperNext>Siguiente</button>
                 </div>
               </form>
             </mat-step>
