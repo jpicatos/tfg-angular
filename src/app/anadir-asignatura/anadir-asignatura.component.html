@@ -57,9 +57,24 @@
                 <button mat-button (click)="removeDesdoble()">Eliminar desdoble</button>
                 <div *ngFor="let desdoble of asignatura.desdobles; let i = index" class="formulario">
                   <h4>Desdoble {{i}}</h4>
+                  <div *ngFor="let horario of desdoble.horario" class="formulario">
                   <mat-form-field>
-                    <input matInput placeholder="No se que poner">
+                    <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=horario.aula [ngModelOptions]="{standalone: true}">
+                    <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4' ...</strong></mat-hint>
                   </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Día de la semana" [(ngModel)]=horario.dia [ngModelOptions]="{standalone: true}">
+                    <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Hora de inicio" [(ngModel)]=horario.hora_inicio [ngModelOptions]="{standalone: true}">
+                    <mat-hint align="start"><strong>Ej. '09:00:00', '11:00:00', '15:00:00' ...</strong></mat-hint>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Hora de fin" [(ngModel)]=horario.hora_fin [ngModelOptions]="{standalone: true}">
+                    <mat-hint align="start"><strong>Ej. '09:00:00', '11:00:00', '15:00:00' ...</strong></mat-hint>
+                  </mat-form-field>
+                  </div>
                 </div>
                 
                 <div>
