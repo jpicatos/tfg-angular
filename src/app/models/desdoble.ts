@@ -1,7 +1,6 @@
 import { Horario } from "./horario";
 
-export class Desdoble{
+export class Desdoble {
     id: number;
-    asignatura: number;
     horario: number[];
 }

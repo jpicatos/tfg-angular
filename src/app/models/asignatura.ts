@@ -9,16 +9,13 @@ export class Asignatura{
     codigo: string;
     curso: string;
     titulacion: string;
-    departamento: {
-        siglas: string;
-        nombre: string;
-        min_creditos: number;
-        fecha_inicio_cuatri: string;
-        max_creditos_teoria: number;
-        max_creditos_lab: number;
-        min_deuda_acumulable: number;
-    };
+    departamento: string;
     horario: Horario[]
     desdobles: Desdoble[]
+
+    constructor() {
+        this.desdobles = [];
+        this.horario = [];
+    }
 };
 
