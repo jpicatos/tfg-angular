@@ -49,7 +49,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { HorarioComponent } from './horario/horario.component';
 import { AsignaturaDetailsComponent } from './asignatura-details/asignatura-details.component';
 import { TestContainerComponent } from './test-container/test-container.component';
-import { AnadirEditarAsignaturaComponent } from './anadir-editar-asignatura/anadir-editar-asignatura.component';
 import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura.component';
 import { AsignaturasService } from './asignaturas.service';
 
@@ -61,7 +60,6 @@ import { AsignaturasService } from './asignaturas.service';
     HorarioComponent,
     AsignaturaDetailsComponent,
     TestContainerComponent,
-    AnadirEditarAsignaturaComponent,
     AnadirAsignaturaComponent
   ],
   imports: [
