@@ -42,6 +42,9 @@ import {
   MatTooltipModule,
   MatTreeModule,
 } from '@angular/material';
+
+import { MatFileUploadModule } from 'angular-material-fileupload';
+
 import { AppComponent } from './app.component';
 import { MenuToolbarComponent } from './menu-toolbar/menu-toolbar.component';
 import { AsignaturasComponent } from './asignaturas/asignaturas.component';
@@ -50,6 +53,7 @@ import { HorarioComponent } from './horario/horario.component';
 import { AsignaturaDetailsComponent } from './asignatura-details/asignatura-details.component';
 import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura.component';
 import { AsignaturasService } from './asignaturas.service';
+import { ImportarAsignaturasComponent } from './importar-asignaturas/importar-asignaturas.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,8 @@ import { AsignaturasService } from './asignaturas.service';
     AsignaturasComponent,
     HorarioComponent,
     AsignaturaDetailsComponent,
-    AnadirAsignaturaComponent
+    AnadirAsignaturaComponent,
+    ImportarAsignaturasComponent
   ],
   imports: [
     HttpClientModule,
@@ -67,6 +72,8 @@ import { AsignaturasService } from './asignaturas.service';
     BrowserModule,
     BrowserAnimationsModule,
     MatAutocompleteModule,
+    MatFileUploadModule,
+
   MatBadgeModule,
   MatBottomSheetModule,
   MatButtonModule,

@@ -9,7 +9,7 @@ import { Asignatura } from "./models/asignatura";
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-type': 'application/json',
-    'Authorization': 'Token d21723875c6e4044f17c81aed0866e0aba14fcd6'
+    'Authorization': 'Token d0cddc40af7cb1bf04084d94cda4a4e0dc96c78e'
   })
 };
 

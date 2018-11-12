@@ -1,0 +1,26 @@
+<div class="decorator"></div>
+<div class="form-container">
+<mat-card class="card">
+    <mat-card-header>
+      <div mat-card-avatar class="header-image"></div>
+      <mat-card-title>Importar asignaturas</mat-card-title>
+      <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    </mat-card-header>
+    <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+    <mat-card-content class="formulario">
+
+<input 
+  style="display: none" 
+  type="file" (change)="onFileChanged($event)" 
+  #fileInput>
+<button mat-raised-button color="accent" (click)="fileInput.click()">Select File</button>
+<br>
+<button mat-raised-button color="accent" (click)="onUpload()">Upload!</button>
+
+   </mat-card-content>
+    <!-- <mat-card-actions>
+      <button mat-raised-button color="warn">Save</button>
+      <button mat-button>Cancel</button>
+    </mat-card-actions> -->
+  </mat-card>
+</div>
