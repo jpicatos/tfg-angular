@@ -12,14 +12,14 @@ export class AsignaturaDetailsComponent implements OnInit {
 
   @Input() asignatura: Asignatura;
 
-  constructor( private angularService: AsignaturasService,
-    private route: ActivatedRoute) {  }
+  constructor(private angularService: AsignaturasService,
+    private route: ActivatedRoute) {
+    this.asignatura = new Asignatura;
+  }
 
   ngOnInit() {
-    if(!this.asignatura){
-      const id =+ this.route.snapshot.paramMap.get('id');
-      this.angularService.getAsignatura(id).subscribe(asignatura => this.asignatura = asignatura);
-    }
+    const id = + this.route.snapshot.paramMap.get('id');
+    this.angularService.getAsignatura(id).subscribe(asignatura => this.asignatura = asignatura);
   }
 
 }

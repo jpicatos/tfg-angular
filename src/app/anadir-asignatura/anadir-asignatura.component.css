@@ -21,3 +21,12 @@
     display: flex;
     flex-direction: column;
 }
+
+.titulo-horarios h4 {
+    float: left;
+}
+
+.boton-eliminar {
+    float: right;
+    background-color: red;
+}
