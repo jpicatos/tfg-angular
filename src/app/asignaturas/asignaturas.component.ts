@@ -39,6 +39,7 @@ export class AsignaturasComponent implements OnInit {
     ini: string,
     fin: string
   }
+  loading: boolean;
   constructor(private asignaturasService: AsignaturasService, private router: Router, private titleService: Title) {
     this.titleService.setTitle("Asignaturas");
     this.selected = 1;
@@ -65,13 +66,17 @@ export class AsignaturasComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.numCols = 4;
     this.getAsignaturas();
   }
 
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
-      .subscribe(asignaturas => { this.asignaturas = asignaturas });
+      .subscribe(asignaturas => {
+        this.asignaturas = asignaturas;
+        this.loading=false;
+      });
   }
   onSelect(asignatura: Asignatura) {
     this.selectedAsignatura = asignatura;

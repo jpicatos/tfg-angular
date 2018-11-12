@@ -10,3 +10,7 @@ body{
 .spacer{
     flex: 1 1 auto;
 }
+
+.mat-progress-bar.mat-warn .mat-progress-bar-buffer{
+    background-color: #c5cae9;
+}
