@@ -5,7 +5,7 @@ import { AsignaturaDetailsComponent } from './asignatura-details/asignatura-deta
 import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura.component';
 
 const routes: Routes = [
-  { path: 'asignaturas', component: AsignaturasComponent},
+  { path: 'asignaturas', component: AsignaturasComponent, data: { title: 'Asignaturas' }},
   { path: 'asignaturas/:id', component: AsignaturaDetailsComponent},
   { path: 'add-asignatura', component: AnadirAsignaturaComponent},
   { path: 'edit-asignatura/:id', component: AnadirAsignaturaComponent}

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Asignatura } from '../models/asignatura';
 import { AsignaturasService } from '../asignaturas.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Departamento } from '../models/departamento';
 import { Desdoble } from '../models/desdoble';
 import { Horario } from '../models/horario';
 
@@ -21,11 +20,11 @@ export class AnadirAsignaturaComponent implements OnInit {
   thirdFormGroup: FormGroup;
   fourFormGroup: FormGroup;
 
-  
+
   constructor(private angularService: AsignaturasService,
-    private route: ActivatedRoute, private _formBuilder: FormBuilder) {
-      this.asignatura = new Asignatura;
-    }
+    private route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder) {
+    this.asignatura = new Asignatura;
+  }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -44,27 +43,34 @@ export class AnadirAsignaturaComponent implements OnInit {
 
     let id = this.route.snapshot.paramMap.get('id');
 
-    if(id != null){
+    if (id != null) {
       this.angularService.getAsignatura(Number(id)).subscribe(
-        asignatura => this.asignatura = asignatura        
-        );
+        asignatura => this.asignatura = asignatura
+      );
     }
 
   }
-  newDesdoble():void{
+
+  newDesdoble(): void {
     this.asignatura.desdobles.push(new Desdoble);
   }
-  removeDesdoble():void{
-    this.asignatura.desdobles.pop();
+
+  removeDesdoble(i: number): void {
+    this.asignatura.desdobles.splice(i, 1);
   }
-  newHorario():void{
+
+  newHorario(): void {
     this.asignatura.horario.push(new Horario);
   }
-  removeHorario():void{
-    this.asignatura.horario.pop();
+
+  removeHorario(i: number): void {
+    this.asignatura.horario.splice(i, 1);
   }
-  save():void{
+
+  save(): void {
+    console.log(this.asignatura);
     this.angularService.saveAsignatura(this.asignatura);
+
   }
 
 }

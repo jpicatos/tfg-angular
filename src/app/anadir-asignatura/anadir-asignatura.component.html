@@ -54,9 +54,11 @@
               <form [formGroup]="thirdFormGroup" class="formulario">
                 <ng-template matStepLabel>Desdobles</ng-template>
                 <button mat-button (click)="newDesdoble()">Añadir desdoble</button>
-                <button mat-button (click)="removeDesdoble()">Eliminar desdoble</button>
                 <div *ngFor="let desdoble of asignatura.desdobles; let i = index" class="formulario">
-                  <h4>Desdoble {{i}}</h4>
+                  <div class="titulo-horarios">
+                  <h4>Desdoble #{{i + 1}}</h4>
+                  <button class="boton-eliminar" mat-mini-fab color="warn" (click)="removeDesdoble(i)">X</button>
+                  </div>
                   <div *ngFor="let horario of desdoble.horario" class="formulario">
                   <mat-form-field>
                     <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=horario.aula [ngModelOptions]="{standalone: true}">
@@ -86,10 +88,12 @@
             <mat-step [stepControl]="fourFormGroup">
               <form [formGroup]="fourFormGroup" class="formulario">
                 <ng-template matStepLabel>Horarios</ng-template>
-                <button mat-button (click)="newHorario()">Añadir desdoble</button>
-                <button mat-button (click)="removeHorario()">Eliminar desdoble</button>
+                <button mat-button (click)="newHorario()">Añadir horario</button>
                 <div *ngFor="let h of asignatura.horario; let i = index" class="formulario">
-                  <h4>Horario {{i}}</h4>
+                <div class="titulo-horarios">
+                  <h4>Horario {{i + 1}}</h4>
+                  <button class="boton-eliminar" mat-mini-fab color="warn" (click)="removeHorario(i)">X</button>
+                  </div>
                   <mat-form-field>
                     <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=h.aula [ngModelOptions]="{standalone: true}">
                     <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4' ...</strong></mat-hint>

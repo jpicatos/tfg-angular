@@ -7,16 +7,18 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './menu-toolbar.component.html',
   styleUrls: ['./menu-toolbar.component.css']
 })
+
 export class MenuToolbarComponent implements OnInit {
 
-  routeTitle : string;
+  routeTitle: string;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.routeTitle = this.route.toString();
   }
-  updateTitle(title: string) :void{
+
+  updateTitle(title: string): void {
     this.routeTitle = title;
   }
 

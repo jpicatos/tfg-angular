@@ -1,22 +1,24 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { Asignatura } from "../models/asignatura";
+import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { AsignaturasService } from "../asignaturas.service";
 
 @Component({
   selector: 'app-asignaturas',
   templateUrl: './asignaturas.component.html',
   styleUrls: ['./asignaturas.component.css'],
-  
+
 })
 
 @NgModule({
   providers: [AsignaturasService]
 })
-export class AsignaturasComponent implements OnInit { 
+export class AsignaturasComponent implements OnInit {
   asignaturas: Asignatura[];
   selectedAsignatura: Asignatura;
   selected: number;
-  opts : {
+  opts: {
     codigo: boolean,
     cuatrimestre: boolean,
     curso: boolean,
@@ -27,7 +29,7 @@ export class AsignaturasComponent implements OnInit {
     grupo: boolean
   };
   numCols: number;
-  searchVals : {
+  searchVals: {
     nombre: string,
     siglas: string,
     codigo: string,
@@ -37,7 +39,8 @@ export class AsignaturasComponent implements OnInit {
     ini: string,
     fin: string
   }
-  constructor(private asignaturasService: AsignaturasService) {
+  constructor(private asignaturasService: AsignaturasService, private router: Router, private titleService: Title) {
+    this.titleService.setTitle("Asignaturas");
     this.selected = 1;
     this.opts = {
       codigo: false,
@@ -59,49 +62,49 @@ export class AsignaturasComponent implements OnInit {
       ini: '',
       fin: ''
     }
-   }
+  }
 
   ngOnInit() {
     this.numCols = 4;
     this.getAsignaturas();
   }
 
-  getAsignaturas(): void{
+  getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
-      .subscribe(asignaturas => {this.asignaturas = asignaturas});
+      .subscribe(asignaturas => { this.asignaturas = asignaturas });
   }
-  onSelect(asignatura: Asignatura){
+  onSelect(asignatura: Asignatura) {
     this.selectedAsignatura = asignatura;
   }
-  updateNumCols(menosUno, num){
+  updateNumCols(menosUno, num) {
     console.log(this.numCols + '|' + menosUno);
-    if(menosUno){
+    if (menosUno) {
       this.numCols = this.numCols - num;
     }
-    else{
+    else {
       this.numCols = this.numCols + num;
     }
     console.log(this.numCols + '|' + menosUno);
   }
-  updateDias(dia: string){
+  updateDias(dia: string) {
     console.log(dia);
     var index = this.searchVals.dias.indexOf(dia);
     console.log(index);
-    if(index === -1){
+    if (index === -1) {
       this.searchVals.dias.push(dia);
     }
-    else{
-      this.searchVals.dias.splice(index,1);
+    else {
+      this.searchVals.dias.splice(index, 1);
     }
   }
-  search(): void{
+  search(): void {
     console.log(this.searchVals);
     var diasAux = []
-    if(this.searchVals.dias.length < 5){
+    if (this.searchVals.dias.length < 5) {
       diasAux = this.searchVals.dias;
     }
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
-      .subscribe(asignaturas => {this.asignaturas = asignaturas});
+      .subscribe(asignaturas => { this.asignaturas = asignaturas });
   }
 
 }
