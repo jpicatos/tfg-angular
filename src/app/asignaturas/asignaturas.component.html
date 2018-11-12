@@ -16,109 +16,53 @@
       </form>
     </div>
     <div class="total-container">
-      <div class="lista">
-        <div class="content">
-          <mat-grid-list cols={{numCols}} rowHeight="30px">
-            <mat-grid-tile *ngIf="opts.nombre" [colspan]=2>
-              <button mat-button color="warn" class="content-row nombre">
-                Siglas/Asignatura
+      <table mat-table matSort (matSortChange)="sortData($event)" [dataSource]="asignaturas" class="table-content">
 
-              </button>
-            </mat-grid-tile>
-            <mat-grid-tile *ngIf="opts.titulacion">
-              <button mat-button color="warn" class="content-row">
-                Titulación
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="nombre" color="warn">Siglas/Asignatura</th>
+          <td mat-cell *matCellDef="let asignatura" routerLink="/asignaturas/{{asignatura.id}}" class="row"> {{asignatura.nombre}} </td>
+        </ng-container>
 
-              </button>
-            </mat-grid-tile>
-            <mat-grid-tile *ngIf="opts.grupo">
-              <button mat-button color="warn" class="content-row">
-                Grupo
+        <ng-container matColumnDef="titulacion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="titulacion"> Titulación </th>
+          <td mat-cell *matCellDef="let asignatura"> {{asignatura.titulacion}} </td>
+        </ng-container>
 
-              </button>
-            </mat-grid-tile>
-            <mat-grid-tile *ngIf="opts.codigo">
-              <button mat-button color="warn" class="content-row">
-                Código
+        <ng-container matColumnDef="grupo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="grupo"> Grupo </th>
+          <td mat-cell *matCellDef="let asignatura"> {{asignatura.grupo}} </td>
+        </ng-container>
 
-              </button>
-            </mat-grid-tile>
-            <mat-grid-tile *ngIf="opts.cuatrimestre">
-              <button mat-button color="warn" class="content-row">
-                Cuatrimestre
+        <ng-container matColumnDef="codigo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="codigo"> Código </th>
+          <td mat-cell *matCellDef="let asignatura"> {{asignatura.codigo}} </td>
+        </ng-container>
 
-              </button>
-            </mat-grid-tile>
-            <mat-grid-tile *ngIf="opts.curso">
-              <button mat-button color="warn" class="content-row">
-                Curso
+        <ng-container matColumnDef="cuatrimestre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="cuatrimestre"> Cuatrimestre </th>
+          <td mat-cell *matCellDef="let asignatura"> {{asignatura.cuatrimestre}} </td>
+        </ng-container>
 
-              </button>
-            </mat-grid-tile>
-            <mat-grid-tile *ngIf="opts.departamento" [colspan]=2>
-              <button mat-button color="warn" class="content-row">
-                Departamento
+        <ng-container matColumnDef="curso">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="curso"> Curso </th>
+          <td mat-cell *matCellDef="let asignatura"> {{asignatura.curso}} </td>
+        </ng-container>
 
-              </button>
-            </mat-grid-tile>
-            <mat-grid-tile *ngIf="opts.id">
-              <button mat-button color="warn" class="content-row">
-                Identificador
+        <ng-container matColumnDef="departamento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="departamento"> Departamento </th>
+          <td mat-cell *matCellDef="let asignatura"> {{asignatura.departamento}} </td>
+        </ng-container>
 
-              </button>
-            </mat-grid-tile>
+        <ng-container matColumnDef="identificador">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="identificador"> Identidicador </th>
+          <td mat-cell *matCellDef="let asignatura"> {{asignatura.id}} </td>
+        </ng-container>
 
-          </mat-grid-list>
-          <div class="todo-content">
-            <div *ngFor="let asignatura of asignaturas">
-              <mat-grid-list cols={{numCols}} rowHeight="50px" routerLink="/asignaturas/{{asignatura.id}}" class="row">
-                <mat-grid-tile *ngIf="opts.nombre" class="nombre" [colspan]=2>
-                  <div class="content-row">
-                    [{{asignatura.siglas}}] {{asignatura.nombre}}
-                  </div>
-                </mat-grid-tile>
-                <mat-grid-tile *ngIf="opts.titulacion">
-                  <div class="content-row">
-                    {{asignatura.titulacion}}
-                  </div>
-                </mat-grid-tile>
-                <mat-grid-tile *ngIf="opts.grupo">
-                  <div class="content-row">
-                    {{asignatura.grupo}}
-                  </div>
-                </mat-grid-tile>
-                <mat-grid-tile *ngIf="opts.codigo">
-                  <div class="content-row">
-                    {{asignatura.codigo}}
-                  </div>
-                </mat-grid-tile>
-                <mat-grid-tile *ngIf="opts.cuatrimestre">
-                  <div class="content-row">
-                    {{asignatura.cuatrimestre}}
-                  </div>
-                </mat-grid-tile>
-                <mat-grid-tile *ngIf="opts.curso">
-                  <div class="content-row">
-                    {{asignatura.curso}}
-                  </div>
-                </mat-grid-tile>
-                <mat-grid-tile *ngIf="opts.departamento" [colspan]=2>
-                  <div class="content-row">
-                    {{asignatura.departamento}}
-                  </div>
-                </mat-grid-tile>
-                <mat-grid-tile *ngIf="opts.id">
-                  <div class="content-row">
-                    {{asignatura.id}}
-                  </div>
-                </mat-grid-tile>
-                <mat-divider class="divider"></mat-divider>
-              </mat-grid-list>
-            </div>
-          </div>
-        </div>
-      </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
     </div>
+    <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
   </mat-card>
   <div class="opts">
     <button mat-raised-button color="accent" routerLink="/add-asignatura" class="addButton">
@@ -131,15 +75,15 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="columnizar">
-        <mat-checkbox color='warn' [(ngModel)]="opts.codigo" (click)="updateNumCols(opts.codigo,1)">Código</mat-checkbox>
-        <mat-checkbox color='warn' [(ngModel)]="opts.cuatrimestre" (click)="updateNumCols(opts.cuatrimestre,1)">Cuatrimestre</mat-checkbox>
-        <mat-checkbox color='warn' [(ngModel)]="opts.curso" (click)="updateNumCols(opts.curso,1)">Curso</mat-checkbox>
-        <mat-checkbox color='warn' [(ngModel)]="opts.departamento" (click)="updateNumCols(opts.departamento,2)">Departamento</mat-checkbox>
+        <mat-checkbox color='warn' [(ngModel)]="opts.codigo" (toggle)="updateNumCols('codigo')">Código</mat-checkbox>
+        <mat-checkbox color='warn' [(ngModel)]="opts.cuatrimestre" (toggle)="updateNumCols('cuatrimestre')">Cuatrimestre</mat-checkbox>
+        <mat-checkbox color='warn' [(ngModel)]="opts.curso" (toggle)="updateNumCols('curso')">Curso</mat-checkbox>
+        <mat-checkbox color='warn' [(ngModel)]="opts.departamento" (toggle)="updateNumCols(opts.departamento,2)">Departamento</mat-checkbox>
 
-        <mat-checkbox color='warn' [(ngModel)]="opts.id" (click)="updateNumCols(opts.id,1)">Identificador</mat-checkbox>
-        <mat-checkbox color='warn' [(ngModel)]="opts.nombre" (click)="updateNumCols(opts.nombre,2)">Nombre</mat-checkbox>
-        <mat-checkbox color='warn' [(ngModel)]="opts.titulacion" (click)="updateNumCols(opts.titulacion,1)">Titulación</mat-checkbox>
-        <mat-checkbox color='warn' [(ngModel)]="opts.grupo" (click)="updateNumCols(opts.grupo,1)">Grupo</mat-checkbox>
+        <mat-checkbox color='warn' [(ngModel)]="opts.id" (toggle)="updateNumCols('identificador')">Identificador</mat-checkbox>
+        <mat-checkbox color='warn' [(ngModel)]="opts.nombre" (toggle)="updateNumCols('nombre')">Nombre</mat-checkbox>
+        <mat-checkbox color='warn' [(ngModel)]="opts.titulacion" (toggle)="updateNumCols('titulacion')">Titulación</mat-checkbox>
+        <mat-checkbox color='warn' [(ngModel)]="opts.grupo" (toggle)="updateNumCols('grupo')">Grupo</mat-checkbox>
       </div>
     </mat-expansion-panel>
     <mat-expansion-panel class="mostrar card">
@@ -148,10 +92,10 @@
       </mat-expansion-panel-header>
 
       <form class="columnizar">
-          <button mat-raised-button type="submit" (click)="search()">
-              Filtrar
-              <mat-icon>search</mat-icon>
-            </button>
+        <button mat-raised-button type="submit" (click)="search()">
+          Filtrar
+          <mat-icon>search</mat-icon>
+        </button>
         <mat-form-field>
           <input matInput placeholder="Siglas" style="text-transform: uppercase" [(ngModel)]="searchVals.siglas"
             [ngModelOptions]="{standalone: true}">

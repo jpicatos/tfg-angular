@@ -1,8 +1,10 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
 import { Asignatura } from "../models/asignatura";
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AsignaturasService } from "../asignaturas.service";
+import {Sort, MatPaginator} from '@angular/material';
+
 
 @Component({
   selector: 'app-asignaturas',
@@ -39,7 +41,10 @@ export class AsignaturasComponent implements OnInit {
     ini: string,
     fin: string
   }
+  displayedColumns: string[];
   loading: boolean;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private asignaturasService: AsignaturasService, private router: Router, private titleService: Title) {
     this.titleService.setTitle("Asignaturas");
     this.selected = 1;
@@ -68,6 +73,7 @@ export class AsignaturasComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.numCols = 4;
+    this.displayedColumns = ['nombre', 'titulacion', 'grupo'];
     this.getAsignaturas();
   }
 
@@ -81,15 +87,16 @@ export class AsignaturasComponent implements OnInit {
   onSelect(asignatura: Asignatura) {
     this.selectedAsignatura = asignatura;
   }
-  updateNumCols(menosUno, num) {
-    console.log(this.numCols + '|' + menosUno);
-    if (menosUno) {
-      this.numCols = this.numCols - num;
-    }
-    else {
-      this.numCols = this.numCols + num;
-    }
-    console.log(this.numCols + '|' + menosUno);
+  updateNumCols(col: string) {
+    this.displayedColumns = []
+    if(this.opts.nombre) this.displayedColumns.push('nombre');
+    if(this.opts.titulacion) this.displayedColumns.push('titulacion');
+    if(this.opts.grupo) this.displayedColumns.push('grupo');
+    if(this.opts.codigo) this.displayedColumns.push('codigo');
+    if(this.opts.cuatrimestre) this.displayedColumns.push('cuatrimestre');
+    if(this.opts.curso) this.displayedColumns.push('curso');
+    if(this.opts.departamento) this.displayedColumns.push('departamento');
+    if(this.opts.id) this.displayedColumns.push('identificador');
   }
   updateDias(dia: string) {
     console.log(dia);
@@ -110,6 +117,31 @@ export class AsignaturasComponent implements OnInit {
     }
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
       .subscribe(asignaturas => { this.asignaturas = asignaturas });
+  }
+  sortData(sort: Sort) {
+    const data = this.asignaturas.slice();
+    if (!sort.active || sort.direction === '') {
+      this.asignaturas = data;
+      return;
+    }
+
+    this.asignaturas = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'nombre': return this.compare(a.nombre, b.nombre, isAsc);
+        case 'titulacion': return this.compare(a.titulacion, b.titulacion, isAsc);
+        case 'grupo': return this.compare(a.grupo, b.grupo, isAsc);
+        case 'codigo': return this.compare(a.codigo, b.codigo, isAsc);
+        case 'cuatrimestre': return this.compare(a.cuatrimestre, b.cuatrimestre, isAsc);
+        case 'curso': return this.compare(a.curso, b.curso, isAsc);
+        case 'departamento': return this.compare(a.departamento, b.departamento, isAsc);
+        case 'identificador': return this.compare(a.id, b.id, isAsc);
+        default: return 0;
+      }
+    });
+  }
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
 }
