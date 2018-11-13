@@ -19,3 +19,8 @@ export class Asignatura{
     }
 };
 
+export class AsignaturaImportar {
+    excel_file: string;
+    departamento_siglas: string;
+    departamento_nombre: string;
+}

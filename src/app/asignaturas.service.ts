@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { Asignatura } from "./models/asignatura";
-
+import { Asignatura, AsignaturaImportar } from "./models/asignatura";
 
 
 const httpOptions = {
@@ -57,6 +56,28 @@ export class AsignaturasService {
     }
 
   }
+
+  importar(archivo: File, departamento_siglas: string, departamento_nombre: string): Observable<AsignaturaImportar> {
+    const httpOptions =
+      new HttpHeaders({
+        'Authorization': 'Token d0cddc40af7cb1bf04084d94cda4a4e0dc96c78e'
+      });
+
+    const httpUrl = "http://tfg.davidarroyo.es/api/asignaturas/importar/";
+
+    // this.http is the injected HttpClient
+    const uploadData = new FormData();
+    uploadData.append('excel_file', archivo, archivo.name);
+    uploadData.append('departamento_siglas', departamento_siglas);
+    uploadData.append('departamento_nombre', departamento_nombre);
+
+    return this.http.post<AsignaturaImportar>(httpUrl, uploadData, {
+      headers: httpOptions,
+      // reportProgress: true,
+      // observe: 'events'
+    })
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 

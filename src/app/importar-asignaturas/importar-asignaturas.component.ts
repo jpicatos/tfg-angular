@@ -1,23 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component, OnInit, NgModule } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AsignaturasService } from "../asignaturas.service";
+import { MatSnackBar } from '@angular/material';
 
-const httpUrl = "http://tfg.davidarroyo.es/api/asignaturas/importar/";
-
-const httpOptions =
-  new HttpHeaders({
-    'Authorization': 'Token d0cddc40af7cb1bf04084d94cda4a4e0dc96c78e'
-  });
 
 @Component({
   selector: 'app-importar-asignaturas',
   templateUrl: './importar-asignaturas.component.html',
   styleUrls: ['./importar-asignaturas.component.css']
 })
+@NgModule({
+  providers: [AsignaturasService]
+})
 export class ImportarAsignaturasComponent implements OnInit {
 
-  selectedFile: File;
+  private selectedFile: File;
+  private departamento_siglas: string;
+  private departamento_nombre: string;
+  private progreso: boolean;
 
-  constructor(private http: HttpClient) {
+  constructor(private asignaturasService: AsignaturasService,
+    private http: HttpClient, private snackBar: MatSnackBar) {
+    this.progreso = false;
   }
 
   ngOnInit() {
@@ -27,21 +31,30 @@ export class ImportarAsignaturasComponent implements OnInit {
     this.selectedFile = event.target.files[0]
   }
 
-  onUpload() {
-    // this.http is the injected HttpClient
-    const uploadData = new FormData();
-    uploadData.append('excel_file', this.selectedFile, this.selectedFile.name);
-    uploadData.append('departamento_siglas', 'SIC');
-    uploadData.append('departamento_nombre', 'Sistemas Informáticos y Computación');
+  importar() {
+    if (this.selectedFile && this.departamento_siglas && this.departamento_nombre) {
+      this.asignaturasService.importar(this.selectedFile,
+        this.departamento_siglas,
+        this.departamento_nombre)
+        .subscribe(event => this.ficheroSubido(event),
+          error => this.mostrarError());
 
-    this.http.post(httpUrl, uploadData, {
-      headers: httpOptions,
-      reportProgress: true,
-      observe: 'events'
-    })
-      .subscribe(event => {
-        console.log(event); // handle event here
-      });
+      this.progreso = true;
+    } else {
+      let snackBarRef = this.snackBar.open('Debe rellenar todos los campos', 'Cerrar');
+    }
+  }
+
+  ficheroSubido(event) {
+    this.progreso = false;
+    if (event.excel_file) {
+      let snackBarRef = this.snackBar.open('Se han importado las asignaturas correctamente', 'Cerrar');
+    }
+  }
+
+  mostrarError() {
+    this.progreso = false;
+    let snackBarRef = this.snackBar.open('Ha habido un error al importar las asignaturas', 'Cerrar');
   }
 
 }
