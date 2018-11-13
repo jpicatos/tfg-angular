@@ -2,6 +2,7 @@ import { Component, OnInit, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AsignaturasService } from "../asignaturas.service";
 import { MatSnackBar } from '@angular/material';
+import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class ImportarAsignaturasComponent implements OnInit {
   }
 
   ngOnInit() {
+    MenuToolbarComponent.updateTitle("Asignaturas");
   }
 
   onFileChanged(event) {

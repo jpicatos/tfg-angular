@@ -3,6 +3,7 @@ import { Asignatura } from "../models/asignatura";
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AsignaturasService } from "../asignaturas.service";
+import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 
 @Component({
   selector: 'app-asignaturas',
@@ -66,6 +67,7 @@ export class AsignaturasComponent implements OnInit {
   }
 
   ngOnInit() {
+    MenuToolbarComponent.updateTitle("Asignaturas");
     this.loading = true;
     this.numCols = 4;
     this.getAsignaturas();

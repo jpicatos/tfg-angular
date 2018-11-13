@@ -10,16 +10,21 @@ import { ActivatedRoute } from '@angular/router';
 
 export class MenuToolbarComponent implements OnInit {
 
-  routeTitle: string;
+  private static routeTitle: string;
 
-  constructor(private route: ActivatedRoute) { }
-
-  ngOnInit() {
-    this.routeTitle = this.route.toString();
+  constructor(private route: ActivatedRoute) { 
+    MenuToolbarComponent.routeTitle = "";
   }
 
-  updateTitle(title: string): void {
-    this.routeTitle = title;
+  ngOnInit() {
+  }
+
+  public static updateTitle(title: string): void {
+    MenuToolbarComponent.routeTitle = title;
+  }
+
+  get title(): string {
+    return MenuToolbarComponent.routeTitle;
   }
 
 }

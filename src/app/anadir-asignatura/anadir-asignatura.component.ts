@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from "@angular/platform-browser";
 import { Asignatura } from '../models/asignatura';
 import { AsignaturasService } from '../asignaturas.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Desdoble } from '../models/desdoble';
 import { Horario } from '../models/horario';
+import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 
 @Component({
   selector: 'app-anadir-asignatura',
@@ -22,7 +24,10 @@ export class AnadirAsignaturaComponent implements OnInit {
 
 
   constructor(private angularService: AsignaturasService,
-    private route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder) {
+    private route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder,
+    private titleService: Title) {
+    this.titleService.setTitle("Añadir una asignatura")
+    MenuToolbarComponent.updateTitle("Asignaturas");
     this.asignatura = new Asignatura;
   }
 
