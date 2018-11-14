@@ -13,29 +13,29 @@
           <form [formGroup]="firstFormGroup" class="formulario">
             <ng-template matStepLabel>Detalles generales</ng-template>
             <mat-form-field>
-              <input matInput placeholder="Nombre" [(ngModel)]=asignatura.nombre [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Nombre" [(ngModel)]=asignatura.nombre [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Codigo" [(ngModel)]=asignatura.codigo [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Codigo" [(ngModel)]=asignatura.codigo [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>
               <input matInput type="number" placeholder="Cuatrimestre" [(ngModel)]=asignatura.cuatrimestre
-                [ngModelOptions]="{standalone: true}">
+                [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Curso" [(ngModel)]=asignatura.curso [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Curso" [(ngModel)]=asignatura.curso [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Grupo" [(ngModel)]=asignatura.grupo [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Grupo" [(ngModel)]=asignatura.grupo [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Siglas" [(ngModel)]=asignatura.siglas [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Siglas" [(ngModel)]=asignatura.siglas [ngModelOptions]="{standalone: true}" required> 
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Titulación" [(ngModel)]=asignatura.titulacion [ngModelOptions]="{standalone: true}">
+              <input matInput placeholder="Titulación" [(ngModel)]=asignatura.titulacion [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <div>
-              <button mat-button matStepperNext>Siguiente</button>
+              <button mat-button matStepperNext type="submit">Siguiente</button>
             </div>
           </form>
         </mat-step>
@@ -44,7 +44,7 @@
             <ng-template matStepLabel>Departamento</ng-template>
             <mat-form-field>
               <input matInput placeholder="Siglas del departamento" [(ngModel)]=asignatura.departamento
-                [ngModelOptions]="{standalone: true}">
+                [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <div>
               <button mat-button matStepperPrevious>Atrás</button>
@@ -59,28 +59,28 @@
             <div *ngFor="let desdoble of asignatura.desdobles; let i = index" class="formulario">
               <div class="titulo-horarios">
                 <h4>Desdoble #{{i + 1}}</h4>
-                <button class="boton-eliminar" mat-mini-fab color="warn" (click)="removeDesdoble(i)"><mat-icon>delete</mat-icon></button>
+                <button class="boton-eliminar" mat-mini-fab color="primary" (click)="removeDesdoble(i)"><mat-icon>delete</mat-icon></button>
               </div>
               <button mat-button (click)="newHorarioDesdoble(i)">Añadir horario al desdoble</button>
               <div *ngFor="let horario of desdoble.horario; let t = index" class="formulario tabulado">
                 <div class="titulo-horarios">
                   <h5>Horario #{{t + 1}}</h5>
-                  <button class="boton-eliminar" mat-mini-fab color="warn" (click)="removeHorarioDesdoble(i,t)"><mat-icon>delete</mat-icon></button>
+                  <button class="boton-eliminar" mat-mini-fab color="primary" (click)="removeHorarioDesdoble(i,t)"><mat-icon>delete</mat-icon></button>
                 </div>
                 <mat-form-field>
-                  <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=horario.aula [ngModelOptions]="{standalone: true}">
+                  <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=horario.aula [ngModelOptions]="{standalone: true}" required>
                   <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4' ...</strong></mat-hint>
                 </mat-form-field>
                 <mat-form-field>
-                  <input matInput placeholder="Día de la semana" [(ngModel)]=horario.dia [ngModelOptions]="{standalone: true}">
+                  <input matInput placeholder="Día de la semana" [(ngModel)]=horario.dia [ngModelOptions]="{standalone: true}" required>
                   <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint>
                 </mat-form-field>
                 <mat-form-field>
-                  <input matInput placeholder="Hora de inicio" [(ngModel)]=horario.hora_inicio [ngModelOptions]="{standalone: true}">
+                  <input matInput placeholder="Hora de inicio" [(ngModel)]=horario.hora_inicio [ngModelOptions]="{standalone: true}" required>
                   <mat-hint align="start"><strong>Ej. '09:00:00', '11:00:00', '15:00:00' ...</strong></mat-hint>
                 </mat-form-field>
                 <mat-form-field>
-                  <input matInput placeholder="Hora de fin" [(ngModel)]=horario.hora_fin [ngModelOptions]="{standalone: true}">
+                  <input matInput placeholder="Hora de fin" [(ngModel)]=horario.hora_fin [ngModelOptions]="{standalone: true}" required>
                   <mat-hint align="start"><strong>Ej. '09:00:00', '11:00:00', '15:00:00' ...</strong></mat-hint>
                 </mat-form-field>
               </div>
@@ -99,22 +99,22 @@
             <div *ngFor="let h of asignatura.horario; let i = index" class="formulario">
               <div class="titulo-horarios">
                 <h4>Horario {{i + 1}}</h4>
-                <button class="boton-eliminar" mat-mini-fab color="warn" (click)="removeHorario(i)"><mat-icon>delete</mat-icon></button>
+                <button class="boton-eliminar" mat-mini-fab color="primary" (click)="removeHorario(i)"><mat-icon>delete</mat-icon></button>
               </div>
               <mat-form-field>
-                <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=h.aula [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=h.aula [ngModelOptions]="{standalone: true}" required>
                 <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4' ...</strong></mat-hint>
               </mat-form-field>
               <mat-form-field>
-                <input matInput placeholder="Día de la semana" [(ngModel)]=h.dia [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Día de la semana" [(ngModel)]=h.dia [ngModelOptions]="{standalone: true}" required>
                 <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint>
               </mat-form-field>
               <mat-form-field>
-                <input matInput placeholder="Hora de inicio" [(ngModel)]=h.hora_inicio [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Hora de inicio" [(ngModel)]=h.hora_inicio [ngModelOptions]="{standalone: true}" required>
                 <mat-hint align="start"><strong>Ej. '09:00:00', '11:00:00', '15:00:00' ...</strong></mat-hint>
               </mat-form-field>
               <mat-form-field>
-                <input matInput placeholder="Hora de fin" [(ngModel)]=h.hora_fin [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Hora de fin" [(ngModel)]=h.hora_fin [ngModelOptions]="{standalone: true}" required>
                 <mat-hint align="start"><strong>Ej. '09:00:00', '11:00:00', '15:00:00' ...</strong></mat-hint>
               </mat-form-field>
             </div>
@@ -137,9 +137,5 @@
       </mat-horizontal-stepper>
 
     </mat-card-content>
-    <!-- <mat-card-actions>
-      <button mat-raised-button color="warn">Save</button>
-      <button mat-button>Cancel</button>
-    </mat-card-actions> -->
   </mat-card>
 </div>

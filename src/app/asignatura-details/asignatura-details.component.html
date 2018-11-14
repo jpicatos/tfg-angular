@@ -1,18 +1,24 @@
 <div class="decorator"></div>
+<div class="card-container">
   <mat-card class="card">
     <mat-card-header>
-        <div mat-card-avatar class="header-image"></div>
-        <mat-card-subtitle><a routerLink="/asignaturas">asignaturas</a> / <a routerLink="/asignaturas/{{asignatura.id}}">{{asignatura.siglas}}</a></mat-card-subtitle>
-        <mat-card-title routerLink="/asignaturas/{{asignatura.id}}" class="nombre-asig">[{{asignatura.siglas}}] {{asignatura.nombre}}</mat-card-title>
+      <div mat-card-avatar class="header-image"></div>
+      <mat-card-subtitle><a routerLink="/asignaturas">asignaturas</a> / <a routerLink="/asignaturas/{{asignatura.id}}">{{asignatura.siglas}}</a></mat-card-subtitle>
+      <mat-card-title routerLink="/asignaturas/{{asignatura.id}}" class="nombre-asig">[{{asignatura.siglas}}]
+        {{asignatura.nombre}}</mat-card-title>
       <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
     </mat-card-header>
     <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
     <mat-card-content>
-        <div *ngFor="let dia of asignatura.horario">
+      <mat-tab-group>
+        <mat-tab label="Detalles generales">
+          <div *ngFor="let dia of asignatura.horario">
             <code>
               <strong>{{dia.aula}}: </strong>{{dia.dia}} <mat-icon>navigate_next</mat-icon> {{dia.hora_inicio}}/{{dia.hora_fin}}
             </code>
           </div>
+        </mat-tab>
+        <mat-tab label="Horario">
           <mat-grid-list cols="2">
             <mat-grid-tile>
               <mat-list role="list">
@@ -22,6 +28,12 @@
               </mat-list>
             </mat-grid-tile>
           </mat-grid-list>
+        </mat-tab>
+        <mat-tab label="Desdobles"> Content 3 </mat-tab>
+      </mat-tab-group>
+
+
     </mat-card-content>
   </mat-card>
+</div>
 <button mat-raised-button color="alert" routerLink="/edit-asignatura/{{asignatura.id}}">Editar</button>

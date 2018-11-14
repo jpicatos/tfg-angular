@@ -1,4 +1,4 @@
-<mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn" class="progress-bar"></mat-progress-bar>
+<mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
 <div class="total-container">
     <mat-card class="card main-card">
         <div>
@@ -11,8 +11,8 @@
 
                 </mat-form-field>
                 <button mat-button type="submit" (click)="search()">
-          <mat-icon>search</mat-icon>
-        </button>
+                    <mat-icon>search</mat-icon>
+                </button>
             </form>
         </div>
         <div class="total-container">
@@ -20,58 +20,59 @@
                 <div class="content">
                     <mat-grid-list cols={{numCols}} rowHeight="30px">
                         <mat-grid-tile *ngIf="opts.nombre" [colspan]=2>
-                            <button mat-button color="warn" class="content-row nombre">
-                Siglas/Asignatura
+                            <button mat-button color="primary" class="content-row nombre">
+                                Siglas/Asignatura
 
-              </button>
+                            </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.titulacion">
-                            <button mat-button color="warn" class="content-row">
-                Titulación
+                            <button mat-button color="primary" class="content-row">
+                                Titulación
 
-              </button>
+                            </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.grupo">
-                            <button mat-button color="warn" class="content-row">
-                Grupo
+                            <button mat-button color="primary" class="content-row">
+                                Grupo
 
-              </button>
+                            </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.codigo">
-                            <button mat-button color="warn" class="content-row">
-                Código
+                            <button mat-button color="primary" class="content-row">
+                                Código
 
-              </button>
+                            </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.cuatrimestre">
-                            <button mat-button color="warn" class="content-row">
-                Cuatrimestre
+                            <button mat-button color="primary" class="content-row">
+                                Cuatrimestre
 
-              </button>
+                            </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.curso">
-                            <button mat-button color="warn" class="content-row">
-                Curso
+                            <button mat-button color="primary" class="content-row">
+                                Curso
 
-              </button>
+                            </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.departamento" [colspan]=2>
-                            <button mat-button color="warn" class="content-row">
-                Departamento
+                            <button mat-button color="primary" class="content-row">
+                                Departamento
 
-              </button>
+                            </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.id">
-                            <button mat-button color="warn" class="content-row">
-                Identificador
+                            <button mat-button color="primary" class="content-row">
+                                Identificador
 
-              </button>
+                            </button>
                         </mat-grid-tile>
 
                     </mat-grid-list>
                     <div class="todo-content">
                         <div *ngFor="let asignatura of asignaturas">
-                            <mat-grid-list cols={{numCols}} rowHeight="50px" routerLink="/asignaturas/{{asignatura.id}}" class="row">
+                            <mat-grid-list cols={{numCols}} rowHeight="50px" routerLink="/asignaturas/{{asignatura.id}}"
+                                class="row">
                                 <mat-grid-tile *ngIf="opts.nombre" class="nombre" [colspan]=2>
                                     <div class="content-row">
                                         [{{asignatura.siglas}}] {{asignatura.nombre}}
@@ -122,12 +123,12 @@
     </mat-card>
     <div class="opts">
         <button mat-raised-button color="accent" routerLink="/add-asignatura" class="addButton">
-      <mat-icon>add</mat-icon>Añadir nueva asignatura
-    </button>
+            <mat-icon>add</mat-icon>Añadir nueva asignatura
+        </button>
 
         <button mat-raised-button color="accent" routerLink="/importar-asignaturas" class="addButton">
-      <mat-icon>cloud_upload</mat-icon>  Importar asignaturas
-    </button>
+            <mat-icon>cloud_upload</mat-icon> Importar asignaturas
+        </button>
         <mat-expansion-panel class="mostrar card" [expanded]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -135,15 +136,15 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="columnizar">
-                <mat-checkbox color='warn' [(ngModel)]="opts.codigo" (click)="updateNumCols(opts.codigo,1)">Código</mat-checkbox>
-                <mat-checkbox color='warn' [(ngModel)]="opts.cuatrimestre" (click)="updateNumCols(opts.cuatrimestre,1)">Cuatrimestre</mat-checkbox>
-                <mat-checkbox color='warn' [(ngModel)]="opts.curso" (click)="updateNumCols(opts.curso,1)">Curso</mat-checkbox>
-                <mat-checkbox color='warn' [(ngModel)]="opts.departamento" (click)="updateNumCols(opts.departamento,2)">Departamento</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.codigo" (click)="updateNumCols(opts.codigo,1)">Código</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.cuatrimestre" (click)="updateNumCols(opts.cuatrimestre,1)">Cuatrimestre</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.curso" (click)="updateNumCols(opts.curso,1)">Curso</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.departamento" (click)="updateNumCols(opts.departamento,2)">Departamento</mat-checkbox>
 
-                <mat-checkbox color='warn' [(ngModel)]="opts.id" (click)="updateNumCols(opts.id,1)">Identificador</mat-checkbox>
-                <mat-checkbox color='warn' [(ngModel)]="opts.nombre" (click)="updateNumCols(opts.nombre,2)">Nombre</mat-checkbox>
-                <mat-checkbox color='warn' [(ngModel)]="opts.titulacion" (click)="updateNumCols(opts.titulacion,1)">Titulación</mat-checkbox>
-                <mat-checkbox color='warn' [(ngModel)]="opts.grupo" (click)="updateNumCols(opts.grupo,1)">Grupo</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.id" (click)="updateNumCols(opts.id,1)">Identificador</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.nombre" (click)="updateNumCols(opts.nombre,2)">Nombre</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.titulacion" (click)="updateNumCols(opts.titulacion,1)">Titulación</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.grupo" (click)="updateNumCols(opts.grupo,1)">Grupo</mat-checkbox>
             </div>
         </mat-expansion-panel>
         <mat-expansion-panel class="mostrar card">
@@ -153,11 +154,12 @@
 
             <form class="columnizar">
                 <button mat-raised-button type="submit" (click)="search()">
-              Filtrar
-              <mat-icon>search</mat-icon>
-            </button>
+                    Filtrar
+                    <mat-icon>search</mat-icon>
+                </button>
                 <mat-form-field>
-                    <input matInput placeholder="Siglas" style="text-transform: uppercase" [(ngModel)]="searchVals.siglas" [ngModelOptions]="{standalone: true}">
+                    <input matInput placeholder="Siglas" style="text-transform: uppercase" [(ngModel)]="searchVals.siglas"
+                        [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput placeholder="Código" [(ngModel)]="searchVals.codigo" [ngModelOptions]="{standalone: true}">
@@ -174,15 +176,16 @@
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type='number' placeholder="Cuatrimestre" min=1 max=2 [(ngModel)]="searchVals.cuatrimestre" [ngModelOptions]="{standalone: true}">
+                    <input matInput type='number' placeholder="Cuatrimestre" min=1 max=2 [(ngModel)]="searchVals.cuatrimestre"
+                        [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
 
                 <h4>Día(s)</h4>
-                <mat-checkbox color='warn' (click)="updateDias('L')">Lunes</mat-checkbox>
-                <mat-checkbox color='warn' (click)="updateDias('M')">Martes</mat-checkbox>
-                <mat-checkbox color='warn' (click)="updateDias('X')">Miércoles</mat-checkbox>
-                <mat-checkbox color='warn' (click)="updateDias('J')">Jueves</mat-checkbox>
-                <mat-checkbox color='warn' (click)="updateDias('V')">Viernes</mat-checkbox>
+                <mat-checkbox color='primary' (click)="updateDias('L')">Lunes</mat-checkbox>
+                <mat-checkbox color='primary' (click)="updateDias('M')">Martes</mat-checkbox>
+                <mat-checkbox color='primary' (click)="updateDias('X')">Miércoles</mat-checkbox>
+                <mat-checkbox color='primary' (click)="updateDias('J')">Jueves</mat-checkbox>
+                <mat-checkbox color='primary' (click)="updateDias('V')">Viernes</mat-checkbox>
 
 
                 <mat-form-field>
@@ -194,9 +197,9 @@
                     <mat-hint align="start"><strong>Ej. '09:00:00', 15:00:00' ...</strong></mat-hint>
                 </mat-form-field>
                 <button mat-raised-button type="submit" (click)="search()">
-          Filtrar
-          <mat-icon>search</mat-icon>
-        </button>
+                    Filtrar
+                    <mat-icon>search</mat-icon>
+                </button>
             </form>
 
         </mat-expansion-panel>
