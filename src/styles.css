@@ -14,3 +14,10 @@ body{
 .mat-progress-bar.mat-warn .mat-progress-bar-buffer{
     background-color: #c5cae9;
 }
+.decorator{
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    background-color: #0077c2;
+}

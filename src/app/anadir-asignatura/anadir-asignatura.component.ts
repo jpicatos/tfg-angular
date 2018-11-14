@@ -71,6 +71,13 @@ export class AnadirAsignaturaComponent implements OnInit {
   removeHorario(i: number): void {
     this.asignatura.horario.splice(i, 1);
   }
+  newHorarioDesdoble(i:number): void {
+    this.asignatura.desdobles[i].horario.push(new Horario);
+  }
+
+  removeHorarioDesdoble(i: number, t:number): void {
+    this.asignatura.desdobles[i].horario.splice(t, 1);
+  }
 
   save(): void {
     console.log(this.asignatura);

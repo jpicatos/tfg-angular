@@ -78,6 +78,7 @@ export class AsignaturasComponent implements OnInit {
       .subscribe(asignaturas => {
         this.asignaturas = asignaturas;
         this.loading=false;
+        console.log(this.asignaturas);
       });
   }
   onSelect(asignatura: Asignatura) {

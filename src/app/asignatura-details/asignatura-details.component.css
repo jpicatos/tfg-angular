@@ -16,3 +16,7 @@
 .nombre-asig:hover{
     text-decoration: underline;
 }
+.header-image{
+    background-image: url('../../assets/books.png');
+    background-size: cover;
+}
