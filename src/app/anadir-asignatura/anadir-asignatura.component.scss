@@ -1,3 +1,5 @@
+@import '../../scss/variables.scss';
+
 .form-container{
     display: flex;
     justify-content: center;
@@ -24,7 +26,7 @@
 
 .boton-eliminar {
     float: right;
-    background-color: red;
+    background-color: $warn;
 }
 .tabulado{
     margin-left: 20px;

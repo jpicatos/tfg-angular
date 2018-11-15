@@ -1,0 +1,42 @@
+.total-container {
+    display: flex;
+
+    .card-container {
+        flex-grow: 5;
+        display: flex;
+        justify-content: center;
+
+        .card {
+            z-index: 2;
+            width: 80%;
+            overflow: hidden;
+            .header-image {
+                background-image: url('../../assets/books.png');
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            .manualDivider{
+                border-bottom: 1px solid;
+                display: block;
+                opacity: 0.2;
+            }
+            .tab{
+                overflow: hidden;
+            }
+            .generalDataRow {
+                width: 70%;
+            }
+            
+        }
+    }
+
+    .actionButtonContainer{
+        flex-grow: 1;
+        margin-right: 25px;
+        
+        button{
+            width: 100%;
+        }
+    }
+    
+}

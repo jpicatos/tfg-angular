@@ -11,7 +11,7 @@ import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 @Component({
   selector: 'app-anadir-asignatura',
   templateUrl: './anadir-asignatura.component.html',
-  styleUrls: ['./anadir-asignatura.component.css']
+  styleUrls: ['./anadir-asignatura.component.scss']
 })
 export class AnadirAsignaturaComponent implements OnInit {
 
