@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>¿Estás seguro de eliminar la asignatura?</h2>
+
+<mat-dialog-content>
+    <p>Esta acción es irreversible, se borrarán todos los datos asociados a la asignatura</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Cancelar</button>
+    <button class="mat-raised-button mat-primary"(click)="delete()">Eliminar</button>
+</mat-dialog-actions>

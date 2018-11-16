@@ -11,7 +11,7 @@
         <mat-divider></mat-divider>
 
         <div class="slidenav-buttons">
-            <button mat-button routerLink="/" class="dash-button" (click)='updateTitle("Dashboard")'>
+            <button mat-button routerLink="/" class="dash-button">
                 <span class="menu-button-content">
                     <mat-icon>home</mat-icon>
                     DASHBOARD
@@ -19,27 +19,27 @@
             </button>
             <mat-divider></mat-divider>
             <p class="menu-title">Listas</p>
-            <button mat-button routerLink="/asignaturas" (click)='updateTitle("Asignaturas")'>
+            <button mat-button routerLink="/asignaturas">
                 <span class="menu-button-content">
                     <mat-icon>visibility</mat-icon>
                     ASIGNATURAS
                 </span>
             </button>
-            <button mat-button (click)='updateTitle("Profesores")'>
+            <button mat-button>
                 <span class="menu-button-content">
                     PROFESORES
                 </span>
             </button>
             <mat-divider></mat-divider>
             <p class="menu-title">Configuración</p>
-            <button mat-button (click)='updateTitle("Configuración")'>
+            <button mat-button>
                 <span class="menu-button-content">
                     CONFIGURACIÓN
                 </span>
             </button>
             <mat-divider></mat-divider>
             <mat-divider></mat-divider>
-            <button mat-button class="dash-button" (click)='updateTitle("Dashboard")'>
+            <button mat-button class="dash-button">
                 <span class="menu-button-content">
                     SALIR
                 </span>

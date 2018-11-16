@@ -22,9 +22,11 @@ export class AsignaturasService {
   getAsignaturas(): Observable<Asignatura[]> {
     return this.http.get<Asignatura[]>(this.asignaturasUrl + '?format=json', httpOptions);
   }
+
   getAsignatura(id: number): Observable<Asignatura> {
     return this.http.get<Asignatura>(this.asignaturasUrl + id + '/?format=json', httpOptions);
   }
+
   searchAsignatura(siglas: string, nombre: string, codigo: string, curso: string, cuatrimestre: number, inicio: string, fin: string, dia: string[]): Observable<Asignatura[]> {
     var params = '&siglas=' + siglas +
       '&nombre=' + nombre +
@@ -40,6 +42,7 @@ export class AsignaturasService {
     });
     return this.http.get<Asignatura[]>(this.asignaturasUrl + '?format=json' + params, httpOptions);
   }
+
   saveAsignatura(asignatura: Asignatura): void {
 
     if (asignatura.id != undefined) {
@@ -55,6 +58,11 @@ export class AsignaturasService {
         });
     }
 
+  }
+
+  deleteAsignatura(id: number): void {
+    this.http.delete<Asignatura>(this.asignaturasUrl + id + '/?format=json', httpOptions)
+    .subscribe(asignatura => { this.router.navigate(['/asignaturas']); });
   }
 
   importar(archivo: File, departamento_siglas: string, departamento_nombre: string): Observable<AsignaturaImportar> {

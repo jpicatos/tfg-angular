@@ -54,6 +54,7 @@ import { AsignaturaDetailsComponent } from './asignatura-details/asignatura-deta
 import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura.component';
 import { AsignaturasService } from './asignaturas.service';
 import { ImportarAsignaturasComponent } from './importar-asignaturas/importar-asignaturas.component';
+import { EliminarDialogComponent } from './eliminar-dialog/eliminar-dialog.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { ImportarAsignaturasComponent } from './importar-asignaturas/importar-as
     HorarioComponent,
     AsignaturaDetailsComponent,
     AnadirAsignaturaComponent,
-    ImportarAsignaturasComponent
+    ImportarAsignaturasComponent,
+    EliminarDialogComponent
   ],
   imports: [
     MatFileUploadModule,
@@ -110,6 +112,7 @@ import { ImportarAsignaturasComponent } from './importar-asignaturas/importar-as
     AppRoutingModule,
   ],
   providers: [AsignaturasService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [EliminarDialogComponent]
 })
 export class AppModule { }

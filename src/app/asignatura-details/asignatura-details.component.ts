@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Title, disableDebugTools } from "@angular/platform-browser";
 import { Asignatura } from '../models/asignatura';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AsignaturasService } from '../asignaturas.service';
 import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
+import { EliminarDialogComponent } from '../eliminar-dialog/eliminar-dialog.component';
+import { MatDialog, MatDialogConfig } from "@angular/material";
 
 @Component({
   selector: 'app-asignatura-details',
@@ -17,7 +19,7 @@ export class AsignaturaDetailsComponent implements OnInit {
   displayedColumns: string[];
   asignaturaData: any[];
 
-  constructor(private angularService: AsignaturasService,
+  constructor(private angularService: AsignaturasService, private dialog: MatDialog,
     private route: ActivatedRoute, private titleService: Title) {
     this.loaded = false;
     this.asignatura = new Asignatura;
@@ -30,7 +32,7 @@ export class AsignaturaDetailsComponent implements OnInit {
     this.asignatura.nombre = 'Mocked Nombre';
     this.asignatura.siglas = 'MN';
     this.asignatura.titulacion = 'testTitu';
-    
+
   }
 
   ngOnInit() {
@@ -70,6 +72,32 @@ export class AsignaturaDetailsComponent implements OnInit {
       'data': data
     }
     this.asignaturaData = [total];
+  }
+
+  eliminarDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+        idAsignatura: this.asignatura.id
+    };
+
+    const dialogRef = this.dialog.open(EliminarDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+        asignatura => this.eliminarAsignatura(asignatura)
+    );
+  }
+
+  eliminarAsignatura(asignatura) {
+    if (asignatura != undefined) {
+      this.angularService.deleteAsignatura(this.asignatura.id);
+    }
+    else {
+      console.log('Cancelada eliminación asignatura');
+    }
   }
 
 }
