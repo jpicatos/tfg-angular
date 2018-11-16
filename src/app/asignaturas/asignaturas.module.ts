@@ -9,11 +9,12 @@ import { MaterialModule } from '../material/material.module';
 import { MenuToolbarComponent } from './menu-toolbar/menu-toolbar.component';
 import { AsignaturasListComponent } from './asignaturas-list/asignaturas-list.component';
 import { HorarioComponent } from './horario/horario.component';
-import { AsignaturaDetailsComponent } from './asignatura-details/asignatura-details.component';
+import { AsignaturaDetailsComponent} from './asignatura-details/asignatura-details.component';
 import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura.component';
 import { AsignaturasService } from './asignaturas.service';
 import { ImportarAsignaturasComponent } from './importar-asignaturas/importar-asignaturas.component';
 import { EliminarDialogComponent } from './eliminar-dialog/eliminar-dialog.component';
+import { DialogDesdobleComponent } from './dialog-desdoble/dialog-desdoble.component';
 
 @NgModule({
   imports: [
@@ -33,9 +34,10 @@ import { EliminarDialogComponent } from './eliminar-dialog/eliminar-dialog.compo
     AsignaturaDetailsComponent,
     AnadirAsignaturaComponent,
     ImportarAsignaturasComponent,
-    EliminarDialogComponent
+    EliminarDialogComponent,
+    DialogDesdobleComponent
   ],
   providers: [AsignaturasService],
-  entryComponents: [EliminarDialogComponent]
+  entryComponents: [EliminarDialogComponent, DialogDesdobleComponent]
 })
 export class AsignaturasModule { }

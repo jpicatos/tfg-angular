@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AsignaturasModule } from './asignaturas/asignaturas.module';
 import { routing } from './app-routing';
 
+
 @NgModule({
   declarations: [
     AppComponent,

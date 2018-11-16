@@ -4,7 +4,7 @@ import { Horario } from "../models/horario";
 @Component({
   selector: 'app-horario',
   templateUrl: './horario.component.html',
-  styleUrls: ['./horario.component.css']
+  styleUrls: ['./horario.component.scss']
 })
 export class HorarioComponent implements OnInit {
 
@@ -20,21 +20,21 @@ export class HorarioComponent implements OnInit {
 
   ngOnInit() {
     this.horarioOneDimension = [];
-    this.horario = [['','Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
-                    ['09:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['10:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['11:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['12:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['13:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['14:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['15:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['16:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['17:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['18:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['19:00:00', undefined, undefined, undefined, undefined, undefined],
-                    ['20:00:00', undefined, undefined, undefined, undefined, undefined]
+    this.horario = [[undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined],
+                    [undefined, undefined, undefined, undefined, undefined]
                   ];
     this.setClass();
+    console.log(this.horario);
   }
 
   getDay(val: string): number{
@@ -61,23 +61,25 @@ export class HorarioComponent implements OnInit {
     return columnIndex;
   }
   setClass(): void{
+    console.log('EMPIEZA', this.horarioEntrada, this.horarioEntrada);
     for (let index = 0; index < this.horarioEntrada.length; index++) {
       var columnIndex = this.getDay(this.horarioEntrada[index].dia);
-      for (let h = 1; h < 12; h++) {
-        if (this.horario[h][0]>=  this.horarioEntrada[index].hora_inicio && this.horario[h][0]<this.horarioEntrada[index].hora_fin) {
-          this.horario[h][columnIndex] = 'true';
+      console.log("Indice columna", columnIndex);
+      for (let h = 0; h < 11; h++) {
+        console.log("Hora", this.horario[h][0]);
+        console.log("Hora Entrada", this.horarioEntrada[index].hora_inicio);
+        if (this.getHoraFromNumber(h) >=  this.horarioEntrada[index].hora_inicio && this.getHoraFromNumber(h)<this.horarioEntrada[index].hora_fin) {
+          this.horario[h][columnIndex] = this.horarioEntrada[index];
         }
         
       }
     }
-    this.transformToOneDimension();
   }
-  transformToOneDimension(): void{
-    for (let i = 1; i < 13; i++) {
-      for (let j = 0; j < 6; j++) {
-        this.horarioOneDimension.push(this.horario[i][j]);
-      }  
-    }
+  getHoraFromNumber(n: number): string{
+    n = n+9;
+    return (n + ":00:00")
   }
+  
 
 }
+

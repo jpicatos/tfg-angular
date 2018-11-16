@@ -52,13 +52,14 @@
                         </div>
                     </mat-tab>
                     <mat-tab label="Horario">
-                        <div *ngFor="let dia of asignatura.horario">
-                            <code>
-                <strong>{{dia.aula}}: </strong>{{dia.dia}} <mat-icon>navigate_next</mat-icon> {{dia.hora_inicio}}/{{dia.hora_fin}}
-              </code>
+                        <app-horario [horarioEntrada]="asignatura.horario"></app-horario>
+                    </mat-tab>
+                    <mat-tab label="Desdobles">
+                        <h4>Esta asignatura tiene {{asignatura.desdobles.length}} desdoble(s)</h4>
+                        <div *ngFor='let horario of asignatura.desdobles; index as i'>
+                            <button mat-raised-button (click)="openDialog(i)">Ver el horario del desdoble {{i+1}}</button>
                         </div>
                     </mat-tab>
-                    <mat-tab label="Desdobles"> Content 3 </mat-tab>
                 </mat-tab-group>
 
 

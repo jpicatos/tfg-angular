@@ -1,11 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Title, disableDebugTools } from "@angular/platform-browser";
 import { Asignatura } from '../models/asignatura';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AsignaturasService } from '../asignaturas.service';
 import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 import { EliminarDialogComponent } from '../eliminar-dialog/eliminar-dialog.component';
-import { MatDialog, MatDialogConfig } from "@angular/material";
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import {DialogDesdobleComponent} from '../dialog-desdoble/dialog-desdoble.component';
 
 @Component({
   selector: 'app-asignatura-details',
@@ -23,15 +24,6 @@ export class AsignaturaDetailsComponent implements OnInit {
     private route: ActivatedRoute, private titleService: Title) {
     this.loaded = false;
     this.asignatura = new Asignatura;
-    this.asignatura.codigo = '000000';
-    this.asignatura.cuatrimestre = 1;
-    this.asignatura.curso = '2º';
-    this.asignatura.departamento = 'test';
-    this.asignatura.grupo = 'B';
-    this.asignatura.id = 2;
-    this.asignatura.nombre = 'Mocked Nombre';
-    this.asignatura.siglas = 'MN';
-    this.asignatura.titulacion = 'testTitu';
 
   }
 
@@ -41,37 +33,17 @@ export class AsignaturaDetailsComponent implements OnInit {
     MenuToolbarComponent.updateTitle("Asignaturas");
     this.angularService.getAsignatura(id).subscribe(asignatura => {
       this.update(asignatura);
+      console.log(this.asignatura);
       this.loaded = true;
     }
 
     );
-    this.prepareGeneralData();
-    console.log(this.asignaturaData);
-    this.loaded = true;
 
   }
 
   update(asignatura) {
     this.asignatura = asignatura;
     this.titleService.setTitle(this.asignatura.nombre)
-  }
-
-  prepareGeneralData() {
-    var titles = ['Código', 'Cuatrimestre', 'Curso', 'Departamento', 'Grupo', 'Identificador', 'Titulación'];
-    var data = [];
-    data.push(this.asignatura.codigo);
-    data.push(this.asignatura.cuatrimestre);
-    data.push(this.asignatura.curso);
-    data.push(this.asignatura.departamento);
-    data.push(this.asignatura.grupo);
-    data.push(this.asignatura.id);
-    data.push(this.asignatura.titulacion);
-
-    var total = {
-      'titles': titles,
-      'data': data
-    }
-    this.asignaturaData = [total];
   }
 
   eliminarDialog() {
@@ -98,6 +70,19 @@ export class AsignaturaDetailsComponent implements OnInit {
     else {
       console.log('Cancelada eliminación asignatura');
     }
+  }
+
+  openDialog(i: number):void{
+    
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+      data: this.asignatura.desdobles[i]
+    };
+    const dialogRef = this.dialog.open(DialogDesdobleComponent,dialogConfig);
   }
 
 }

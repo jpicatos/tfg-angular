@@ -1,13 +1,35 @@
-<!-- <mat-card> -->
-    <mat-grid-list cols="6">
-        <mat-grid-tile class="day wtf"></mat-grid-tile>
-        <mat-grid-tile class="day wtf">Lunes</mat-grid-tile>
-        <mat-grid-tile class="day wtf">Martes</mat-grid-tile>
-        <mat-grid-tile class="day wtf">Miercoles</mat-grid-tile>
-        <mat-grid-tile class="day wtf">Jueves</mat-grid-tile>
-        <mat-grid-tile class="day wtf">Viernes</mat-grid-tile>
-        <mat-grid-tile class="wtf" *ngFor="let dia of horarioOneDimension">
-          <div *ngIf='dia' class="clase">{{dia}}</div>
-        </mat-grid-tile>
-    </mat-grid-list>
-<!-- </mat-card> -->
+<div class="calendar">
+
+    <div class="outer">
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miercoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div class="wrap">
+            <table class="offset">
+
+                <tbody >
+                    <tr *ngFor="let hora of horario; index as i">
+                        <td class="headcol">{{getHoraFromNumber(i)}}</td>
+                        <td *ngFor = "let dia of hora">
+                            <div *ngIf="dia" class="event">
+                                {{dia.aula}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
