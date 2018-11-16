@@ -1,118 +1,29 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
-
-import {
-  MatAutocompleteModule,
-  MatBadgeModule,
-  MatBottomSheetModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatDividerModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatStepperModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatTreeModule,
-} from '@angular/material';
-
-import { MatFileUploadModule } from 'angular-material-fileupload';
-
 import { AppComponent } from './app.component';
-import { MenuToolbarComponent } from './menu-toolbar/menu-toolbar.component';
-import { AsignaturasComponent } from './asignaturas/asignaturas.component';
-import { AppRoutingModule } from './app-routing.module';
-import { HorarioComponent } from './horario/horario.component';
-import { AsignaturaDetailsComponent } from './asignatura-details/asignatura-details.component';
-import { AnadirAsignaturaComponent } from './anadir-asignatura/anadir-asignatura.component';
-import { AsignaturasService } from './asignaturas.service';
-import { ImportarAsignaturasComponent } from './importar-asignaturas/importar-asignaturas.component';
-import { EliminarDialogComponent } from './eliminar-dialog/eliminar-dialog.component';
+import { AsignaturasModule } from './asignaturas/asignaturas.module';
+import { routing } from './app-routing';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MenuToolbarComponent,
-    AsignaturasComponent,
-    HorarioComponent,
-    AsignaturaDetailsComponent,
-    AnadirAsignaturaComponent,
-    ImportarAsignaturasComponent,
-    EliminarDialogComponent
   ],
   imports: [
-    MatFileUploadModule,
+    AsignaturasModule,
     HttpClientModule,
-    ReactiveFormsModule,
-    FormsModule,
     BrowserModule,
     BrowserAnimationsModule,
-    MatAutocompleteModule,
-    MatBadgeModule,
-    MatBottomSheetModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatNativeDateModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatStepperModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatTreeModule,
-    AppRoutingModule,
+    routing,
   ],
-  providers: [AsignaturasService],
+  exports: [
+    HttpClientModule,
+    BrowserModule,
+    BrowserAnimationsModule
+  ],
+  providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [EliminarDialogComponent]
+  entryComponents: []
 })
 export class AppModule { }

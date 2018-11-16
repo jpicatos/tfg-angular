@@ -7,15 +7,15 @@ import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 
 @Component({
   selector: 'app-asignaturas',
-  templateUrl: './asignaturas.component.html',
-  styleUrls: ['./asignaturas.component.css'],
+  templateUrl: './asignaturas-list.component.html',
+  styleUrls: ['./asignaturas-list.component.css'],
 
 })
 
 @NgModule({
   providers: [AsignaturasService]
 })
-export class AsignaturasComponent implements OnInit {
+export class AsignaturasListComponent implements OnInit {
   asignaturas: Asignatura[];
   selectedAsignatura: Asignatura;
   selected: number;

@@ -4,22 +4,25 @@
     bottom: 0;
     left: 0;
     right: 0;
-    
-  }
-.sidenav{
+}
+
+.sidenav {
     width: 250px;
 }
-.user-container{
+
+.user-container {
     padding: 16px;
 }
-.icon-container{
+
+.icon-container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 5px;
 }
-.user-icon{
-    background-image: url("../../assets/user-male-icon.png");
+
+.user-icon {
+    background-image: url("../../../assets/user-male-icon.png");
     height: 100px;
     background-repeat: no-repeat;
     width: 100px;
@@ -27,30 +30,37 @@
     border-radius: 100%;
     background-color: darkgray;
 }
-.username-container{
+
+.username-container {
     display: flex;
     /* padding-right: 16px; */
     align-items: center;
 }
-.dash-button{
+
+.dash-button {
     margin-top: 25px;
 }
-.slidenav-buttons{
+
+.slidenav-buttons {
     display: flex;
     flex-direction: column;
 }
-.slidenav-buttons>.mat-button{
+
+.slidenav-buttons>.mat-button {
     text-align: left;
     font-weight: bolder;
 }
-.menu-button-content{
+
+.menu-button-content {
     display: flex;
     align-items: center;
 }
-.menu-button-content>.mat-icon{
+
+.menu-button-content>.mat-icon {
     margin-right: 15px;
 }
-.menu-title{
+
+.menu-title {
     padding-left: 16px;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.603);
