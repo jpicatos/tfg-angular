@@ -10,6 +10,15 @@ body {
     background-color: #ffffff;
 }
 
+a {
+    color: $primary;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 .spacer {
     flex: 1 1 auto;
 }
