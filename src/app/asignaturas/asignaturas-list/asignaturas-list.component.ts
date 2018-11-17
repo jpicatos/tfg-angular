@@ -24,7 +24,6 @@ export class AsignaturasListComponent implements OnInit {
     cuatrimestre: boolean,
     curso: boolean,
     departamento: boolean,
-    id: boolean,
     nombre: boolean,
     titulacion: boolean,
     grupo: boolean
@@ -45,14 +44,13 @@ export class AsignaturasListComponent implements OnInit {
     this.titleService.setTitle("Asignaturas");
     this.selected = 1;
     this.opts = {
-      codigo: false,
+      codigo: true,
       cuatrimestre: false,
-      curso: false,
+      curso: true,
       departamento: false,
-      id: false,
       nombre: true,
       titulacion: true,
-      grupo: true
+      grupo: false
     };
     this.searchVals = {
       nombre: '',
@@ -69,7 +67,7 @@ export class AsignaturasListComponent implements OnInit {
   ngOnInit() {
     MenuToolbarComponent.updateTitle("Asignaturas");
     this.loading = true;
-    this.numCols = 4;
+    this.numCols = 5;
     this.getAsignaturas();
   }
 
