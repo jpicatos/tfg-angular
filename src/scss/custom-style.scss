@@ -600,14 +600,13 @@ input.mat-input-element {
 
 .mat-simple-snackbar {
     font-family: Quattrocento Sans, sans-serif;
-    font-size: 16px
+    font-size: 16px;
 }
 
 .mat-simple-snackbar-action {
     line-height: 1;
     font-family: inherit;
     font-size: inherit;
-    font-weight: 500
 }
 
 .mat-tree {
@@ -2830,11 +2829,11 @@ th.mat-header-cell {
 }
 
 .mat-snack-bar-container {
-    color: rgba(255, 255, 255, .7);
-    background: #323232;
+    color: #fff;
+    background: $primary;
     box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12)
 }
 
 .mat-simple-snackbar-action {
-    color: $accent;
+    color: $links;
 }

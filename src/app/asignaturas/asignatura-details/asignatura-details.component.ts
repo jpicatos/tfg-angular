@@ -76,7 +76,7 @@ export class AsignaturaDetailsComponent implements OnInit {
     
     const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
+    dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
 
     dialogConfig.data = {
