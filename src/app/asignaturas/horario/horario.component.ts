@@ -41,19 +41,19 @@ export class HorarioComponent implements OnInit {
     var columnIndex = 0
       switch (val) {
         case 'L':
-            columnIndex = 1;
+            columnIndex = 0;
           break;
         case 'M':
-          columnIndex = 2;
+          columnIndex = 1;
         break;
         case 'X':
-            columnIndex = 3;
+            columnIndex = 2;
           break;
           case 'J':
-          columnIndex = 4;
+          columnIndex = 3;
         break;
         case 'V':
-            columnIndex = 5;
+            columnIndex = 4;
           break;
         default:
           break;
