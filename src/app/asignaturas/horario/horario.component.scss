@@ -92,15 +92,15 @@ td {
 }
 
 tr:nth-child(odd) td:not(.headcol) {
-    border-bottom: 1px solid #e8e8e8;
+    border-bottom: 1px solid #d6d6d6;
 }
 
 tr:nth-child(even) td:not(.headcol) {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #d6d6d6;
 }
 
 tr td {
-    border-right: 1px solid #eee;
+    border-right: 1px solid #d6d6d6;
     padding: 0;
     white-space: none;
     word-wrap: nowrap;

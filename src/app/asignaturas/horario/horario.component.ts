@@ -66,7 +66,7 @@ export class HorarioComponent implements OnInit {
       var columnIndex = this.getDay(this.horarioEntrada[index].dia);
       console.log("Indice columna", columnIndex);
       for (let h = 0; h < 11; h++) {
-        console.log("Hora", this.horario[h][0]);
+        console.log("Hora", this.getHoraFromNumber(h));
         console.log("Hora Entrada", this.horarioEntrada[index].hora_inicio);
         if (this.getHoraFromNumber(h) >=  this.horarioEntrada[index].hora_inicio && this.getHoraFromNumber(h)<this.horarioEntrada[index].hora_fin) {
           this.horario[h][columnIndex] = this.horarioEntrada[index];
@@ -77,6 +77,9 @@ export class HorarioComponent implements OnInit {
   }
   getHoraFromNumber(n: number): string{
     n = n+9;
+    if(n === 9){
+      return ("0" + n +":00:00");
+    }
     return (n + ":00:00")
   }
   
