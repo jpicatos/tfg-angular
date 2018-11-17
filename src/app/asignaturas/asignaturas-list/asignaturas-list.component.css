@@ -47,7 +47,7 @@
     display: flex;
     align-items: center;
     padding-left: 10px;
-    opacity: 0.8;
+    /* opacity: 0.8; No se ve bien en algunos navegadores */
 }
 
 button.content-row {
