@@ -14,6 +14,8 @@ export class Asignatura{
     desdobles: Desdoble[]
 
     constructor() {
+        this.desdobles = [];
+        this.horario = [];
     }
 };
 

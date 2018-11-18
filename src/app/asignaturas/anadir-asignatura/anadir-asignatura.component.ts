@@ -9,12 +9,30 @@ import { Horario } from '../models/horario';
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
 import { AvisosService } from '../../avisos.service';
 
+class HorarioDesdoble {
+
+  desdoble: number;
+  horario: number;
+
+  constructor(desdoble: number, horario: number) {
+    this.desdoble = desdoble;
+    this.horario = horario;
+  }
+
+}
+
 @Component({
   selector: 'app-anadir-asignatura',
   templateUrl: './anadir-asignatura.component.html',
   styleUrls: ['./anadir-asignatura.component.scss']
 })
 export class AnadirAsignaturaComponent implements OnInit {
+
+  /* Propiedades necesarias para cuando se edita una asignatura */
+  editar: boolean;
+  deletedDesdobles: number[];
+  deletedHorariosDesdobles: HorarioDesdoble[];
+  deletedHorarios: number[];
 
   asignatura: Asignatura;
 
@@ -29,6 +47,11 @@ export class AnadirAsignaturaComponent implements OnInit {
     this.titleService.setTitle("Añadir una asignatura")
     MenuToolbarComponent.updateTitle("Asignaturas");
     this.asignatura = new Asignatura;
+    this.editar = false;
+
+    this.deletedDesdobles = [];
+    this.deletedHorariosDesdobles = [];
+    this.deletedHorarios = [];
   }
 
   ngOnInit() {
@@ -52,6 +75,8 @@ export class AnadirAsignaturaComponent implements OnInit {
       this.angularService.getAsignatura(Number(id)).subscribe(
         asignatura => this.asignatura = asignatura
       );
+
+      this.editar = true;   // Al existir un ID en la URL es una edición de una asignatura existente
     }
 
   }
@@ -61,6 +86,8 @@ export class AnadirAsignaturaComponent implements OnInit {
   }
 
   removeDesdoble(i: number): void {
+    // añadir en la lista para eliminarlo del servidor posteriormente
+    this.deletedDesdobles.push(this.asignatura.desdobles[i].id);
     this.asignatura.desdobles.splice(i, 1);
   }
 
@@ -69,6 +96,7 @@ export class AnadirAsignaturaComponent implements OnInit {
   }
 
   removeHorario(i: number): void {
+    this.deletedHorarios.push(this.asignatura.horario[i].id);
     this.asignatura.horario.splice(i, 1);
   }
   newHorarioDesdoble(i: number): void {
@@ -76,6 +104,7 @@ export class AnadirAsignaturaComponent implements OnInit {
   }
 
   removeHorarioDesdoble(i: number, t: number): void {
+    this.deletedHorariosDesdobles.push(new HorarioDesdoble(this.asignatura.desdobles[i].id, this.asignatura.desdobles[i].horario[t].id));
     this.asignatura.desdobles[i].horario.splice(t, 1);
   }
 
@@ -83,12 +112,26 @@ export class AnadirAsignaturaComponent implements OnInit {
     console.log(this.asignatura);
 
     if (!(this.asignatura.hasOwnProperty('codigo') && this.asignatura.hasOwnProperty('cuatrimestre')
-    && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
-    && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
-    && this.asignatura.hasOwnProperty('siglas') && this.asignatura.hasOwnProperty('titulacion'))) {
+      && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
+      && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
+      && this.asignatura.hasOwnProperty('siglas') && this.asignatura.hasOwnProperty('titulacion'))) {
       this.avisosService.enviarMensaje("Debe rellenar todos los campos obligatorios");
     }
     else {
+      if (this.editar) {
+        // Es necesario eliminar del servidor antes de salvar la asignatura
+        this.deletedHorariosDesdobles.forEach(horario => {
+          this.angularService.deleteHorarioDesdoble(this.asignatura.id, horario.desdoble, horario.horario);
+        });
+        this.deletedHorarios.forEach(horario => {
+          this.angularService.deleteHorario(this.asignatura.id, horario);
+        });
+        this.deletedDesdobles.forEach(desdoble => {
+          this.angularService.deleteDesdoble(this.asignatura.id, desdoble);
+        });
+
+      }
+
       this.angularService.saveAsignatura(this.asignatura);
     }
   }

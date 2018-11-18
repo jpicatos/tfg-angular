@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Asignatura, AsignaturaImportar } from "./models/asignatura";
+import { Desdoble } from "./models/desdoble";
+import { Horario } from "./models/horario";
+import { AvisosService } from '../avisos.service';
 
 
 const httpOptions = {
@@ -17,7 +20,7 @@ const httpOptions = {
 export class AsignaturasService {
 
   private asignaturasUrl = 'http://tfg.davidarroyo.es/api/asignaturas/';
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) { }
 
   getAsignaturas(): Observable<Asignatura[]> {
     return this.http.get<Asignatura[]>(this.asignaturasUrl + '?format=json', httpOptions);
@@ -49,12 +52,14 @@ export class AsignaturasService {
       this.http.put<Asignatura>(this.asignaturasUrl + asignatura.id + '/', asignatura, httpOptions)
         .subscribe(data => {   // data is already a JSON object
           this.router.navigate(['/asignaturas/' + asignatura.id]);
+          this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
         });
     }
     else {
       this.http.post<Asignatura>(this.asignaturasUrl, asignatura, httpOptions)
         .subscribe(data => {   // data is already a JSON object
           this.router.navigate(['/asignaturas/' + data.id]);
+          this.avisosService.enviarMensaje("Se ha creado la asignatura correctamente");
         });
     }
 
@@ -63,6 +68,21 @@ export class AsignaturasService {
   deleteAsignatura(id: number): void {
     this.http.delete<Asignatura>(this.asignaturasUrl + id + '/?format=json', httpOptions)
     .subscribe(asignatura => { this.router.navigate(['/asignaturas']); });
+  }
+
+  deleteHorario(idAsignatura: number, idHorario: number): void {
+    this.http.delete<Horario>(this.asignaturasUrl + idAsignatura + '/horarios/' + idHorario + '/?format=json', httpOptions)
+    .subscribe(res => { });
+  }
+
+  deleteDesdoble(idAsignatura: number, idDesdoble: number): void {
+    this.http.delete<Desdoble>(this.asignaturasUrl + idAsignatura + '/desdobles/' + idDesdoble + '/?format=json', httpOptions)
+    .subscribe(res => { });
+  }
+
+  deleteHorarioDesdoble(idAsignatura: number, idDesdoble: number, idHorario: number): void {
+    this.http.delete<Horario>(this.asignaturasUrl + idAsignatura + '/desdobles/' + idDesdoble + '/horarios/' + idHorario + '/?format=json', httpOptions)
+    .subscribe(res => { });
   }
 
   importar(archivo: File, departamento_siglas: string, departamento_nombre: string): Observable<AsignaturaImportar> {
