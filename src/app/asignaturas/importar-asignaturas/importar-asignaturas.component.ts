@@ -1,8 +1,8 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AsignaturasService } from "../asignaturas.service";
-import { MatSnackBar } from '@angular/material';
-import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
+import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
+import { AvisosService } from '../../avisos.service';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class ImportarAsignaturasComponent implements OnInit {
   private progreso: boolean;
 
   constructor(private asignaturasService: AsignaturasService,
-    private http: HttpClient, private snackBar: MatSnackBar) {
+    private http: HttpClient, private avisosService: AvisosService) {
     this.progreso = false;
   }
 
@@ -43,20 +43,20 @@ export class ImportarAsignaturasComponent implements OnInit {
 
       this.progreso = true;
     } else {
-      let snackBarRef = this.snackBar.open('Debe rellenar todos los campos', 'Cerrar');
+      this.avisosService.enviarMensaje('Debe rellenar todos los campos');
     }
   }
 
   ficheroSubido(event) {
     this.progreso = false;
     if (event.excel_file) {
-      let snackBarRef = this.snackBar.open('Se han importado las asignaturas correctamente', 'Cerrar');
+      this.avisosService.enviarMensaje('Se han importado las asignaturas correctamente');
     }
   }
 
   mostrarError() {
     this.progreso = false;
-    let snackBarRef = this.snackBar.open('Ha habido un error al importar las asignaturas', 'Cerrar');
+    this.avisosService.enviarMensaje('Ha habido un error al importar las asignaturas');
   }
 
 }

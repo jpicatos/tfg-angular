@@ -6,7 +6,7 @@ import { routing } from './asingaturas-routing';
 // Módulo compartido con los componentes de Angular Material
 import { MaterialModule } from '../material/material.module';
 
-import { MenuToolbarComponent } from './menu-toolbar/menu-toolbar.component';
+import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 import { AsignaturasListComponent } from './asignaturas-list/asignaturas-list.component';
 import { HorarioComponent } from './horario/horario.component';
 import { AsignaturaDetailsComponent} from './asignatura-details/asignatura-details.component';

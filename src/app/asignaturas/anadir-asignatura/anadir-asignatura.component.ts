@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { Asignatura } from '../models/asignatura';
 import { AsignaturasService } from '../asignaturas.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Desdoble } from '../models/desdoble';
 import { Horario } from '../models/horario';
-import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
+import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
+import { AvisosService } from '../../avisos.service';
 
 @Component({
   selector: 'app-anadir-asignatura',
@@ -23,9 +24,8 @@ export class AnadirAsignaturaComponent implements OnInit {
   fourFormGroup: FormGroup;
 
 
-  constructor(private angularService: AsignaturasService,
-    private route: ActivatedRoute, private router: Router, private _formBuilder: FormBuilder,
-    private titleService: Title) {
+  constructor(private angularService: AsignaturasService, private route: ActivatedRoute, private _formBuilder: FormBuilder,
+    private titleService: Title, private avisosService: AvisosService) {
     this.titleService.setTitle("Añadir una asignatura")
     MenuToolbarComponent.updateTitle("Asignaturas");
     this.asignatura = new Asignatura;
@@ -71,18 +71,26 @@ export class AnadirAsignaturaComponent implements OnInit {
   removeHorario(i: number): void {
     this.asignatura.horario.splice(i, 1);
   }
-  newHorarioDesdoble(i:number): void {
+  newHorarioDesdoble(i: number): void {
     this.asignatura.desdobles[i].horario.push(new Horario);
   }
 
-  removeHorarioDesdoble(i: number, t:number): void {
+  removeHorarioDesdoble(i: number, t: number): void {
     this.asignatura.desdobles[i].horario.splice(t, 1);
   }
 
   save(): void {
     console.log(this.asignatura);
-    this.angularService.saveAsignatura(this.asignatura);
 
+    if (!(this.asignatura.hasOwnProperty('codigo') && this.asignatura.hasOwnProperty('cuatrimestre')
+    && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
+    && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
+    && this.asignatura.hasOwnProperty('siglas') && this.asignatura.hasOwnProperty('titulacion'))) {
+      this.avisosService.enviarMensaje("Debe rellenar todos los campos obligatorios");
+    }
+    else {
+      this.angularService.saveAsignatura(this.asignatura);
+    }
   }
 
 }

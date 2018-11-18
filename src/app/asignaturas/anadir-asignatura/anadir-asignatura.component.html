@@ -48,7 +48,7 @@
             </mat-form-field>
             <div>
               <button mat-button matStepperPrevious>Atrás</button>
-              <button mat-button matStepperNext>Next</button>
+              <button mat-button matStepperNext>Siguiente</button>
             </div>
           </form>
         </mat-step>
@@ -127,10 +127,10 @@
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Done</ng-template>
-          You are now done.
+          Ya puedes salvar los cambios
           <div>
             <button mat-button matStepperPrevious>Atrás</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-button (click)="stepper.reset()">Volver a empezar</button>
             <button mat-raised-button (click)="save()">Guardar</button>
           </div>
         </mat-step>
