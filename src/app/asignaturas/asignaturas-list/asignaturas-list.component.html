@@ -175,15 +175,10 @@
                 <mat-checkbox color='primary' (click)="updateDias('J')">Jueves</mat-checkbox>
                 <mat-checkbox color='primary' (click)="updateDias('V')">Viernes</mat-checkbox>
 
+                <app-filtro-hora [ayuda]="ayudaHoraIni" (horaChange)="horaIni($event)"></app-filtro-hora>
 
-                <mat-form-field>
-                    <input matInput placeholder="A partir de la hora..." [(ngModel)]="searchVals.ini" [ngModelOptions]="{standalone: true}">
-                    <mat-hint align="start"><strong>Ej. '09:00:00', '15:00:00' ...</strong></mat-hint>
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="Antes de la hora..." [(ngModel)]="searchVals.fin" [ngModelOptions]="{standalone: true}">
-                    <mat-hint align="start"><strong>Ej. '09:00:00', 15:00:00' ...</strong></mat-hint>
-                </mat-form-field>
+                <app-filtro-hora [ayuda]="ayudaHoraFin" (horaChange)="horaFin($event)"></app-filtro-hora>
+
                 <button mat-raised-button type="submit" (click)="search()">
                     Filtrar
                     <mat-icon>search</mat-icon>

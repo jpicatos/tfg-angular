@@ -40,6 +40,10 @@ export class AsignaturasListComponent implements OnInit {
     fin: string
   }
   loading: boolean;
+
+  ayudaHoraIni = "A partir de la hora...";
+  ayudaHoraFin = "Antes de la hora...";
+
   constructor(private asignaturasService: AsignaturasService, private router: Router, private titleService: Title) {
     this.titleService.setTitle("Asignaturas");
     this.selected = 1;
@@ -75,7 +79,7 @@ export class AsignaturasListComponent implements OnInit {
     this.asignaturasService.getAsignaturas()
       .subscribe(asignaturas => {
         this.asignaturas = asignaturas;
-        this.loading=false;
+        this.loading = false;
         console.log(this.asignaturas);
       });
   }
@@ -111,6 +115,16 @@ export class AsignaturasListComponent implements OnInit {
     }
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
       .subscribe(asignaturas => { this.asignaturas = asignaturas });
+  }
+
+  horaIni($event): void {
+    this.searchVals.ini = $event;
+    console.log($event);
+  }
+
+  horaFin($event): void {
+    this.searchVals.fin = $event;
+    console.log($event);
   }
 
 }
