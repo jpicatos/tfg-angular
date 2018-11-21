@@ -139,12 +139,4 @@ export class AnadirAsignaturaComponent implements OnInit {
     }
   }
 
-  horaIni($event): void {
-    console.log($event);
-  }
-
-  horaFin($event): void {
-    console.log($event);
-  }
-
 }
