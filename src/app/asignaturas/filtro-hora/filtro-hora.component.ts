@@ -15,14 +15,20 @@ export class FiltroHoraComponent implements OnInit {
   options: string[] = [];
   filteredOptions: Observable<string[]>;
 
+  @Input() hora: string;
   @Input() ayuda: string;
+  @Input() isRequired: boolean;
   @Output() horaChange = new EventEmitter<string>();
 
   constructor() {
     this.createOptions();
+    this.isRequired = false;
   }
 
   ngOnInit() {
+    // Establecemos una hora cuando estamos editando una asignatura
+    this.myControl.setValue(this.hora);
+
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),

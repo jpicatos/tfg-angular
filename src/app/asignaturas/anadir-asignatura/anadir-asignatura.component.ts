@@ -41,6 +41,9 @@ export class AnadirAsignaturaComponent implements OnInit {
   thirdFormGroup: FormGroup;
   fourFormGroup: FormGroup;
 
+  ayudaHoraIni = "Hora de inicio";
+  ayudaHoraFin = "Hora de fin";
+
 
   constructor(private angularService: AsignaturasService, private route: ActivatedRoute, private _formBuilder: FormBuilder,
     private titleService: Title, private avisosService: AvisosService) {
@@ -134,6 +137,14 @@ export class AnadirAsignaturaComponent implements OnInit {
 
       this.angularService.saveAsignatura(this.asignatura);
     }
+  }
+
+  horaIni($event): void {
+    console.log($event);
+  }
+
+  horaFin($event): void {
+    console.log($event);
   }
 
 }

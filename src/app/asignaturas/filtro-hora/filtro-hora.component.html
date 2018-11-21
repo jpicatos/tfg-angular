@@ -1,5 +1,5 @@
-<mat-form-field>
-    <input type="text" placeholder="{{ ayuda }}" aria-label="Hora" matInput [formControl]="myControl" [matAutocomplete]="auto">
+<mat-form-field class="filtro-hora-full-width">
+    <input type="text" placeholder="{{ ayuda }}" aria-label="Hora" matInput [formControl]="myControl" [matAutocomplete]="auto" [required]="isRequired">
     <mat-hint align="start"><strong>Ej. '09:00:00', '15:00:00' ...</strong></mat-hint>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
