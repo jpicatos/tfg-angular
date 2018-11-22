@@ -11,7 +11,7 @@ import { AvisosService } from '../avisos.service';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-type': 'application/json',
-    'Authorization': 'Token d0cddc40af7cb1bf04084d94cda4a4e0dc96c78e'
+    'Authorization': 'Token 15cf0a3360a976b453192620b1fb47164abb20e0'
   })
 };
 
