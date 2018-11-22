@@ -88,7 +88,7 @@ export class AsignaturasService {
   importar(archivo: File, departamento_siglas: string, departamento_nombre: string): Observable<AsignaturaImportar> {
     const httpOptions =
       new HttpHeaders({
-        'Authorization': 'Token d0cddc40af7cb1bf04084d94cda4a4e0dc96c78e'
+        'Authorization': 'Token 15cf0a3360a976b453192620b1fb47164abb20e0'
       });
 
     const httpUrl = "http://tfg.davidarroyo.es/api/asignaturas/importar/";
