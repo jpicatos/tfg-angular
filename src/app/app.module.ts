@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { AsignaturasModule } from './asignaturas/asignaturas.module';
 import { routing } from './app-routing';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth/auth.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +26,13 @@ import { routing } from './app-routing';
     BrowserModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   entryComponents: []
 })

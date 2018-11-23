@@ -1,0 +1,26 @@
+<div class="decorator"></div>
+<div class="form-container">
+    <mat-card class="card">
+        <mat-card-header>
+            <div mat-card-avatar class="header-image"></div>
+            <mat-card-title>Iniciar sesión</mat-card-title>
+            <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content class="formulario">
+        <p>Usuario: david - Contraseña: 1234</p>
+
+            <mat-form-field>
+                <input matInput [(ngModel)]="usuario" placeholder="Nombre de usuario">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput [(ngModel)]="password" type="password" placeholder="Contraseña">
+            </mat-form-field>
+
+            <button mat-button (click)="login()">Iniciar sesion</button>
+
+        </mat-card-content>
+
+    </mat-card>
+</div>
