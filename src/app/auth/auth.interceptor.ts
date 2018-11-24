@@ -3,13 +3,11 @@ import {
     HttpRequest,
     HttpHandler,
     HttpEvent,
-    HttpInterceptor,
-    HttpResponse
+    HttpInterceptor
 } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -19,10 +17,10 @@ export class AuthInterceptor implements HttpInterceptor {
         const url = 'http://tfg.davidarroyo.es';
         let headers = {};
 
-        let token = JSON.parse(localStorage.getItem('user'));
+        let token = JSON.parse(localStorage.getItem('token'));
 
         if (token) {
-            headers = { Authorization: "Token " + token.token };
+            headers = { Authorization: "Token " + token };
         }
 
         request = request.clone({
@@ -30,15 +28,6 @@ export class AuthInterceptor implements HttpInterceptor {
             setHeaders: headers
         });
         
-        return next.handle(request).pipe(catchError(err => {
-            if (err.status === 401) {
-                // auto logout if 401 response returned from api
-                this.auth.logout();
-                this.router.navigate(['/login']);
-            }
-
-            const error = err.error.message || err.statusText;
-            return throwError(error);
-        }))
+        return next.handle(request);
     }
 }

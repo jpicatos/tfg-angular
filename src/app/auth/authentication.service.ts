@@ -13,6 +13,10 @@ class Credentials {
   }
 }
 
+class User {
+  token: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,15 +24,21 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) { }
 
+  isAuthenticated(): boolean {
+    let token = JSON.parse(localStorage.getItem('token'));
+    
+    return token ? true : false;
+  }
+
   login(usuario, password) {
     let credentials = {
       username: usuario,
       password: password
     }
 
-    this.http.post("/api-token-auth/", credentials).subscribe(
+    this.http.post<User>("/api-token-auth/", credentials).subscribe(
       res => {
-        localStorage.setItem('user', JSON.stringify(res));
+        localStorage.setItem('token', JSON.stringify(res.token));
         this.router.navigate(['/asignaturas/']);
         this.avisosService.enviarMensaje("Ha iniciado sesión correctamente");
       },
@@ -38,6 +48,6 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 }

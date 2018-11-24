@@ -8,17 +8,21 @@
         </mat-card-header>
         <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
         <mat-card-content class="formulario">
-        <p>Usuario: david - Contraseña: 1234</p>
+            <p>Usuario: david - Contraseña: 1234</p>
 
-            <mat-form-field>
-                <input matInput [(ngModel)]="usuario" placeholder="Nombre de usuario">
-            </mat-form-field>
+            <form class="formulario">
 
-            <mat-form-field>
-                <input matInput [(ngModel)]="password" type="password" placeholder="Contraseña">
-            </mat-form-field>
+                <mat-form-field>
+                    <input matInput [(ngModel)]="usuario" placeholder="Nombre de usuario" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
 
-            <button mat-button (click)="login()">Iniciar sesion</button>
+                <mat-form-field>
+                    <input matInput [(ngModel)]="password" type="password" placeholder="Contraseña" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+
+                <button mat-button type="submit" (click)="login()">Iniciar sesion</button>
+
+            </form>
 
         </mat-card-content>
 

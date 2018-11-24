@@ -9,6 +9,9 @@ import { routing } from './app-routing';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth.interceptor';
 
+import { AuthGuardService as AuthGuard } from './auth/auth-guard.service';
+import { AuthenticationService } from './auth/authentication.service';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +34,9 @@ import { AuthInterceptor } from './auth/auth.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    AuthenticationService,
+    AuthGuard
   ],
   bootstrap: [AppComponent],
   entryComponents: []
