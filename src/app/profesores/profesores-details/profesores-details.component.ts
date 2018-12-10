@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
 import { EliminarDialogComponent } from 'src/app/asignaturas/eliminar-dialog/eliminar-dialog.component';
+import { Categoria } from '../models/categoria';
 
 @Component({
   selector: 'app-profesores-details',
@@ -17,6 +18,7 @@ export class ProfesoresDetailsComponent implements OnInit {
   loaded: boolean;
   displayedColumns: string[];
   profesorData: any[];
+  categorias: Categoria[];
 
   constructor(private angularService: ProfesoresService, private dialog: MatDialog,
     private route: ActivatedRoute, private titleService: Title) {
@@ -30,6 +32,7 @@ export class ProfesoresDetailsComponent implements OnInit {
     const id = + this.route.snapshot.paramMap.get('id');
     MenuToolbarComponent.updateTitle("Profesores");
     this.angularService.getProfesor(id).subscribe(profesor => {
+      this.getCategoria(profesor.categoria);
       this.update(profesor);
       console.log(this.profesor);
       this.loaded = true;
@@ -61,6 +64,19 @@ export class ProfesoresDetailsComponent implements OnInit {
         this.eliminarProfesor(this.profesor)
       }
     );
+  }
+
+  getCategoria(cate){
+    this.angularService.getCategoria(cate)
+      .subscribe(categoria => {
+        this.profesor.categoria = categoria.categoria;
+      });
+  }
+  getCategorias(){
+    this.angularService.getCategorias()
+      .subscribe(categorias => {
+        this.categorias = categorias;
+      });
   }
 
   eliminarProfesor(profesor) {

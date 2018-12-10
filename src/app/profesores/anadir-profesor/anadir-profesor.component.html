@@ -7,7 +7,7 @@
       <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
     </mat-card-header>
     <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-    <mat-card-content class="formulario">
+    <mat-card-content class="formulario" *ngIf="loaded">
       <mat-horizontal-stepper [linear]="false" #stepper="matHorizontalStepper">
         <mat-step [stepControl]="firstFormGroup">
           <form [formGroup]="firstFormGroup" class="formulario">
@@ -21,8 +21,8 @@
                 required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput type="number" placeholder="Despacho" [(ngModel)]=profesor.despacho
-                [ngModelOptions]="{standalone: true}" required>
+              <input matInput placeholder="Despacho" [(ngModel)]=profesor.despacho [ngModelOptions]="{standalone: true}"
+                required>
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Email" [(ngModel)]=profesor.usuario.email [ngModelOptions]="{standalone: true}"
@@ -33,8 +33,9 @@
                 required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Categoría" [(ngModel)]=profesor.categoria [ngModelOptions]="{standalone: true}"
-                required>
+              <mat-select [(value)]=profesor.categoria>
+                <mat-option *ngFor="let categoria of categorias" value={{categoria.categoria_abreviatura}}>[{{categoria.categoria_abreviatura}}] {{categoria.categoria}}</mat-option>
+              </mat-select>
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Departamento" [(ngModel)]=profesor.departamento [ngModelOptions]="{standalone: true}"
@@ -48,28 +49,28 @@
         <mat-step [stepControl]="secondFormGroup">
           <form [formGroup]="secondFormGroup" class="formulario">
             <ng-template matStepLabel>Deuda & PDA</ng-template>
-            <h4>Deuda:</h4>
+            <h4 *ngIf="profesor.deuda">Deuda:</h4>
+            <mat-form-field *ngIf="profesor.deuda">
+              <input matInput type="number" placeholder="Hace cuatro años" [(ngModel)]=profesor.deuda.hace_cuatro
+                [ngModelOptions]="{standalone: true}" required>
+            </mat-form-field>
+            <mat-form-field *ngIf="profesor.deuda">
+              <input matInput type="number" placeholder="Hace tres años" [(ngModel)]=profesor.deuda.hace_tres
+                [ngModelOptions]="{standalone: true}" required>
+            </mat-form-field>
+            <mat-form-field *ngIf="profesor.deuda">
+              <input matInput type="number" placeholder="Hace dos años" [(ngModel)]=profesor.deuda.hace_dos
+                [ngModelOptions]="{standalone: true}" required>
+            </mat-form-field>
+            <mat-form-field *ngIf="profesor.deuda">
+              <input matInput type="number" placeholder="Hace un año" [(ngModel)]=profesor.deuda.hace_uno
+                [ngModelOptions]="{standalone: true}" required>
+            </mat-form-field>
+            <h4>PDA</h4>
             <mat-form-field>
-                <input matInput type="number" placeholder="Hace cuatro años" [(ngModel)]=profesor.deuda.hace_cuatro
-                  [ngModelOptions]="{standalone: true}" required>
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput type="number" placeholder="Hace tres años" [(ngModel)]=profesor.deuda.tres [ngModelOptions]="{standalone: true}"
-                  required>
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput type="number" placeholder="Hace dos años" [(ngModel)]=profesor.deuda.hace_dos [ngModelOptions]="{standalone: true}"
-                  required>
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput type="number" placeholder="Hace un año" [(ngModel)]=profesor.deuda.hace_uno [ngModelOptions]="{standalone: true}"
-                  required>
-              </mat-form-field>
-              <h4>PDA</h4>
-              <mat-form-field>
-                <input matInput type="number" placeholder="PDA" [(ngModel)]=profesor.pda [ngModelOptions]="{standalone: true}"
-                  required>
-              </mat-form-field>
+              <input matInput type="number" placeholder="PDA" [(ngModel)]=profesor.pda [ngModelOptions]="{standalone: true}"
+                required>
+            </mat-form-field>
             <div>
               <button mat-button matStepperPrevious>Atrás</button>
               <button mat-button matStepperNext>Siguiente</button>

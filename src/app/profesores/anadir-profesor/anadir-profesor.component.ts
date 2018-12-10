@@ -6,6 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { AvisosService } from 'src/app/avisos.service';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
+import { Categoria } from '../models/categoria';
+import { Usuario } from '../models/usuario';
+import { Deuda } from '../models/deuda';
 
 @Component({
   selector: 'app-anadir-profesor',
@@ -21,14 +24,17 @@ export class AnadirProfesorComponent implements OnInit {
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+  categorias: Categoria[];
+  loaded: boolean;
 
 
   constructor(private angularService: ProfesoresService, private route: ActivatedRoute, private _formBuilder: FormBuilder,
     private titleService: Title, private avisosService: AvisosService) {
-    this.titleService.setTitle("Añadir un profesor")
+    this.titleService.setTitle("Añadir un profesor");
     MenuToolbarComponent.updateTitle("Profesores");
-    this.profesor = new Profesor;
+    this.profesor = new Profesor();
     this.editar = false;
+    this.loaded = false;
   }
 
   ngOnInit() {
@@ -44,24 +50,33 @@ export class AnadirProfesorComponent implements OnInit {
 
     if (id != null) {
       this.angularService.getProfesor(Number(id)).subscribe(
-        profesor => this.profesor = profesor
+        profesor => {
+          console.log(profesor);
+          this.profesor = profesor
+          this.getCategorias();
+          this.loaded = true;
+        }
+
       );
 
       this.editar = true;   // Al existir un ID en la URL es una edición de una asignatura existente
     }
 
   }
+
+  getCategorias() {
+    this.angularService.getCategorias()
+      .subscribe(
+        categorias => {
+          this.categorias = categorias;
+        });
+  }
+
   save(): void {
     console.log(this.profesor);
 
-    if (!(this.profesor.hasOwnProperty('categoria') && this.profesor.hasOwnProperty('telefono')
-      && this.profesor.hasOwnProperty('pda') && this.profesor.hasOwnProperty('departamento')
-      && this.profesor.hasOwnProperty('grupo') && this.profesor.hasOwnProperty('nombre'))) {
-      this.avisosService.enviarMensaje("Debe rellenar todos los campos obligatorios");
-    }
-    else {
-      this.angularService.saveProfesor(this.profesor);
-    }
+    this.angularService.saveProfesor(this.profesor);
+
   }
 
 }

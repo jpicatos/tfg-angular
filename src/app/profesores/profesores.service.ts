@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Profesor} from "./models/profesor";
 import { AvisosService } from '../avisos.service';
+import { Categoria } from './models/categoria';
 
 
 @Injectable()
@@ -22,8 +23,8 @@ export class ProfesoresService {
   }
 
   saveProfesor(profesor: Profesor): void {
-    if (profesor.id != undefined) {
-      this.http.put<Profesor>(this.profesoresUrl + profesor.id + '/', profesor)
+    if (profesor.usuario.id != undefined) {
+      this.http.put<Profesor>(this.profesoresUrl + profesor.usuario.id + '/', profesor)
         .subscribe(data => {   // data is already a JSON object
           this.router.navigate(['/profesores/' + profesor.id]);
           this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
@@ -44,12 +45,19 @@ export class ProfesoresService {
       .subscribe(profesor => { this.router.navigate(['/profesores']); });
   }
 
-  searchProfesor(nombre: string, email: string, telefono: string, despacho: number, departamento: string, categoria: string): Observable<Profesor[]> {
-    var params = '&nombre=' + nombre +
-      '&email=' + email +
+  getCategoria(cate: string): Observable<Categoria>{
+    return this.http.get<Categoria>(this.profesoresUrl +"categorias/"+ cate);
+  }
+
+  getCategorias(): Observable<Categoria[]>{
+    return this.http.get<Categoria[]>(this.profesoresUrl +"categorias");
+  }
+
+  searchProfesor(nombre: string, email: string, telefono: string, despacho: number, departamento: string): Observable<Profesor[]> {
+    var params = 'nombre=' + nombre +
+      '&username=' + email +
       '&telefono=' + telefono +
-      '&departamento=' + departamento +
-      '&categoria=' + categoria;
+      '&departamento=' + departamento
 
     if(despacho){
       params += '&despacho=' + despacho;

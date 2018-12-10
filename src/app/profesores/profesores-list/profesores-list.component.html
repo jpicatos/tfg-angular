@@ -148,10 +148,6 @@
                     <input (keyup)="search()" matInput placeholder="Departamento" [(ngModel)]="searchVals.departamento"
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
-                <mat-form-field>
-                    <input (keyup)="search()" matInput placeholder="Categoría" [(ngModel)]="searchVals.categoria"
-                        [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
                 <button mat-raised-button type="submit" (click)="search()">
                     Filtrar
                     <mat-icon>search</mat-icon>

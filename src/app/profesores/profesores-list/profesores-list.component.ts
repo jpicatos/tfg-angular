@@ -7,6 +7,7 @@ import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.componen
 import { Deuda } from '../models/deuda';
 import { PrefixNot } from '@angular/compiler';
 import { Usuario } from '../models/usuario';
+import { Categoria } from '../models/categoria';
 
 @Component({
   selector: 'app-profesores-list',
@@ -34,8 +35,7 @@ export class ProfesoresListComponent implements OnInit {
     email: string,
     telefono: string,
     despacho: number,
-    departamento: string,
-    categoria: string
+    departamento: string
   }
   loading: boolean;
 
@@ -55,8 +55,7 @@ export class ProfesoresListComponent implements OnInit {
       email: "",
       telefono: '',
       despacho: undefined,
-      departamento: '',
-      categoria: ''
+      departamento: ''
     }
   }
 
@@ -73,7 +72,7 @@ export class ProfesoresListComponent implements OnInit {
         profesores => {
           this.profesores = profesores;
           this.loading = false;
-          console.log(this.profesores);
+          console.log(this.profesores);          
         },
         error => {
           var profe = new Profesor();
@@ -81,7 +80,7 @@ export class ProfesoresListComponent implements OnInit {
           profe.categoria = "categoría de prueba";
           profe.departamento = "departamento de prueba";
           profe.despacho = "1234";
-          profe.deuda = new Deuda;
+          profe.deuda = new Deuda();
           profe.deuda.id = 0;
           profe.deuda.hace_uno = 0;
           profe.deuda.hace_dos = 0;
@@ -117,7 +116,7 @@ export class ProfesoresListComponent implements OnInit {
   }
   search(): void {
     this.loading = true;
-    this.profesoresService.searchProfesor(this.searchVals.nombre, this.searchVals.email, this.searchVals.telefono, this.searchVals.despacho, this.searchVals.departamento, this.searchVals.categoria)
+    this.profesoresService.searchProfesor(this.searchVals.nombre, this.searchVals.email, this.searchVals.telefono, this.searchVals.despacho, this.searchVals.departamento)
       .subscribe(profesores => {
         this.profesores = profesores;
         this.loading = false;

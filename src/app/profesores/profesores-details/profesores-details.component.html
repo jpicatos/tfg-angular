@@ -33,10 +33,10 @@
               <h4>Email</h4> <span class="spacer"></span>{{profesor.usuario.email}}
             </mat-list-item>
             <span class="manualDivider"></span>
-            <mat-list-item role="listitem">
+            <mat-list-item role="listitem" *ngIf='profesor.deuda'>
               <h4>Deuda</h4> <span class="spacer"></span>{{profesor.deuda}}
             </mat-list-item>
-            <span class="manualDivider"></span>
+            <span class="manualDivider" *ngIf='profesor.deuda'></span>
             <mat-list-item role="listitem">
               <h4>Teléfono</h4> <span class="spacer"></span>{{profesor.telefono}}
             </mat-list-item>

@@ -6,9 +6,9 @@ export class Profesor{
     usuario: Usuario;
     deuda: Deuda;
     escalafon: Number;
-    telefono: String;
-    despacho: String;
+    telefono: string;
+    despacho: string;
     pda: Number;
-    categoria: String;
+    categoria: string;
     departamento: String;
 };
