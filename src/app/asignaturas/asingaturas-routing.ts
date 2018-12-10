@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', component: AsignaturasListComponent, data: { title: 'Asignaturas' }, canActivate: [AuthGuard] },
+      //{ path: '', component: AsignaturasListComponent, data: { title: 'Asignaturas' }, canActivate: [AuthGuard] },
       { path: 'asignaturas', component: AsignaturasListComponent, data: { title: 'Asignaturas' }, canActivate: [AuthGuard] },
       { path: 'asignaturas/:id', component: AsignaturaDetailsComponent, canActivate: [AuthGuard] },
       { path: 'add-asignatura', component: AnadirAsignaturaComponent, canActivate: [AuthGuard] },

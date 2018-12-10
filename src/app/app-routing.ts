@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', loadChildren: './asignaturas/asignaturas.module#AsignaturasModule' },
+      //{ path: '', loadChildren: './asignaturas/asignaturas.module#AsignaturasModule' },
       { path: '', loadChildren: './auth/auth.module#AuthModule' }
     ]
   }

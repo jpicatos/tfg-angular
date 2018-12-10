@@ -2,6 +2,8 @@
 <div class="form-container">
     <mat-card class="card">
         <mat-card-header>
+            <mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
+
             <div mat-card-avatar class="header-image"></div>
             <mat-card-title>Iniciar sesión</mat-card-title>
             <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->

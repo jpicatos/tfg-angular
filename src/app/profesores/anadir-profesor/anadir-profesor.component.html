@@ -1,0 +1,92 @@
+<div class="decorator"></div>
+<div class="form-container">
+  <mat-card class="card">
+    <mat-card-header>
+      <div mat-card-avatar class="header-image"></div>
+      <mat-card-title>Añadir profesor</mat-card-title>
+      <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    </mat-card-header>
+    <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+    <mat-card-content class="formulario">
+      <mat-horizontal-stepper [linear]="false" #stepper="matHorizontalStepper">
+        <mat-step [stepControl]="firstFormGroup">
+          <form [formGroup]="firstFormGroup" class="formulario">
+            <ng-template matStepLabel>Detalles generales</ng-template>
+            <mat-form-field>
+              <input matInput placeholder="Nombre" [(ngModel)]=profesor.usuario.first_name [ngModelOptions]="{standalone: true}"
+                required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Apellidos" [(ngModel)]=profesor.usuario.last_name [ngModelOptions]="{standalone: true}"
+                required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="number" placeholder="Despacho" [(ngModel)]=profesor.despacho
+                [ngModelOptions]="{standalone: true}" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Email" [(ngModel)]=profesor.usuario.email [ngModelOptions]="{standalone: true}"
+                required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Teléfono" [(ngModel)]=profesor.telefono [ngModelOptions]="{standalone: true}"
+                required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Categoría" [(ngModel)]=profesor.categoria [ngModelOptions]="{standalone: true}"
+                required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Departamento" [(ngModel)]=profesor.departamento [ngModelOptions]="{standalone: true}"
+                required>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperNext type="submit">Siguiente</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+          <form [formGroup]="secondFormGroup" class="formulario">
+            <ng-template matStepLabel>Deuda & PDA</ng-template>
+            <h4>Deuda:</h4>
+            <mat-form-field>
+                <input matInput type="number" placeholder="Hace cuatro años" [(ngModel)]=profesor.deuda.hace_cuatro
+                  [ngModelOptions]="{standalone: true}" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="number" placeholder="Hace tres años" [(ngModel)]=profesor.deuda.tres [ngModelOptions]="{standalone: true}"
+                  required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="number" placeholder="Hace dos años" [(ngModel)]=profesor.deuda.hace_dos [ngModelOptions]="{standalone: true}"
+                  required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="number" placeholder="Hace un año" [(ngModel)]=profesor.deuda.hace_uno [ngModelOptions]="{standalone: true}"
+                  required>
+              </mat-form-field>
+              <h4>PDA</h4>
+              <mat-form-field>
+                <input matInput type="number" placeholder="PDA" [(ngModel)]=profesor.pda [ngModelOptions]="{standalone: true}"
+                  required>
+              </mat-form-field>
+            <div>
+              <button mat-button matStepperPrevious>Atrás</button>
+              <button mat-button matStepperNext>Siguiente</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          Ya puedes salvar los cambios
+          <div>
+            <button mat-button matStepperPrevious>Atrás</button>
+            <button mat-button (click)="stepper.reset()">Volver a empezar</button>
+            <button mat-raised-button (click)="save()">Guardar</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,163 @@
+<mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
+<div class="total-container">
+    <mat-card class="card main-card">
+        <div>
+            <form class="buscar">
+                <mat-form-field>
+                    <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
+                    <mat-placeholder>
+                        <mat-icon>search</mat-icon> Buscar por nombre
+                    </mat-placeholder>
+
+                </mat-form-field>
+                <button mat-button type="submit" (click)="search()">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </form>
+        </div>
+        <div class="total-container">
+            <div class="lista">
+                <div class="content">
+                    <mat-grid-list cols={{numCols}} rowHeight="30px">
+                        <mat-grid-tile *ngIf="opts.nombre">
+                            <button mat-button color="accent" class="content-row">
+                                Nombre
+
+                            </button>
+                        </mat-grid-tile>
+                        <mat-grid-tile *ngIf="opts.email">
+                            <button mat-button color="accent" class="content-row nombre">
+                                Email
+
+                            </button>
+                        </mat-grid-tile>
+                        <mat-grid-tile *ngIf="opts.telefono">
+                            <button mat-button color="accent" class="content-row">
+                                Teléfono
+
+                            </button>
+                        </mat-grid-tile>
+                        <mat-grid-tile *ngIf="opts.despacho">
+                            <button mat-button color="accent" class="content-row">
+                                Despacho
+                            </button>
+                        </mat-grid-tile>
+                        <mat-grid-tile *ngIf="opts.departamento">
+                            <button mat-button color="accent" class="content-row">
+                                Departamento
+
+                            </button>
+                        </mat-grid-tile>
+                        <mat-grid-tile *ngIf="opts.categoria">
+                            <button mat-button color="accent" class="content-row">
+                                Categoría
+
+                            </button>
+                        </mat-grid-tile>
+
+                    </mat-grid-list>
+                    <div class="todo-content">
+                        <div *ngFor="let profesor of profesores">
+                            <mat-grid-list cols={{numCols}} rowHeight="50px" routerLink="/profesores/{{profesor.usuario.id}}"
+                                class="row">
+                                <mat-grid-tile *ngIf="opts.nombre">
+                                    <div class="content-row">
+                                        {{profesor.usuario.last_name}}, {{profesor.usuario.first_name}}
+                                    </div>
+                                </mat-grid-tile>
+                                <mat-grid-tile *ngIf="opts.email">
+                                    <div class="content-row">
+                                        {{profesor.usuario.email}}
+                                    </div>
+                                </mat-grid-tile>
+                                <mat-grid-tile *ngIf="opts.telefono">
+                                    <div class="content-row">
+                                        {{profesor.telefono}}
+                                    </div>
+                                </mat-grid-tile>
+                                <mat-grid-tile *ngIf="opts.despacho">
+                                    <div class="content-row">
+                                        {{profesor.despacho}}
+                                    </div>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile *ngIf="opts.departamento">
+                                    <div class="content-row">
+                                        {{profesor.departamento}}
+                                    </div>
+                                </mat-grid-tile>
+                                <mat-grid-tile *ngIf="opts.categoria">
+                                    <div class="content-row">
+                                        {{profesor.categoria}}
+                                    </div>
+                                </mat-grid-tile>
+                                <mat-divider class="divider"></mat-divider>
+                            </mat-grid-list>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+    <div class="opts">
+        <button mat-raised-button color="accent" routerLink="/add-profesor" class="addButton">
+            <mat-icon>add</mat-icon>Añadir nuevo profesor
+        </button>
+
+        <button mat-raised-button color="accent" routerLink="/importar-profesors" class="addButton">
+            <mat-icon>cloud_upload</mat-icon> Importar profesores
+        </button>
+        <mat-expansion-panel class="mostrar card" [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Mostrar
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="columnizar">
+                <mat-checkbox color='primary' [(ngModel)]="opts.nombre" (click)="updateNumCols(opts.nombre,1)">Nombre</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.email" (click)="updateNumCols(opts.email,1)">Email</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.telefono" (click)="updateNumCols(opts.telefono,1)">Teléfono</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.despacho" (click)="updateNumCols(opts.despacho,1)">Despacho</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.departamento" (click)="updateNumCols(opts.departamento,1)">Departamento</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.categoria" (click)="updateNumCols(opts.categoria,1)">Categoría</mat-checkbox>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mostrar card">
+            <mat-expansion-panel-header>
+                <mat-panel-title>Filtrar</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <form (change)="search()" class="columnizar">
+                <button mat-raised-button type="submit" (click)="search()">
+                    Filtrar
+                    <mat-icon>search</mat-icon>
+                </button>
+                <mat-form-field>
+                    <input (keyup)="search()" matInput placeholder="Email" [(ngModel)]="searchVals.email"
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input (keyup)="search()" matInput placeholder="telefono" [(ngModel)]="searchVals.telefono"
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input (keyup)="search()" matInput type='number' placeholder="Despacho" min=0 [(ngModel)]="searchVals.despacho"
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input (keyup)="search()" matInput placeholder="Departamento" [(ngModel)]="searchVals.departamento"
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <mat-form-field>
+                    <input (keyup)="search()" matInput placeholder="Categoría" [(ngModel)]="searchVals.categoria"
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <button mat-raised-button type="submit" (click)="search()">
+                    Filtrar
+                    <mat-icon>search</mat-icon>
+                </button>
+            </form>
+
+        </mat-expansion-panel>
+    </div>
+</div>

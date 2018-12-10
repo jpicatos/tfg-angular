@@ -4,7 +4,7 @@
         <div>
             <form class="buscar">
                 <mat-form-field>
-                    <input matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
+                    <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
                     <mat-placeholder>
                         <mat-icon>search</mat-icon> Buscar por nombre
                     </mat-placeholder>
@@ -20,45 +20,45 @@
                 <div class="content">
                     <mat-grid-list cols={{numCols}} rowHeight="30px">
                         <mat-grid-tile *ngIf="opts.codigo">
-                            <button mat-button color="primary" class="content-row">
+                            <button mat-button color="accent" class="content-row">
                                         Código
         
                             </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.nombre" [colspan]=2>
-                            <button mat-button color="primary" class="content-row nombre">
+                            <button mat-button color="accent" class="content-row nombre">
                                 Siglas/Asignatura
 
                             </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.curso">
-                            <button mat-button color="primary" class="content-row">
+                            <button mat-button color="accent" class="content-row">
                                     Curso
     
                                 </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.grupo">
-                            <button mat-button color="primary" class="content-row">
+                            <button mat-button color="accent" class="content-row">
                                         Grupo
         
                                     </button>
                         </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.cuatrimestre">
-                            <button mat-button color="primary" class="content-row">
+                            <button mat-button color="accent" class="content-row">
                                             Cuatrimestre
             
                                         </button>
                         </mat-grid-tile>
 
                         <mat-grid-tile *ngIf="opts.titulacion">
-                            <button mat-button color="primary" class="content-row">
+                            <button mat-button color="accent" class="content-row">
                                 Titulación
 
                             </button>
                         </mat-grid-tile>
 
                         <mat-grid-tile *ngIf="opts.departamento" [colspan]=2>
-                            <button mat-button color="primary" class="content-row">
+                            <button mat-button color="accent" class="content-row">
                                 Departamento
 
                             </button>
@@ -142,19 +142,19 @@
                 <mat-panel-title>Filtrar</mat-panel-title>
             </mat-expansion-panel-header>
 
-            <form class="columnizar">
+            <form (change)="search()" class="columnizar">
                 <button mat-raised-button type="submit" (click)="search()">
                     Filtrar
                     <mat-icon>search</mat-icon>
                 </button>
                 <mat-form-field>
-                    <input matInput placeholder="Siglas" style="text-transform: uppercase" [(ngModel)]="searchVals.siglas" [ngModelOptions]="{standalone: true}">
+                    <input (keyup)="search()" matInput placeholder="Siglas" style="text-transform: uppercase" [(ngModel)]="searchVals.siglas" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="Código" [(ngModel)]="searchVals.codigo" [ngModelOptions]="{standalone: true}">
+                    <input (keyup)="search()" matInput placeholder="Código" [(ngModel)]="searchVals.codigo" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
-                    <mat-select placeholder="Curso" [(ngModel)]="searchVals.curso" [ngModelOptions]="{standalone: true}">
+                    <mat-select (change)="search()" placeholder="Curso" [(ngModel)]="searchVals.curso" [ngModelOptions]="{standalone: true}">
                         <mat-option value="">--</mat-option>
                         <mat-option value="1º">1º</mat-option>
                         <mat-option value="2º">2º</mat-option>
@@ -165,15 +165,15 @@
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type='number' placeholder="Cuatrimestre" min=1 max=2 [(ngModel)]="searchVals.cuatrimestre" [ngModelOptions]="{standalone: true}">
+                    <input (keyup)="search()" matInput type='number' placeholder="Cuatrimestre" min=1 max=2 [(ngModel)]="searchVals.cuatrimestre" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
 
                 <h4>Día(s)</h4>
-                <mat-checkbox color='primary' (click)="updateDias('L')">Lunes</mat-checkbox>
-                <mat-checkbox color='primary' (click)="updateDias('M')">Martes</mat-checkbox>
-                <mat-checkbox color='primary' (click)="updateDias('X')">Miércoles</mat-checkbox>
-                <mat-checkbox color='primary' (click)="updateDias('J')">Jueves</mat-checkbox>
-                <mat-checkbox color='primary' (click)="updateDias('V')">Viernes</mat-checkbox>
+                <mat-checkbox (change)="search()" color='primary' (click)="updateDias('L')">Lunes</mat-checkbox>
+                <mat-checkbox (change)="search()" color='primary' (click)="updateDias('M')">Martes</mat-checkbox>
+                <mat-checkbox (change)="search()" color='primary' (click)="updateDias('X')">Miércoles</mat-checkbox>
+                <mat-checkbox (change)="search()" color='primary' (click)="updateDias('J')">Jueves</mat-checkbox>
+                <mat-checkbox (change)="search()" color='primary' (click)="updateDias('V')">Viernes</mat-checkbox>
 
                 <app-filtro-hora [ayuda]="ayudaHoraIni" (horaChange)="horaIni($event)"></app-filtro-hora>
 

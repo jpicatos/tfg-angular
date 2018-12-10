@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AsignaturasModule } from './asignaturas/asignaturas.module';
+import { ProfesoresModule} from './profesores/profesores.module';
 import { routing } from './app-routing';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -15,10 +16,11 @@ import { AuthenticationService } from './auth/authentication.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     AsignaturasModule,
+    ProfesoresModule,
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,

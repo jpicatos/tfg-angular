@@ -1,3 +1,4 @@
+@import '../../../scss/variables.scss';
 .form-container {
     display: flex;
     justify-content: center;
@@ -16,9 +17,21 @@
 .formulario {
     display: flex;
     flex-direction: column;
-    margin: 20px;
 }
 
-.formulario button {
-    margin-right: 10px;
+.titulo-horarios h4 {
+    float: left;
+}
+
+.titulo-horarios h5 {
+    float: left;
+}
+
+.boton-eliminar {
+    float: right;
+    background-color: $warn;
+}
+
+.tabulado {
+    margin-left: 20px;
 }

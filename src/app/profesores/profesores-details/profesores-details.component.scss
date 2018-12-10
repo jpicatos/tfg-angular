@@ -12,9 +12,10 @@
             width: 80%;
             overflow: hidden;
             .header-image {
-                background-image: url('../../../assets/books.png');
+                background-image: url('../../../assets/user-male-icon.png');
                 background-repeat: no-repeat;
                 background-size: cover;
+                border-radius: 0;
             }
             .mat-card-subtitle a{
                 color: $accent;

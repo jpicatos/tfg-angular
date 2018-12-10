@@ -108,13 +108,17 @@ export class AsignaturasListComponent implements OnInit {
     }
   }
   search(): void {
+    this.loading=true;
     console.log(this.searchVals);
     var diasAux = []
     if (this.searchVals.dias.length < 5) {
       diasAux = this.searchVals.dias;
     }
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
-      .subscribe(asignaturas => { this.asignaturas = asignaturas });
+      .subscribe(asignaturas => {
+         this.asignaturas = asignaturas;
+         this.loading = false;
+        });
   }
 
   horaIni($event): void {

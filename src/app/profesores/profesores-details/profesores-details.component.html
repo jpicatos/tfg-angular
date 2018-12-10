@@ -1,0 +1,66 @@
+<div class="total-container">
+  <div class="decorator"></div>
+  <div class="card-container">
+    <mat-card class="card" *ngIf='loaded'>
+      <mat-card-header>
+        <div mat-card-avatar class="header-image"></div>
+        <mat-card-subtitle><a routerLink="/profesores" color="accent">profesores</a> / <a routerLink="/profesores/{{profesor.usuario.id}}" color="accent">{{profesor.usuario.first_name}}</a></mat-card-subtitle>
+        <mat-card-title routerLink="/profesors/{{profesor.usuario.id}}" class="nombre-asig">
+          {{profesor.usuario.last_name}}, {{profesor.usuario.first_name}}
+        </mat-card-title>
+
+        <div class="actionButtonContainer">
+          <button mat-raised-button color="accent" class="actionButton" routerLink="/edit-profesor/{{profesor.usuario.id}}">
+            <mat-icon>create</mat-icon> Editar
+          </button>
+          <button mat-raised-button color="accent" class="actionButton" (click)="eliminarDialog()">
+            <mat-icon>delete</mat-icon> Eliminar
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="tab">
+          <mat-list role="list" class="generalDataRow">
+            <mat-list-item role="listitem">
+              <h4>Nombre</h4> <span class="spacer"></span>{{profesor.usuario.first_name}}
+            </mat-list-item>
+            <span class="manualDivider"></span>
+            <mat-list-item role="listitem">
+              <h4>Apellidos</h4> <span class="spacer"></span>{{profesor.usuario.last_name}}
+            </mat-list-item>
+            <span class="manualDivider"></span>
+            <mat-list-item role="listitem">
+              <h4>Email</h4> <span class="spacer"></span>{{profesor.usuario.email}}
+            </mat-list-item>
+            <span class="manualDivider"></span>
+            <mat-list-item role="listitem">
+              <h4>Deuda</h4> <span class="spacer"></span>{{profesor.deuda}}
+            </mat-list-item>
+            <span class="manualDivider"></span>
+            <mat-list-item role="listitem">
+              <h4>Teléfono</h4> <span class="spacer"></span>{{profesor.telefono}}
+            </mat-list-item>
+            <span class="manualDivider"></span>
+            <mat-list-item role="listitem">
+              <h4>Despacho</h4> <span class="spacer"></span>{{profesor.despacho}}
+            </mat-list-item>
+            <span class="manualDivider"></span>
+            <mat-list-item role="listitem">
+              <h4>PDA</h4> <span class="spacer"></span>{{profesor.pda}}
+            </mat-list-item>
+            <span class="manualDivider"></span>
+            <mat-list-item role="listitem">
+              <h4>Categoría</h4> <span class="spacer"></span>{{profesor.categoria}}
+            </mat-list-item>
+            <span class="manualDivider"></span>
+            <mat-list-item role="listitem">
+              <h4>Departamento</h4> <span class="spacer"></span>{{profesor.departamento}}
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

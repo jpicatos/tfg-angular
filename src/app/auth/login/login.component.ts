@@ -10,13 +10,14 @@ export class LoginComponent implements OnInit {
 
   usuario: string;
   password: string;
-
+  loading: boolean;
   constructor(private auth: AuthenticationService) { }
 
   ngOnInit() {
   }
 
   login() {
+    this.loading = true;
     this.auth.login(this.usuario, this.password);
   }
 
