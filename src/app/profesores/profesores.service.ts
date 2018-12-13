@@ -53,14 +53,17 @@ export class ProfesoresService {
     return this.http.get<Categoria[]>(this.profesoresUrl +"categorias");
   }
 
-  searchProfesor(nombre: string, email: string, telefono: string, despacho: number, departamento: string): Observable<Profesor[]> {
-    var params = 'nombre=' + nombre +
-      '&username=' + email +
-      '&telefono=' + telefono +
-      '&departamento=' + departamento
+  searchProfesor(nombre: string, apellidos: string, email: string, telefono: string, despacho: number, escalafon: number): Observable<Profesor[]> {
+    var params = 'nombre=' +  encodeURIComponent(nombre) +
+      '&apellido=' + encodeURIComponent(apellidos) +
+      '&usuario=' + encodeURIComponent(email) +
+      '&telefono=' + encodeURIComponent(telefono);
 
     if(despacho){
       params += '&despacho=' + despacho;
+    }
+    if(escalafon){
+      params += '&escalafon=' + escalafon;
     }
 
     console.log(params);

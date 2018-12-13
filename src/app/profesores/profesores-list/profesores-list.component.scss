@@ -84,10 +84,15 @@ button.content-row {
 
 .buscar {
     display: flex;
+
+    .apellidos{
+        padding-left: 10px;
+    }
 }
 
 .buscar .mat-form-field {
     flex-grow: 1;
+
 }
 
 .opts button {

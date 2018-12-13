@@ -5,7 +5,7 @@ export class Profesor{
     id: number;
     usuario: Usuario;
     deuda: Deuda;
-    escalafon: Number;
+    escalafon: number;
     telefono: string;
     despacho: string;
     pda: Number;

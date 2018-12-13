@@ -26,6 +26,7 @@ export class AnadirProfesorComponent implements OnInit {
   secondFormGroup: FormGroup;
   categorias: Categoria[];
   loaded: boolean;
+  actionTitle: string;
 
 
   constructor(private angularService: ProfesoresService, private route: ActivatedRoute, private _formBuilder: FormBuilder,
@@ -33,6 +34,8 @@ export class AnadirProfesorComponent implements OnInit {
     this.titleService.setTitle("Añadir un profesor");
     MenuToolbarComponent.updateTitle("Profesores");
     this.profesor = new Profesor();
+    this.profesor.usuario = new Usuario;
+    this.profesor.deuda = new Deuda;
     this.editar = false;
     this.loaded = false;
   }
@@ -45,22 +48,24 @@ export class AnadirProfesorComponent implements OnInit {
       secondCtrl: ['', Validators.required]
     });
 
+    this.actionTitle = "Añadir profesor";
 
     let id = this.route.snapshot.paramMap.get('id');
-
     if (id != null) {
       this.angularService.getProfesor(Number(id)).subscribe(
         profesor => {
           console.log(profesor);
-          this.profesor = profesor
-          this.getCategorias();
+          this.profesor = profesor;
           this.loaded = true;
         }
 
       );
+      this.actionTitle = "Editar profesor";
 
       this.editar = true;   // Al existir un ID en la URL es una edición de una asignatura existente
     }
+
+    this.getCategorias();
 
   }
 

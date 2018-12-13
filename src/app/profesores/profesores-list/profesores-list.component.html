@@ -8,8 +8,12 @@
                     <mat-placeholder>
                         <mat-icon>search</mat-icon> Buscar por nombre
                     </mat-placeholder>
-
                 </mat-form-field>
+                <mat-form-field class="apellidos">
+                <input (keyup)="search()" matInput [(ngModel)]="searchVals.apellidos" [ngModelOptions]="{standalone: true}">
+                    <mat-placeholder>
+                        <mat-icon>search</mat-icon> Buscar por apellidos
+                    </mat-placeholder></mat-form-field>
                 <button mat-button type="submit" (click)="search()">
                     <mat-icon>search</mat-icon>
                 </button>
@@ -19,6 +23,18 @@
             <div class="lista">
                 <div class="content">
                     <mat-grid-list cols={{numCols}} rowHeight="30px">
+                        <mat-grid-tile *ngIf="opts.escalafon">
+                            <button mat-button color="accent" class="content-row">
+                                Escalafon
+
+                            </button>
+                        </mat-grid-tile>
+                        <mat-grid-tile *ngIf="opts.apellidos">
+                            <button mat-button color="accent" class="content-row">
+                                Apellidos
+
+                            </button>
+                        </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.nombre">
                             <button mat-button color="accent" class="content-row">
                                 Nombre
@@ -60,24 +76,28 @@
                         <div *ngFor="let profesor of profesores">
                             <mat-grid-list cols={{numCols}} rowHeight="50px" routerLink="/profesores/{{profesor.usuario.id}}"
                                 class="row">
+                                <mat-grid-tile *ngIf="opts.escalafon">
+                                    <div class="content-row" [innerHTML]=profesor.escalafon>
+                                    </div>
+                                </mat-grid-tile>
+                                <mat-grid-tile *ngIf="opts.apellidos">
+                                    <div class="content-row" [innerHTML]=profesor.usuario.last_name>
+                                    </div>
+                                </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.nombre">
-                                    <div class="content-row">
-                                        {{profesor.usuario.last_name}}, {{profesor.usuario.first_name}}
+                                    <div class="content-row" [innerHTML]=profesor.usuario.first_name>
                                     </div>
                                 </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.email">
-                                    <div class="content-row">
-                                        {{profesor.usuario.email}}
+                                    <div class="content-row" [innerHTML]=profesor.usuario.email>
                                     </div>
                                 </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.telefono">
-                                    <div class="content-row">
-                                        {{profesor.telefono}}
+                                    <div class="content-row" [innerHTML]=profesor.telefono>
                                     </div>
                                 </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.despacho">
-                                    <div class="content-row">
-                                        {{profesor.despacho}}
+                                    <div class="content-row" [innerHTML]=profesor.despacho>
                                     </div>
                                 </mat-grid-tile>
 
@@ -114,6 +134,7 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="columnizar">
+                <mat-checkbox color='primary' [(ngModel)]="opts.escalafon" (click)="updateNumCols(opts.escalafon,1)">Escalafon</mat-checkbox>
                 <mat-checkbox color='primary' [(ngModel)]="opts.nombre" (click)="updateNumCols(opts.nombre,1)">Nombre</mat-checkbox>
                 <mat-checkbox color='primary' [(ngModel)]="opts.email" (click)="updateNumCols(opts.email,1)">Email</mat-checkbox>
                 <mat-checkbox color='primary' [(ngModel)]="opts.telefono" (click)="updateNumCols(opts.telefono,1)">Teléfono</mat-checkbox>
@@ -137,7 +158,7 @@
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
-                    <input (keyup)="search()" matInput placeholder="telefono" [(ngModel)]="searchVals.telefono"
+                    <input (keyup)="search()" matInput placeholder="Teléfono" [(ngModel)]="searchVals.telefono"
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
@@ -145,7 +166,7 @@
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
-                    <input (keyup)="search()" matInput placeholder="Departamento" [(ngModel)]="searchVals.departamento"
+                    <input type="number" min="0" (keyup)="search()" matInput placeholder="Escalafón" [(ngModel)]="searchVals.escalafon"
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <button mat-raised-button type="submit" (click)="search()">

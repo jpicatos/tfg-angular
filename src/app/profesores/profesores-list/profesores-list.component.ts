@@ -22,6 +22,8 @@ export class ProfesoresListComponent implements OnInit {
   selectedProfesor: Profesor;
   selected: number;
   opts: {
+    escalafon: boolean;
+    apellidos: boolean;
     nombre: boolean,
     email: boolean,
     telefono: boolean,
@@ -32,10 +34,11 @@ export class ProfesoresListComponent implements OnInit {
   numCols: number;
   searchVals: {
     nombre: string,
+    apellidos: string,
     email: string,
     telefono: string,
     despacho: number,
-    departamento: string
+    escalafon: number
   }
   loading: boolean;
 
@@ -43,7 +46,9 @@ export class ProfesoresListComponent implements OnInit {
     this.titleService.setTitle("Profesores");
     this.selected = 1;
     this.opts = {
+      escalafon: true,
       nombre: true,
+      apellidos: true,
       email: true,
       telefono: false,
       despacho: false,
@@ -52,17 +57,18 @@ export class ProfesoresListComponent implements OnInit {
     };
     this.searchVals = {
       nombre: '',
+      apellidos: "",
       email: "",
       telefono: '',
       despacho: undefined,
-      departamento: ''
+      escalafon: undefined
     }
   }
 
   ngOnInit() {
     MenuToolbarComponent.updateTitle("Profesores");
     this.loading = true;
-    this.numCols = 3;
+    this.numCols = 5;
     this.getProfesores();
   }
 
@@ -70,34 +76,11 @@ export class ProfesoresListComponent implements OnInit {
     this.profesoresService.getProfesores()
       .subscribe(
         profesores => {
-          this.profesores = profesores;
+          this.profesores = profesores.sort((a: Profesor, b: Profesor) => {
+            return a.escalafon - b.escalafon;
+          });
           this.loading = false;
-          console.log(this.profesores);          
-        },
-        error => {
-          var profe = new Profesor();
-          profe.id = 1;
-          profe.categoria = "categoría de prueba";
-          profe.departamento = "departamento de prueba";
-          profe.despacho = "1234";
-          profe.deuda = new Deuda();
-          profe.deuda.id = 0;
-          profe.deuda.hace_uno = 0;
-          profe.deuda.hace_dos = 0;
-          profe.deuda.hace_tres = 0;
-          profe.deuda.hace_cuatro = 0;
-          profe.escalafon = 0;
-          profe.pda = 1;
-          profe.telefono = "123456789";
-          profe.usuario = new Usuario();
-          profe.usuario.id = 0;
-          profe.usuario.first_name = "Nombre Prueba";
-          profe.usuario.last_name = "Apellido Prueba";
-          profe.usuario.password = "";
-          profe.usuario.username = "nombreusuario";
-          profe.usuario.email = "emailprueba@prueba.com";
-          this.profesores = [profe];
-          this.loading = false;
+          console.log(this.profesores);
         }
       )
   }
@@ -116,10 +99,35 @@ export class ProfesoresListComponent implements OnInit {
   }
   search(): void {
     this.loading = true;
-    this.profesoresService.searchProfesor(this.searchVals.nombre, this.searchVals.email, this.searchVals.telefono, this.searchVals.despacho, this.searchVals.departamento)
+    this.profesoresService.searchProfesor(this.searchVals.nombre, this.searchVals.apellidos, this.searchVals.email, this.searchVals.telefono, this.searchVals.despacho, this.searchVals.escalafon)
       .subscribe(profesores => {
-        this.profesores = profesores;
+        this.profesores = profesores.sort((a: Profesor, b: Profesor) => {
+          return a.escalafon - b.escalafon;
+        });
+        this.highlightResults();
         this.loading = false;
       });
+  }
+  highlightResults(): void {
+    this.profesores.forEach(profe => {
+      if (profe.usuario.first_name && this.searchVals.nombre) {
+        profe.usuario.first_name = profe.usuario.first_name.replace(this.searchVals.nombre, "<span class='highlight'>" + this.searchVals.nombre + "</span>");
+      };
+      if (profe.usuario.last_name && this.searchVals.apellidos) {
+        profe.usuario.last_name = profe.usuario.last_name.replace(this.searchVals.apellidos, "<span class='highlight'>" + this.searchVals.apellidos + "</span>");
+      };
+      if (profe.usuario.email && String(this.searchVals.email)) {
+        profe.usuario.email=profe.usuario.email.replace(String(this.searchVals.email), "<span class='highlight'>" + String(this.searchVals.email) + "</span>");
+      };
+      if (profe.telefono && this.searchVals.telefono) {
+        profe.telefono=profe.telefono.replace(this.searchVals.telefono, "<span class='highlight'>" + this.searchVals.telefono + "</span>");
+      };
+      if (profe.despacho && String(this.searchVals.despacho)) {
+        profe.despacho=profe.despacho.replace(String(this.searchVals.despacho), "<span class='highlight'>" + this.searchVals.despacho + "</span>");
+      };
+      if (profe.escalafon && String(this.searchVals.escalafon)) {
+        profe.escalafon=parseInt(String(profe.escalafon).replace(String(this.searchVals.escalafon), "<span class='highlight'>" + this.searchVals.escalafon + "</span>"));
+      };
+    });
   }
 }
