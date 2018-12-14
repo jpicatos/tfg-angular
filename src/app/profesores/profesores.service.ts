@@ -24,16 +24,16 @@ export class ProfesoresService {
 
   saveProfesor(profesor: Profesor): void {
     if (profesor.usuario.id != undefined) {
-      this.http.put<Profesor>(this.profesoresUrl + profesor.usuario.id + '/', profesor)
+      this.http.patch<Profesor>(this.profesoresUrl + profesor.usuario.id + '/', profesor)
         .subscribe(data => {   // data is already a JSON object
-          this.router.navigate(['/profesores/' + profesor.id]);
+          this.router.navigate(['/profesores/' + profesor.usuario.id]);
           this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
         });
     }
     else {
       this.http.post<Profesor>(this.profesoresUrl, profesor)
         .subscribe(data => {   // data is already a JSON object
-          this.router.navigate(['/profesores/' + data.id]);
+          this.router.navigate(['/profesores/' + data.usuario.id]);
           this.avisosService.enviarMensaje("Se ha creado la profesor correctamente");
         });
     }

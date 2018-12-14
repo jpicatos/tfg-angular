@@ -7,8 +7,6 @@ import { Title } from '@angular/platform-browser';
 import { AvisosService } from 'src/app/avisos.service';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
 import { Categoria } from '../models/categoria';
-import { Usuario } from '../models/usuario';
-import { Deuda } from '../models/deuda';
 
 @Component({
   selector: 'app-anadir-profesor',
@@ -16,16 +14,14 @@ import { Deuda } from '../models/deuda';
   styleUrls: ['./anadir-profesor.component.scss']
 })
 export class AnadirProfesorComponent implements OnInit {
-
-  /* Propiedades necesarias para cuando se edita una asignatura */
-  editar: boolean;
-
   profesor: Profesor;
+  
+  username: string; // Atributo para comparar si el nombre de usuario ha sido cambiado
+  password: string; // Lo mismo que el anterior. La petición HTTP cambia si se cambian estos valores
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   categorias: Categoria[];
-  loaded: boolean;
   actionTitle: string;
 
 
@@ -34,10 +30,6 @@ export class AnadirProfesorComponent implements OnInit {
     this.titleService.setTitle("Añadir un profesor");
     MenuToolbarComponent.updateTitle("Profesores");
     this.profesor = new Profesor();
-    this.profesor.usuario = new Usuario;
-    this.profesor.deuda = new Deuda;
-    this.editar = false;
-    this.loaded = false;
   }
 
   ngOnInit() {
@@ -56,13 +48,12 @@ export class AnadirProfesorComponent implements OnInit {
         profesor => {
           console.log(profesor);
           this.profesor = profesor;
-          this.loaded = true;
+          this.username = profesor.usuario.username;
+          this.password = profesor.usuario.password;
         }
 
       );
       this.actionTitle = "Editar profesor";
-
-      this.editar = true;   // Al existir un ID en la URL es una edición de una asignatura existente
     }
 
     this.getCategorias();
@@ -77,8 +68,21 @@ export class AnadirProfesorComponent implements OnInit {
         });
   }
 
+
   save(): void {
     console.log(this.profesor);
+
+    /*
+    La petición a la API no debe llevar el username ni el password si no han sido modificados
+    */
+
+    if (this.username == this.profesor.usuario.username) {
+      delete this.profesor.usuario.username;
+    }
+
+    if (this.password == this.profesor.usuario.password) {
+      delete this.profesor.usuario.password;
+    }
 
     this.angularService.saveProfesor(this.profesor);
 

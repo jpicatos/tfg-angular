@@ -13,6 +13,8 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { AuthGuardService as AuthGuard } from './auth/auth-guard.service';
 import { AuthenticationService } from './auth/authentication.service';
 
+import { HttpErrorInterceptor } from './errors/error-handler';
+
 
 @NgModule({
   declarations: [
@@ -35,6 +37,11 @@ import { AuthenticationService } from './auth/authentication.service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
       multi: true
     },
     AuthenticationService,

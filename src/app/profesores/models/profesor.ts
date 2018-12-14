@@ -11,4 +11,9 @@ export class Profesor{
     pda: Number;
     categoria: string;
     departamento: String;
+
+    constructor() {
+        this.usuario = new Usuario();
+        this.deuda = new Deuda();
+    }
 };
