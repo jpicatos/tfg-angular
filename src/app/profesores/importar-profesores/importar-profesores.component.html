@@ -1,0 +1,40 @@
+<div class="decorator"></div>
+<div class="form-container">
+    <mat-card class="card">
+        <mat-card-header>
+            <div mat-card-avatar class="header-image"></div>
+            <mat-card-title>Importar profesores</mat-card-title>
+            <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content class="formulario">
+
+            <p>Puedes importar el listado de profesores y categorías desde una hoja de cálculo de <strong>Excel 2010 (.xlsx)</strong>.</p>
+            <p>Tienes un ejemplo de la estructura que debe de tener el fichero para su correcta importación en <strong>este enlace.</strong></p>
+
+            <div class="importar-formulario">
+                <mat-form-field>
+                    <input matInput [(ngModel)]="departamento_siglas" placeholder="Siglas del departamento">
+                    <mat-hint>Ejemplo: <strong>SIC</strong></mat-hint>
+                </mat-form-field>
+            </div>
+
+            <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+
+            <button mat-raised-button color="primary" (click)="fileInput.click()">
+<mat-icon>attach_file</mat-icon> Selecciona un archivo
+</button>
+
+            <button mat-raised-button color="accent" (click)="importar()">
+<mat-icon>cloud_upload</mat-icon> Importar</button>
+
+            <div class="carga" *ngIf="progreso">
+                <mat-spinner [diameter]="30"></mat-spinner>
+                <p>Importando profesores...</p>
+            </div>
+
+
+        </mat-card-content>
+
+    </mat-card>
+</div>

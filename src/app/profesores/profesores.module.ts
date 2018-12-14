@@ -10,6 +10,7 @@ import { ProfesoresListComponent } from './profesores-list/profesores-list.compo
 import { ProfesoresService } from './profesores.service';
 import { ProfesoresDetailsComponent } from './profesores-details/profesores-details.component';
 import { AnadirProfesorComponent } from './anadir-profesor/anadir-profesor.component';
+import { ImportarProfesoresComponent } from './importar-profesores/importar-profesores.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { AnadirProfesorComponent } from './anadir-profesor/anadir-profesor.compo
   declarations: [
     ProfesoresListComponent,
     ProfesoresDetailsComponent,
-    AnadirProfesorComponent
+    AnadirProfesorComponent,
+    ImportarProfesoresComponent
   ],
   providers: [ProfesoresService],
 })

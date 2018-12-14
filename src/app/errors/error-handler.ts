@@ -30,7 +30,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
             for (var key in error.error) {
               if (error.error.hasOwnProperty(key)) {
-                errMsg += key + " - " + error.error[key] + " ";
+                errMsg = JSON.stringify(error.error[key]).replace(/[^\w\s]/gi, " ");
               }
             }
           }

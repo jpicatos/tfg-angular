@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { Profesor} from "./models/profesor";
+import { Profesor, ProfesorImportar } from "./models/profesor";
 import { AvisosService } from '../avisos.service';
 import { Categoria } from './models/categoria';
 
@@ -68,6 +68,16 @@ export class ProfesoresService {
 
     console.log(params);
     return this.http.get<Profesor[]>(this.profesoresUrl + '?' + params);
+  }
+
+  importar(archivo: File, departamento_siglas: string): Observable<ProfesorImportar> {
+
+    // this.http is the injected HttpClient
+    const uploadData = new FormData();
+    uploadData.append('excel_file', archivo, archivo.name);
+    uploadData.append('departamento_siglas', departamento_siglas);
+
+    return this.http.post<ProfesorImportar>(this.profesoresUrl + '/importar/', uploadData);
   }
 
 }
