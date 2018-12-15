@@ -169,6 +169,12 @@
                     <input type="number" min="0" (keyup)="search()" matInput placeholder="Escalafón" [(ngModel)]="searchVals.escalafon"
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
+                 <mat-form-field>
+                    <mat-select (selectionChange)="search()" placeholder="Categoría" [(ngModel)]="searchVals.categoria" [ngModelOptions]="{standalone: true}">
+                        <mat-option value="">--</mat-option>
+                        <mat-option *ngFor="let categoria of categorias" value={{categoria.categoria_abreviatura}}>{{categoria.categoria}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
                 <button mat-raised-button type="submit" (click)="search()">
                     Filtrar
                     <mat-icon>search</mat-icon>

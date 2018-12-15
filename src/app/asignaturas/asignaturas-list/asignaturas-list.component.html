@@ -154,7 +154,7 @@
                     <input (keyup)="search()" matInput placeholder="Código" [(ngModel)]="searchVals.codigo" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
-                    <mat-select (change)="search()" placeholder="Curso" [(ngModel)]="searchVals.curso" [ngModelOptions]="{standalone: true}">
+                    <mat-select (selectionChange)="search()" placeholder="Curso" [(ngModel)]="searchVals.curso" [ngModelOptions]="{standalone: true}">
                         <mat-option value="">--</mat-option>
                         <mat-option value="1º">1º</mat-option>
                         <mat-option value="2º">2º</mat-option>

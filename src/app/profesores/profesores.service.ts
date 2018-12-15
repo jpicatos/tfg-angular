@@ -45,24 +45,25 @@ export class ProfesoresService {
       .subscribe(profesor => { this.router.navigate(['/profesores']); });
   }
 
-  getCategoria(cate: string): Observable<Categoria>{
-    return this.http.get<Categoria>(this.profesoresUrl +"categorias/"+ cate);
+  getCategoria(cate: string): Observable<Categoria> {
+    return this.http.get<Categoria>(this.profesoresUrl + "categorias/" + cate);
   }
 
-  getCategorias(): Observable<Categoria[]>{
-    return this.http.get<Categoria[]>(this.profesoresUrl +"categorias");
+  getCategorias(): Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(this.profesoresUrl + "categorias");
   }
 
-  searchProfesor(nombre: string, apellidos: string, email: string, telefono: string, despacho: number, escalafon: number): Observable<Profesor[]> {
-    var params = 'nombre=' +  encodeURIComponent(nombre) +
+  searchProfesor(nombre: string, apellidos: string, email: string, telefono: string, despacho: number, escalafon: number, categoria: string): Observable<Profesor[]> {
+    var params = 'nombre=' + encodeURIComponent(nombre) +
       '&apellido=' + encodeURIComponent(apellidos) +
       '&usuario=' + encodeURIComponent(email) +
-      '&telefono=' + encodeURIComponent(telefono);
+      '&telefono=' + encodeURIComponent(telefono) +
+      '&categoria=' + encodeURIComponent(categoria);
 
-    if(despacho){
+    if (despacho) {
       params += '&despacho=' + despacho;
     }
-    if(escalafon){
+    if (escalafon) {
       params += '&escalafon=' + escalafon;
     }
 

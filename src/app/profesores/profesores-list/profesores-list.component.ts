@@ -38,9 +38,12 @@ export class ProfesoresListComponent implements OnInit {
     email: string,
     telefono: string,
     despacho: number,
-    escalafon: number
+    escalafon: number,
+    categoria: string
   }
   loading: boolean;
+
+  categorias: Categoria[];
 
   constructor(private profesoresService: ProfesoresService, private router: Router, private titleService: Title) {
     this.titleService.setTitle("Profesores");
@@ -56,12 +59,13 @@ export class ProfesoresListComponent implements OnInit {
       categoria: true,
     };
     this.searchVals = {
-      nombre: '',
+      nombre: "",
       apellidos: "",
       email: "",
-      telefono: '',
+      telefono: "",
       despacho: undefined,
-      escalafon: undefined
+      escalafon: undefined,
+      categoria: ""
     }
   }
 
@@ -70,6 +74,12 @@ export class ProfesoresListComponent implements OnInit {
     this.loading = true;
     this.numCols = 5;
     this.getProfesores();
+
+    this.profesoresService.getCategorias()
+      .subscribe(
+        categorias => {
+          this.categorias = categorias;
+        });
   }
 
   getProfesores(): void {
@@ -99,7 +109,7 @@ export class ProfesoresListComponent implements OnInit {
   }
   search(): void {
     this.loading = true;
-    this.profesoresService.searchProfesor(this.searchVals.nombre, this.searchVals.apellidos, this.searchVals.email, this.searchVals.telefono, this.searchVals.despacho, this.searchVals.escalafon)
+    this.profesoresService.searchProfesor(this.searchVals.nombre, this.searchVals.apellidos, this.searchVals.email, this.searchVals.telefono, this.searchVals.despacho, this.searchVals.escalafon, this.searchVals.categoria)
       .subscribe(profesores => {
         this.profesores = profesores.sort((a: Profesor, b: Profesor) => {
           return a.escalafon - b.escalafon;
@@ -117,16 +127,16 @@ export class ProfesoresListComponent implements OnInit {
         profe.usuario.last_name = profe.usuario.last_name.replace(this.searchVals.apellidos, "<span class='highlight'>" + this.searchVals.apellidos + "</span>");
       };
       if (profe.usuario.email && String(this.searchVals.email)) {
-        profe.usuario.email=profe.usuario.email.replace(String(this.searchVals.email), "<span class='highlight'>" + String(this.searchVals.email) + "</span>");
+        profe.usuario.email = profe.usuario.email.replace(String(this.searchVals.email), "<span class='highlight'>" + String(this.searchVals.email) + "</span>");
       };
       if (profe.telefono && this.searchVals.telefono) {
-        profe.telefono=profe.telefono.replace(this.searchVals.telefono, "<span class='highlight'>" + this.searchVals.telefono + "</span>");
+        profe.telefono = profe.telefono.replace(this.searchVals.telefono, "<span class='highlight'>" + this.searchVals.telefono + "</span>");
       };
       if (profe.despacho && String(this.searchVals.despacho)) {
-        profe.despacho=profe.despacho.replace(String(this.searchVals.despacho), "<span class='highlight'>" + this.searchVals.despacho + "</span>");
+        profe.despacho = profe.despacho.replace(String(this.searchVals.despacho), "<span class='highlight'>" + this.searchVals.despacho + "</span>");
       };
       if (profe.escalafon && String(this.searchVals.escalafon)) {
-        profe.escalafon=parseInt(String(profe.escalafon).replace(String(this.searchVals.escalafon), "<span class='highlight'>" + this.searchVals.escalafon + "</span>"));
+        profe.escalafon = String(profe.escalafon).replace(String(this.searchVals.escalafon), "<span class='highlight'>" + this.searchVals.escalafon + "</span>");
       };
     });
   }
