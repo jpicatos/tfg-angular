@@ -54,14 +54,14 @@ export class ProfesoresDetailsComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     dialogConfig.data = {
-      idProfesor: this.profesor.usuario.id
+      id: this.profesor.usuario.id
     };
 
     const dialogRef = this.dialog.open(EliminarDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       profesor => {
-        this.eliminarProfesor(this.profesor)
+        this.eliminarProfesor(profesor)
       }
     );
   }

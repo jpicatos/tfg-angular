@@ -8,13 +8,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 })
 export class EliminarDialogComponent implements OnInit {
 
-  idAsignatura: number;
+  id: number;
 
   constructor(
     private dialogRef: MatDialogRef<EliminarDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
 
-    this.idAsignatura = data.idAsignatura;
+    this.id = data;
   }
 
   ngOnInit() {
@@ -22,7 +22,7 @@ export class EliminarDialogComponent implements OnInit {
   }
 
   delete() {
-    this.dialogRef.close(this.idAsignatura);
+    this.dialogRef.close(this.id);
   }
 
   close() {

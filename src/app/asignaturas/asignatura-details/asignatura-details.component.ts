@@ -53,7 +53,7 @@ export class AsignaturaDetailsComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     dialogConfig.data = {
-        idAsignatura: this.asignatura.id
+        id: this.asignatura.id
     };
 
     const dialogRef = this.dialog.open(EliminarDialogComponent, dialogConfig);
