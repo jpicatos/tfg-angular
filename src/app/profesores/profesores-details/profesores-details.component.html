@@ -34,7 +34,11 @@
             </mat-list-item>
             <span class="manualDivider"></span>
             <mat-list-item role="listitem" *ngIf='profesor.deuda'>
-              <h4>Deuda</h4> <span class="spacer"></span>{{profesor.deuda}}
+              <h4>Deuda</h4> 
+              <span class="spacer"></span>2014: {{profesor.deuda.hace_cuatro}} créditos
+              <span class="spacer"></span>2015:{{profesor.deuda.hace_tres}} créditos
+              <span class="spacer"></span>2016:{{profesor.deuda.hace_dos}} créditos
+              <span class="spacer"></span>2017:{{profesor.deuda.hace_uno}} créditos
             </mat-list-item>
             <span class="manualDivider" *ngIf='profesor.deuda'></span>
             <mat-list-item role="listitem">
@@ -46,7 +50,7 @@
             </mat-list-item>
             <span class="manualDivider"></span>
             <mat-list-item role="listitem">
-              <h4>PDA</h4> <span class="spacer"></span>{{profesor.pda}}
+              <h4>PDA</h4> <span class="spacer"></span>{{profesor.pda}} créditos
             </mat-list-item>
             <span class="manualDivider"></span>
             <mat-list-item role="listitem">
