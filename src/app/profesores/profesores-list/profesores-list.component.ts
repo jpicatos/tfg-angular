@@ -135,9 +135,11 @@ export class ProfesoresListComponent implements OnInit {
       if (profe.despacho && String(this.searchVals.despacho)) {
         profe.despacho = profe.despacho.replace(String(this.searchVals.despacho), "<span class='highlight'>" + this.searchVals.despacho + "</span>");
       };
+      /*
       if (profe.escalafon && String(this.searchVals.escalafon)) {
         profe.escalafon = String(profe.escalafon).replace(String(this.searchVals.escalafon), "<span class='highlight'>" + this.searchVals.escalafon + "</span>");
       };
+      */
     });
   }
 }
