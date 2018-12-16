@@ -23,7 +23,7 @@
 }
 
 .todo-content {
-    overflow: overlay;
+    overflow: auto;
     max-height: 800px;
 }
 
@@ -84,15 +84,13 @@ button.content-row {
 
 .buscar {
     display: flex;
-
-    .apellidos{
+    .apellidos {
         padding-left: 10px;
     }
 }
 
 .buscar .mat-form-field {
     flex-grow: 1;
-
 }
 
 .opts button {

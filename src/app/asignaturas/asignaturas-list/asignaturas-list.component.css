@@ -23,7 +23,7 @@
 }
 
 .todo-content {
-    overflow: overlay;
+    overflow: auto;
     max-height: 800px;
 }
 
