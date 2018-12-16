@@ -121,13 +121,16 @@ export class ProfesoresListComponent implements OnInit {
   highlightResults(): void {
     this.profesores.forEach(profe => {
       if (profe.usuario.first_name && this.searchVals.nombre) {
-        profe.usuario.first_name = profe.usuario.first_name.replace(this.searchVals.nombre, "<span class='highlight'>" + this.searchVals.nombre + "</span>");
+        var regex = new RegExp(this.searchVals.nombre, 'gi')
+        profe.usuario.first_name = profe.usuario.first_name.replace(regex, function (str) { return "<span class='highlight'>" + str + "</span>" });
       };
       if (profe.usuario.last_name && this.searchVals.apellidos) {
-        profe.usuario.last_name = profe.usuario.last_name.replace(this.searchVals.apellidos, "<span class='highlight'>" + this.searchVals.apellidos + "</span>");
+        var regex = new RegExp(this.searchVals.apellidos, 'gi')
+        profe.usuario.last_name = profe.usuario.last_name.replace(regex, function (str) { return "<span class='highlight'>" + str + "</span>" });
       };
-      if (profe.usuario.email && String(this.searchVals.email)) {
-        profe.usuario.email = profe.usuario.email.replace(String(this.searchVals.email), "<span class='highlight'>" + String(this.searchVals.email) + "</span>");
+      if (profe.usuario.email && this.searchVals.email) {
+        var regex = new RegExp(this.searchVals.email, 'gi')
+        profe.usuario.email = profe.usuario.email.replace(regex, function (str) { return "<span class='highlight'>" + str + "</span>" });
       };
       if (profe.telefono && this.searchVals.telefono) {
         profe.telefono = profe.telefono.replace(this.searchVals.telefono, "<span class='highlight'>" + this.searchVals.telefono + "</span>");
