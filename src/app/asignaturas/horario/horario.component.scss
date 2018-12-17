@@ -62,8 +62,7 @@ table {
     color: rgba(0, 0, 0, 0.8);
     padding: 0.25rem 0;
     text-align: center;
-    border: 0;
-    position: relative;
+    border: 0; // position: relative;
     top: -12px;
     border-bottom: 1px solid transparent;
 }
@@ -92,6 +91,7 @@ td {
 
 tr:nth-child(odd) td:not(.headcol) {
     border-bottom: 1px solid #d6d6d6;
+    border-top: 1px solid #d6d6d6;
 }
 
 tr:nth-child(even) td:not(.headcol) {
@@ -106,21 +106,50 @@ tr td {
 }
 
 tbody tr td {
-    position: relative;
+    // position: relative;
     vertical-align: top;
     height: 40px;
     width: auto;
 }
 
-.event {
-    background: $primary;
-    color: white;
-    border-radius: 2px;
-    text-align: left;
-    font-size: 0.875rem;
-    z-index: 2;
-    padding: 0.5rem;
-    overflow-x: hidden;
-    transition: all 0.2s;
+.text-hora {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    margin: 15px;
+    display: flex;
+    li {
+        margin: auto;
+    }
+    div {
+        margin: 1px;
+    }
+    .text-hora-desdoble {
+        color: $accent;
+    }
+}
+
+.horas {
+    display: flex;
     height: 104%;
+    .event {
+        background: $primary;
+        color: white;
+        border-radius: 2px;
+        text-align: left;
+        font-size: 0.875rem; // z-index: 2;
+        padding: 0.5rem;
+        overflow-x: hidden;
+        transition: all 0.2s;
+        position: relative;
+        flex-grow: 1;
+        &.desdoble {
+            background: $accent;
+        }
+    }
+}
+
+.anotacion{
+    color: $accent;
+    margin: 15px;
 }

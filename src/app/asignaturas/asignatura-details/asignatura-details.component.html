@@ -52,13 +52,7 @@
                         </div>
                     </mat-tab>
                     <mat-tab label="Horario">
-                        <app-horario [horarioEntrada]="asignatura.horario"></app-horario>
-                    </mat-tab>
-                    <mat-tab label="Desdobles">
-                        <h4>Esta asignatura tiene {{asignatura.desdobles.length}} desdoble(s)</h4>
-                        <div *ngFor='let horario of asignatura.desdobles; index as i'>
-                            <button mat-raised-button (click)="openDialog(i)">Ver el horario del desdoble {{i+1}}</button>
-                        </div>
+                        <app-horario [asignatura]="asignatura"></app-horario>
                     </mat-tab>
                 </mat-tab-group>
 

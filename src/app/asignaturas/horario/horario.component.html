@@ -1,8 +1,17 @@
+<ul class="text-hora">
+    <li *ngFor="let hora of horarioEntrada; index as i">
+        <div>{{fetchDay(hora.dia)}}</div>
+        <div>{{hora.hora_inicio}} - {{hora.hora_fin}}</div>
+        <div>[{{hora.aula}}]</div>
+    </li>
+    <li *ngFor="let hora of horarioDesdoble; index as i" class="text-hora-desdoble">
+        <div>{{fetchDay(hora.dia)}}</div>
+        <div>{{hora.hora_inicio}} - {{hora.hora_fin}}</div>
+        <div>[{{hora.aula}}]</div>
+    </li>
+</ul>
 <div class="calendar">
-
     <div class="outer">
-
-
         <table>
             <thead>
                 <tr>
@@ -18,14 +27,19 @@
 
         <div class="wrap">
             <table class="offset">
-
-                <tbody >
+                <tbody>
                     <tr *ngFor="let hora of horario; index as i">
                         <td class="headcol">{{getHoraFromNumber(i)}}</td>
-                        <td *ngFor = "let dia of hora">
-                            <div *ngIf="dia" class="event">
-                                {{dia.aula}}
+                        <td *ngFor="let dia of hora">
+                            <div class="horas">
+                                <div *ngIf="dia.horarioNormal" class="event">
+                                    {{dia.horarioNormal.aula}}
+                                </div>
+                                <div *ngIf="dia.horarioDesdoble" class="event desdoble">
+                                    {{dia.horarioDesdoble.aula}}
+                                </div>
                             </div>
+
                         </td>
                     </tr>
                 </tbody>
@@ -33,3 +47,4 @@
         </div>
     </div>
 </div>
+<h5 class="anotacion">* desdobles</h5>

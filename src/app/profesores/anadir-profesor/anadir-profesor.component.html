@@ -3,7 +3,9 @@
   <mat-card class="card">
     <mat-card-header>
       <div mat-card-avatar>
-        <a href="javascript:history.back()"><mat-icon>arrow_back</mat-icon></a>
+        <a href="javascript:history.back()">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
       </div>
       <mat-card-title>{{actionTitle}}</mat-card-title>
       <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
@@ -19,8 +21,8 @@
                 required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Contraseña" type="password" [(ngModel)]=profesor.usuario.password [ngModelOptions]="{standalone: true}"
-                required>
+              <input matInput placeholder="Contraseña" type="password" [(ngModel)]=profesor.usuario.password
+                [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <div>
               <button mat-button matStepperNext type="submit">Siguiente</button>

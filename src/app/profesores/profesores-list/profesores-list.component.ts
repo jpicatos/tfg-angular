@@ -121,10 +121,12 @@ export class ProfesoresListComponent implements OnInit {
   highlightResults(): void {
     this.profesores.forEach(profe => {
       if (profe.usuario.first_name && this.searchVals.nombre) {
-        profe.usuario.first_name = profe.usuario.first_name.replace(this.searchVals.nombre, "<span class='highlight'>" + this.searchVals.nombre + "</span>");
+        var aux = this.searchVals.nombre[0].toUpperCase() + this.searchVals.nombre.slice(1);
+        profe.usuario.first_name = profe.usuario.first_name.replace(aux, "<span class='highlight'>" + aux + "</span>");
       };
       if (profe.usuario.last_name && this.searchVals.apellidos) {
-        profe.usuario.last_name = profe.usuario.last_name.replace(this.searchVals.apellidos, "<span class='highlight'>" + this.searchVals.apellidos + "</span>");
+        var aux = this.searchVals.apellidos[0].toUpperCase() + this.searchVals.apellidos.slice(1);
+        profe.usuario.last_name = profe.usuario.last_name.replace(aux, "<span class='highlight'>" + aux + "</span>");
       };
       if (profe.usuario.email && String(this.searchVals.email)) {
         profe.usuario.email = profe.usuario.email.replace(String(this.searchVals.email), "<span class='highlight'>" + String(this.searchVals.email) + "</span>");
@@ -135,11 +137,6 @@ export class ProfesoresListComponent implements OnInit {
       if (profe.despacho && String(this.searchVals.despacho)) {
         profe.despacho = profe.despacho.replace(String(this.searchVals.despacho), "<span class='highlight'>" + this.searchVals.despacho + "</span>");
       };
-      /*
-      if (profe.escalafon && String(this.searchVals.escalafon)) {
-        profe.escalafon = String(profe.escalafon).replace(String(this.searchVals.escalafon), "<span class='highlight'>" + this.searchVals.escalafon + "</span>");
-      };
-      */
     });
   }
 }
