@@ -20,26 +20,26 @@ export class HorarioComponent implements OnInit {
   hDesdoble: Horario[];
 
   constructor() {
-    
+
   }
 
   ngOnInit() {
     this.horarioEntrada = this.asignatura.horario;
-    this.horarioDesdoble = this.asignatura.desdobles[0].horario;
+    this.horarioDesdoble = this.asignatura.desdobles.length != 0 ? this.asignatura.desdobles[0].horario : null;
     this.horarioOneDimension = [];
     this.horario = [
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
-    [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]]
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]],
+      [[{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }], [{ horarioNormal: undefined, horarioDesdoble: undefined }]]
     ];
     this.setClass();
     this.setDesdoble();
@@ -68,6 +68,7 @@ export class HorarioComponent implements OnInit {
     }
     return;
   }
+  
   getDay(val: string): number {
     var columnIndex = 0
     switch (val) {
@@ -91,6 +92,7 @@ export class HorarioComponent implements OnInit {
     }
     return columnIndex;
   }
+
   setClass(): void {
     for (let index = 0; index < this.horarioEntrada.length; index++) {
       var columnIndex = this.getDay(this.horarioEntrada[index].dia);
@@ -102,17 +104,21 @@ export class HorarioComponent implements OnInit {
       }
     }
   }
-  setDesdoble(): void {
-    for (let index = 0; index < this.horarioDesdoble.length; index++) {
-      var columnIndex = this.getDay(this.horarioDesdoble[index].dia);
-      for (let h = 0; h < 11; h++) {
-        if (this.getHoraFromNumber(h) >= this.horarioDesdoble[index].hora_inicio && this.getHoraFromNumber(h) < this.horarioDesdoble[index].hora_fin) {
-          this.horario[h][columnIndex].horarioDesdoble = this.horarioDesdoble[index];
-        }
 
+  setDesdoble(): void {
+    if (this.horarioDesdoble) {
+      for (let index = 0; index < this.horarioDesdoble.length; index++) {
+        var columnIndex = this.getDay(this.horarioDesdoble[index].dia);
+        for (let h = 0; h < 11; h++) {
+          if (this.getHoraFromNumber(h) >= this.horarioDesdoble[index].hora_inicio && this.getHoraFromNumber(h) < this.horarioDesdoble[index].hora_fin) {
+            this.horario[h][columnIndex].horarioDesdoble = this.horarioDesdoble[index];
+          }
+
+        }
       }
     }
   }
+
   getHoraFromNumber(n: number): string {
     n = n + 9;
     if (n === 9) {
@@ -120,7 +126,6 @@ export class HorarioComponent implements OnInit {
     }
     return (n + ":00:00")
   }
-
 
 }
 
