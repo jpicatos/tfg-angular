@@ -118,7 +118,25 @@ export class AsignaturasListComponent implements OnInit {
       .subscribe(asignaturas => {
          this.asignaturas = asignaturas;
          this.loading = false;
+         this.highlightResults();
         });
+  }
+
+  highlightResults(): void {
+    this.asignaturas.forEach(asignatura => {
+      if (asignatura.nombre && this.searchVals.nombre) {
+        var regex = new RegExp(this.searchVals.nombre, 'gi')
+        asignatura.nombre = asignatura.nombre.replace(regex, function (str) { return "<span class='highlight'>" + str + "</span>" });
+      };
+      if (asignatura.siglas && this.searchVals.siglas) {
+        var regex = new RegExp(this.searchVals.siglas, 'gi')
+        asignatura.siglas = asignatura.siglas.replace(regex, function (str) { return "<span class='highlight'>" + str + "</span>" });
+      };
+      if (asignatura.codigo && this.searchVals.codigo) {
+        var regex = new RegExp(this.searchVals.codigo, 'gi')
+        asignatura.codigo = asignatura.codigo.replace(regex, function (str) { return "<span class='highlight'>" + str + "</span>" });
+      };
+    });
   }
 
   horaIni($event): void {

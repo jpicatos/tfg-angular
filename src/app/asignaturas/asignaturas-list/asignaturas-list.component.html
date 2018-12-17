@@ -69,14 +69,11 @@
                         <div *ngFor="let asignatura of asignaturas">
                             <mat-grid-list cols={{numCols}} rowHeight="50px" routerLink="/asignaturas/{{asignatura.id}}" class="row">
                                 <mat-grid-tile *ngIf="opts.codigo">
-                                    <div class="content-row">
-                                        {{asignatura.codigo}}
+                                    <div class="content-row" [innerHTML]="asignatura.codigo">
                                     </div>
                                 </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.nombre" class="nombre" [colspan]=2>
-                                    <div class="content-row">
-                                        [{{asignatura.siglas}}] {{asignatura.nombre}}
-                                    </div>
+                                    <div class="content-row" [innerHTML]="'[' + asignatura.siglas + '] ' + asignatura.nombre"></div>
                                 </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.curso">
                                     <div class="content-row">
