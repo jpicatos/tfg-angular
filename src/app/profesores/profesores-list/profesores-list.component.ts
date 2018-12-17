@@ -121,21 +121,12 @@ export class ProfesoresListComponent implements OnInit {
   highlightResults(): void {
     this.profesores.forEach(profe => {
       if (profe.usuario.first_name && this.searchVals.nombre) {
-<<<<<<< HEAD
-        var aux = this.searchVals.nombre[0].toUpperCase() + this.searchVals.nombre.slice(1);
-        profe.usuario.first_name = profe.usuario.first_name.replace(aux, "<span class='highlight'>" + aux + "</span>");
-      };
-      if (profe.usuario.last_name && this.searchVals.apellidos) {
-        var aux = this.searchVals.apellidos[0].toUpperCase() + this.searchVals.apellidos.slice(1);
-        profe.usuario.last_name = profe.usuario.last_name.replace(aux, "<span class='highlight'>" + aux + "</span>");
-=======
         var regex = new RegExp(this.searchVals.nombre, 'gi')
         profe.usuario.first_name = profe.usuario.first_name.replace(regex, function (str) { return "<span class='highlight'>" + str + "</span>" });
       };
       if (profe.usuario.last_name && this.searchVals.apellidos) {
         var regex = new RegExp(this.searchVals.apellidos, 'gi')
         profe.usuario.last_name = profe.usuario.last_name.replace(regex, function (str) { return "<span class='highlight'>" + str + "</span>" });
->>>>>>> 14539d2d7328445ac2053d7323ccc51eb6b6e334
       };
       if (profe.usuario.email && this.searchVals.email) {
         var regex = new RegExp(this.searchVals.email, 'gi')
