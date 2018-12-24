@@ -1,8 +1,8 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AsignaturasService } from "../asignaturas.service";
+import { AsignaturasService } from "../../services/asignaturas.service";
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
-import { AvisosService } from '../../avisos.service';
+import { AvisosService } from '../../services/avisos.service';
 
 
 @Component({

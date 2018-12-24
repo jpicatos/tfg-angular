@@ -7,7 +7,7 @@ import { MaterialModule } from '../material/material.module';
 
 import { routing } from './profesores-routing';
 import { ProfesoresListComponent } from './profesores-list/profesores-list.component';
-import { ProfesoresService } from './profesores.service';
+import { ProfesoresService } from '../services/profesores.service';
 import { ProfesoresDetailsComponent } from './profesores-details/profesores-details.component';
 import { AnadirProfesorComponent } from './anadir-profesor/anadir-profesor.component';
 import { ImportarProfesoresComponent } from './importar-profesores/importar-profesores.component';

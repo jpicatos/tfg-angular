@@ -14,6 +14,7 @@ import { AuthGuardService as AuthGuard } from './auth/auth-guard.service';
 import { AuthenticationService } from './auth/authentication.service';
 
 import { HttpErrorInterceptor } from './errors/error-handler';
+import { EleccionDocenciaModule } from './eleccion-docencia/eleccion-docencia.module';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { HttpErrorInterceptor } from './errors/error-handler';
   imports: [
     AsignaturasModule,
     ProfesoresModule,
+    EleccionDocenciaModule,
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,

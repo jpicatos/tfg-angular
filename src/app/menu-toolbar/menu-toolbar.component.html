@@ -6,7 +6,9 @@
                 <!-- <span>Admin</span> -->
             </div>
             <div class="username-container">User-Name
-                <div class="spacer"></div><button mat-icon-button><mat-icon>more_vert</mat-icon></button></div>
+                <div class="spacer"></div><button mat-icon-button>
+                    <mat-icon>more_vert</mat-icon>
+                </button></div>
         </div>
         <mat-divider></mat-divider>
         <mat-divider></mat-divider>
@@ -28,15 +30,22 @@
             </button>
             <button mat-button routerLink="/profesores">
                 <span class="menu-button-content">
-                <mat-icon>school</mat-icon>
+                    <mat-icon>school</mat-icon>
                     PROFESORES
+                </span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-button routerLink="/eleccion-docencia" (click)="sidenav.toggle()">
+                <span class="menu-button-content">
+                    <mat-icon>plus_one</mat-icon>
+                    Elección Docencia
                 </span>
             </button>
             <mat-divider></mat-divider>
             <p class="menu-title">Configuración</p>
             <button mat-button>
                 <span class="menu-button-content">
-                <mat-icon>settings</mat-icon>
+                    <mat-icon>settings</mat-icon>
                     CONFIGURACIÓN
                 </span>
             </button>
@@ -44,7 +53,7 @@
             <mat-divider></mat-divider>
             <button mat-button class="dash-button" routerLink="/salir">
                 <span class="menu-button-content">
-                <mat-icon>exit_to_app</mat-icon>
+                    <mat-icon>exit_to_app</mat-icon>
                     SALIR
                 </span>
             </button>
@@ -57,14 +66,16 @@
     <mat-sidenav-content>
         <mat-toolbar color="primary">
             <mat-toolbar-row>
-                <button mat-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
+                <button mat-button (click)="sidenav.toggle()">
+                    <mat-icon>menu</mat-icon>
+                </button>
                 <span>{{title}}</span>
             </mat-toolbar-row>
 
         </mat-toolbar>
 
-
         <router-outlet></router-outlet>
+
 
 
     </mat-sidenav-content>

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Title, disableDebugTools } from "@angular/platform-browser";
-import { Asignatura } from '../models/asignatura';
+import { Asignatura } from '../../models/asignatura';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AsignaturasService } from '../asignaturas.service';
+import { AsignaturasService } from '../../services/asignaturas.service';
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
 import { EliminarDialogComponent } from '../eliminar-dialog/eliminar-dialog.component';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";

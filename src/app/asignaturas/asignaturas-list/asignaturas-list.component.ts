@@ -1,8 +1,8 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { Asignatura } from "../models/asignatura";
+import { Asignatura } from "../../models/asignatura";
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AsignaturasService } from "../asignaturas.service";
+import { AsignaturasService } from "../../services/asignaturas.service";
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
 
 @Component({

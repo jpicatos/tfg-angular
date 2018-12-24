@@ -81,3 +81,12 @@
     filter: alpha(opacity=70);
     /* For IE8 and earlier */
 }
+.mini-sidenav{
+    /* z-index: 10; */
+    /* color: red; */
+    display: inline-grid;
+    float: left;
+    background-color: white;
+    height: -webkit-fill-available;
+    /* padding: 20px; */
+}

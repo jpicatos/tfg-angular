@@ -1,13 +1,13 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { ProfesoresService } from '../profesores.service';
-import { Profesor } from '../models/profesor';
+import { ProfesoresService } from '../../services/profesores.service';
+import { Profesor } from '../../models/profesor';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
-import { Deuda } from '../models/deuda';
+import { Deuda } from '../../models/deuda';
 import { PrefixNot } from '@angular/compiler';
-import { Usuario } from '../models/usuario';
-import { Categoria } from '../models/categoria';
+import { Usuario } from '../../models/usuario';
+import { Categoria } from '../../models/categoria';
 
 @Component({
   selector: 'app-profesores-list',

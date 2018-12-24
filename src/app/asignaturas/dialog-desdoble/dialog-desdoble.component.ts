@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Desdoble } from '../models/desdoble';
-import { Horario } from '../models/horario';
+import { Desdoble } from '../../models/desdoble';
+import { Horario } from '../../models/horario';
 
 @Component({
   selector: 'app-dialog-desdoble',

@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Profesor } from '../models/profesor';
-import { ProfesoresService } from '../profesores.service';
+import { Profesor } from '../../models/profesor';
+import { ProfesoresService } from '../../services/profesores.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
 import { EliminarDialogComponent } from 'src/app/asignaturas/eliminar-dialog/eliminar-dialog.component';
-import { Categoria } from '../models/categoria';
+import { Categoria } from '../../models/categoria';
 
 @Component({
   selector: 'app-profesores-details',

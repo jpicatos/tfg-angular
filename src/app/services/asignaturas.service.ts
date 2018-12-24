@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { Asignatura, AsignaturaImportar } from "./models/asignatura";
-import { Desdoble } from "./models/desdoble";
-import { Horario } from "./models/horario";
-import { AvisosService } from '../avisos.service';
+import { Asignatura, AsignaturaImportar } from "../models/asignatura";
+import { Desdoble } from "../models/desdoble";
+import { Horario } from "../models/horario";
+import { AvisosService } from './avisos.service';
 
 
 @Injectable()

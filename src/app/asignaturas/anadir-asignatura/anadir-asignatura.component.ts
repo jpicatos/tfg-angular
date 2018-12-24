@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Inject} from '@angular/core';
 import { Title } from "@angular/platform-browser";
-import { Asignatura } from '../models/asignatura';
-import { AsignaturasService } from '../asignaturas.service';
+import { Asignatura } from '../../models/asignatura';
+import { AsignaturasService } from '../../services/asignaturas.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Desdoble } from '../models/desdoble';
-import { Horario } from '../models/horario';
+import { Desdoble } from '../../models/desdoble';
+import { Horario } from '../../models/horario';
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
-import { AvisosService } from '../../avisos.service';
+import { AvisosService } from '../../services/avisos.service';
 
 class HorarioDesdoble {
 

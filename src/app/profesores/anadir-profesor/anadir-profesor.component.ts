@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Profesor } from '../models/profesor';
-import { ProfesoresService } from '../profesores.service';
+import { Profesor } from '../../models/profesor';
+import { ProfesoresService } from '../../services/profesores.service';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { AvisosService } from 'src/app/avisos.service';
+import { AvisosService } from 'src/app/services/avisos.service';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
-import { Categoria } from '../models/categoria';
+import { Categoria } from '../../models/categoria';
 
 @Component({
   selector: 'app-anadir-profesor',

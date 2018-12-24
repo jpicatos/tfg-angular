@@ -1,4 +1,4 @@
-<ul class="text-hora">
+<ul class="text-hora" *ngIf="showTextData">
     <li *ngFor="let hora of horarioEntrada; index as i">
         <div>{{fetchDay(hora.dia)}}</div>
         <div>{{hora.hora_inicio}} - {{hora.hora_fin}}</div>
@@ -10,7 +10,7 @@
         <div>[{{hora.aula}}]</div>
     </li>
 </ul>
-<div class="calendar">
+<div class="calendar black">
     <div class="outer">
         <table>
             <thead>

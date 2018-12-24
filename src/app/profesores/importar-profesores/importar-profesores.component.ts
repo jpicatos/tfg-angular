@@ -1,8 +1,8 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AvisosService } from '../../avisos.service';
+import { AvisosService } from '../../services/avisos.service';
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
-import { ProfesoresService } from "../profesores.service";
+import { ProfesoresService } from "../../services/profesores.service";
 
 @Component({
   selector: 'app-importar-profesores',

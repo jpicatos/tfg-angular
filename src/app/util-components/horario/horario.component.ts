@@ -1,16 +1,25 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Horario } from "../models/horario";
-import { Desdoble } from '../models/desdoble';
-import { Asignatura } from '../models/asignatura';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Horario } from "../../models/horario";
+import { Desdoble } from '../../models/desdoble';
+import { Asignatura } from '../../models/asignatura';
 
 @Component({
   selector: 'app-horario',
   templateUrl: './horario.component.html',
   styleUrls: ['./horario.component.scss']
 })
-export class HorarioComponent implements OnInit {
+export class HorarioComponent implements OnChanges, OnInit {
 
-  @Input() asignatura: Asignatura;
+  get asignaturaEntrada(): Asignatura { 
+    return this.asignatura
+  }
+
+  @Input() set asignaturaEntrada(asignatura: Asignatura) {
+    this.asignatura = asignatura;
+  };
+
+  @Input() showTextData: boolean;
+  asignatura: Asignatura;
   horarioEntrada: Horario[];
   horarioDesdoble: Horario[];
 
@@ -21,6 +30,15 @@ export class HorarioComponent implements OnInit {
 
   constructor() {
 
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const asign: SimpleChange = changes.asignatura;
+    if (asign) {
+      this.asignatura = asign.currentValue;
+    }
+    console.log("La asignatura ha cambiado")
+    this.ngOnInit();
   }
 
   ngOnInit() {
@@ -68,7 +86,7 @@ export class HorarioComponent implements OnInit {
     }
     return;
   }
-  
+
   getDay(val: string): number {
     var columnIndex = 0
     switch (val) {

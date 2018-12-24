@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { AvisosService } from './avisos.service';
+import { AvisosService } from './services/avisos.service';
 
 @Component({
   selector: 'app-root',

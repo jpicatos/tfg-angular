@@ -1,0 +1,88 @@
+@import "../../../scss/variables.scss";
+.mwlResizable {
+    box-sizing: border-box; // required for the enableGhostResize option to work
+    min-width: min-content;
+    min-height: min-content;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.card {
+    margin: 10px;
+    display: flex;
+    padding: 0;
+    height: 100%;
+}
+
+.list-column {
+    width: 40%;
+    padding: 10px;
+    border-right: 1px solid gray;
+}
+
+.state-column {
+    background-color: $primary;
+    width: 60%;
+    padding: 10px;
+}
+
+.left-minimice {
+    //position: relative;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    padding: 1px 1px 1px 10px;
+    z-index: 1;
+    cursor: pointer;
+    mat-icon {
+        margin-right: 20px;
+    }
+    &.black {
+        color: white;
+    }
+}
+
+.left-minimiced {
+    .list-column {
+        width: 50px;
+        .left-minimice {
+            transform: rotate(90deg);
+            padding: 0;
+        }
+        mat-selection-list {
+            display: none;
+        }
+    }
+    .state-column {
+        width: -webkit-fill-available;
+    }
+}
+.right-minimiced {
+    .state-column {
+        width: 50px;
+        .left-minimice {
+            transform: rotate(90deg);
+            padding: 0;
+        }
+        h2{
+            width: 300px;
+            position: absolute;
+            margin: auto;
+            left: 40px;
+        }
+        #stateContent {
+            display: none;
+        }
+    }
+    .list-column {
+        width: -webkit-fill-available;
+    }
+}
+.calendar{
+    background-color: transparent;
+    box-shadow: none;
+    table{
+        background-color: transparent;
+    }
+}

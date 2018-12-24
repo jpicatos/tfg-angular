@@ -1,0 +1,40 @@
+<!-- <div mwlResizable class="mwlResizable" [enableGhostResize]="true" [resizeEdges]="{right: true}"
+  (resizeEnd)="onResizeEnd($event)" id="resizable" resizeCursorPrecision=10>
+  ashjaslsn skjdascb jkshdas
+</div> -->
+<mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
+<!-- <div class="total-container">
+    <mat-card class="card main-card mwlResizable" mwlResizable [enableGhostResize]="true" [resizeEdges]="{right: true, left: true, top: true, bottom: true}"
+    (resizeEnd)="onResizeEnd($event)" id="resizable" resizeCursorPrecision=10>
+        
+    </mat-card>
+</div> -->
+<div class="total-container">
+  <mat-card class="card" id="minimizable-container">
+    <div class="list-column">
+      <div class="left-minimice" (click)="minimiceLeft()">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        <h2>Asignaturas</h2>
+      </div>
+      <mat-selection-list>
+        <mat-list-option #opt *ngFor="let asignatura of asignaturas" (click)="onSelectAsignatura(asignatura, opt)">
+          <h4 mat-line><a routerLink="/asignaturas/{{asignatura.id}}">[{{asignatura.siglas}}] {{asignatura.nombre}}</a></h4>
+          <p mat-line *ngFor="let hora of asignatura.horario"> <strong> {{fetchDay(hora.dia)}}: </strong>{{hora.hora_inicio}}-{{hora.hora_fin}}</p>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div class="state-column">
+      <div class="left-minimice black" (click)="minimiceRight()">
+        <mat-icon>arrow_forward_ios</mat-icon>
+        <h2>Estado de la elección</h2>
+      </div>
+      <div id="stateContent">
+        <div id="horarioComponent">
+          <app-horario *ngIf="fakeAsignatura" [asignaturaEntrada]="fakeAsignatura" [showTextData]=false></app-horario>
+        </div>
+      </div>
+    </div>
+
+  </mat-card>
+
+</div>

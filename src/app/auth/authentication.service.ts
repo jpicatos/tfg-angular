@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AvisosService } from '../avisos.service';
+import { AvisosService } from '../services/avisos.service';
 
 class Credentials {
   username: string;
