@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
 import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 import { Asignatura } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
@@ -17,7 +17,6 @@ import { CastExpr } from '@angular/compiler';
   providers: [AsignaturasService]
 })
 export class EleccionListComponent implements OnInit {
-
   asignaturas: Asignatura[];
   loading: boolean;
   asignaturasSelected: Asignatura[];
@@ -31,8 +30,8 @@ export class EleccionListComponent implements OnInit {
     this.loading = true;
     this.getAsignaturas();
     this.asignaturasSelected = [];
-    this.horariosSelected = [];
     this.fakeAsignatura = new Asignatura;
+    
   }
 
   getAsignaturas(): void {
@@ -55,18 +54,6 @@ export class EleccionListComponent implements OnInit {
         this.asignaturasSelected.splice(index, 1);
       }
     }
-    this.updateHorario();
-  }
-
-  updateHorario(){
-    this.horariosSelected = [];
-    this.fakeAsignatura = new Asignatura;
-    this.asignaturasSelected.forEach(asignatura => {
-      asignatura.horario.forEach(horario => {
-        this.horariosSelected.push(horario);
-      });
-    });
-    this.fakeAsignatura.horario = this.horariosSelected;
   }
 
   fetchDay(val: string): string {
@@ -128,6 +115,5 @@ export class EleccionListComponent implements OnInit {
   isMinimiceLeft(): boolean {
     return document.getElementById('minimizable-container').classList.contains("left-minimiced")
   }
-
 
 }

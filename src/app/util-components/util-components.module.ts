@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HorarioComponent } from "./horario/horario.component";
+import { FullCalendarComponent } from './full-calendar/full-calendar.component';
+import { FullCalendarModule } from 'ng-fullcalendar';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FullCalendarModule
   ],
   declarations: [
-    HorarioComponent
+    HorarioComponent,
+    FullCalendarComponent,
   ],
   exports: [
-    HorarioComponent
+    HorarioComponent,
+    FullCalendarComponent
   ]
 })
 export class UtilComponentsModule { }

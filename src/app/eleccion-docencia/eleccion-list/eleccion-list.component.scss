@@ -58,6 +58,7 @@
         width: -webkit-fill-available;
     }
 }
+
 .right-minimiced {
     .state-column {
         width: 50px;
@@ -65,7 +66,7 @@
             transform: rotate(90deg);
             padding: 0;
         }
-        h2{
+        h2 {
             width: 300px;
             position: absolute;
             margin: auto;
@@ -77,12 +78,5 @@
     }
     .list-column {
         width: -webkit-fill-available;
-    }
-}
-.calendar{
-    background-color: transparent;
-    box-shadow: none;
-    table{
-        background-color: transparent;
     }
 }
