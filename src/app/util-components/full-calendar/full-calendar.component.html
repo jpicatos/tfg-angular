@@ -1,1 +1,3 @@
-<ng-fullcalendar class="calendar" #ucCalendar [options]="calendarOptions" [(eventsModel)]="events"></ng-fullcalendar>
+<div *ngIf="calendarOptions">
+    <ng-fullcalendar #ucCalendar [options]="calendarOptions" [(eventsModel)]="events"></ng-fullcalendar>
+</div>

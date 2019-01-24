@@ -54,6 +54,9 @@ export class EleccionListComponent implements OnInit {
         this.asignaturasSelected.splice(index, 1);
       }
     }
+    // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
+    let asignaturasNew = this.asignaturasSelected.slice();
+    this.asignaturasSelected = asignaturasNew;
   }
 
   fetchDay(val: string): string {
