@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
 import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 import { Asignatura } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
@@ -17,12 +17,10 @@ import { CastExpr } from '@angular/compiler';
   providers: [AsignaturasService]
 })
 export class EleccionListComponent implements OnInit {
-
   asignaturas: Asignatura[];
   loading: boolean;
   asignaturasSelected: Asignatura[];
-  horariosSelected: Horario[];
-  fakeAsignatura: Asignatura;
+  desdoblesSelected: Asignatura[];
 
   constructor(private asignaturasService: AsignaturasService) { }
 
@@ -31,17 +29,23 @@ export class EleccionListComponent implements OnInit {
     this.loading = true;
     this.getAsignaturas();
     this.asignaturasSelected = [];
-    this.horariosSelected = [];
-    this.fakeAsignatura = new Asignatura;
+    this.desdoblesSelected = [];
   }
 
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
       .subscribe(asignaturas => {
         this.asignaturas = asignaturas;
-        this.loading = false;
+        
+        asignaturas.map((asignatura) =>{
+          this.asignaturasService.getCalendarios(asignatura.calendario)
+            .subscribe(calendario =>{
+              asignatura.calendario = calendario;
+            })
+        });
         console.log(this.asignaturas);
-      });
+        this.loading = false;
+      })
   }
 
   onSelectAsignatura(asignatura, opt) {
@@ -55,18 +59,27 @@ export class EleccionListComponent implements OnInit {
         this.asignaturasSelected.splice(index, 1);
       }
     }
-    this.updateHorario();
+    // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
+    let asignaturasNew = this.asignaturasSelected.slice();
+    this.asignaturasSelected = asignaturasNew;
+    console.log("asignatura: ", this.asignaturasSelected, "desdobles: ", this.desdoblesSelected);
   }
 
-  updateHorario(){
-    this.horariosSelected = [];
-    this.fakeAsignatura = new Asignatura;
-    this.asignaturasSelected.forEach(asignatura => {
-      asignatura.horario.forEach(horario => {
-        this.horariosSelected.push(horario);
-      });
-    });
-    this.fakeAsignatura.horario = this.horariosSelected;
+  onSelectDesdoble(asignatura, opt) {
+    var selected = opt.selected;
+    if (selected) {
+      this.desdoblesSelected.push(asignatura);
+    }
+    else {
+      var index = this.desdoblesSelected.indexOf(asignatura);
+      if (index > -1) {
+        this.desdoblesSelected.splice(index, 1);
+      }
+    }
+    // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
+    let desdoblesNew = this.desdoblesSelected.slice();
+    this.desdoblesSelected = desdoblesNew;
+    console.log("asignatura: ", this.asignaturasSelected, "desdobles: ", this.desdoblesSelected);
   }
 
   fetchDay(val: string): string {
@@ -128,6 +141,5 @@ export class EleccionListComponent implements OnInit {
   isMinimiceLeft(): boolean {
     return document.getElementById('minimizable-container').classList.contains("left-minimiced")
   }
-
 
 }

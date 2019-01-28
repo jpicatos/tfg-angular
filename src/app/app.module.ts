@@ -15,11 +15,12 @@ import { AuthenticationService } from './auth/authentication.service';
 
 import { HttpErrorInterceptor } from './errors/error-handler';
 import { EleccionDocenciaModule } from './eleccion-docencia/eleccion-docencia.module';
-
+// import { CustomGoogleCalendarComponent } from './custom-google-calendar/custom-google-calendar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // CustomGoogleCalendarComponent
   ],
   imports: [
     AsignaturasModule,

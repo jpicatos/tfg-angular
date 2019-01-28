@@ -1,0 +1,16 @@
+@import "~fullcalendar/dist/fullcalendar.min.css";
+
+
+.fc-today{
+    color: black;
+}
+.fc-scroller {
+    &.fc-day-grid-container {
+        overflow: unset !important;
+        height: fit-content !important;
+    }
+    &.fc-time-grid-container{
+        overflow: unset !important;
+        height: fit-content !important;
+    }
+} 
