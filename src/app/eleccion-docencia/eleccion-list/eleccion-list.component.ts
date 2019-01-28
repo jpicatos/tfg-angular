@@ -20,8 +20,7 @@ export class EleccionListComponent implements OnInit {
   asignaturas: Asignatura[];
   loading: boolean;
   asignaturasSelected: Asignatura[];
-  horariosSelected: Horario[];
-  fakeAsignatura: Asignatura;
+  desdoblesSelected: Asignatura[];
 
   constructor(private asignaturasService: AsignaturasService) { }
 
@@ -30,17 +29,23 @@ export class EleccionListComponent implements OnInit {
     this.loading = true;
     this.getAsignaturas();
     this.asignaturasSelected = [];
-    this.fakeAsignatura = new Asignatura;
-    
+    this.desdoblesSelected = [];
   }
 
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
       .subscribe(asignaturas => {
         this.asignaturas = asignaturas;
-        this.loading = false;
+        
+        asignaturas.map((asignatura) =>{
+          this.asignaturasService.getCalendarios(asignatura.calendario)
+            .subscribe(calendario =>{
+              asignatura.calendario = calendario;
+            })
+        });
         console.log(this.asignaturas);
-      });
+        this.loading = false;
+      })
   }
 
   onSelectAsignatura(asignatura, opt) {
@@ -57,6 +62,24 @@ export class EleccionListComponent implements OnInit {
     // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
     let asignaturasNew = this.asignaturasSelected.slice();
     this.asignaturasSelected = asignaturasNew;
+    console.log("asignatura: ", this.asignaturasSelected, "desdobles: ", this.desdoblesSelected);
+  }
+
+  onSelectDesdoble(asignatura, opt) {
+    var selected = opt.selected;
+    if (selected) {
+      this.desdoblesSelected.push(asignatura);
+    }
+    else {
+      var index = this.desdoblesSelected.indexOf(asignatura);
+      if (index > -1) {
+        this.desdoblesSelected.splice(index, 1);
+      }
+    }
+    // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
+    let desdoblesNew = this.desdoblesSelected.slice();
+    this.desdoblesSelected = desdoblesNew;
+    console.log("asignatura: ", this.asignaturasSelected, "desdobles: ", this.desdoblesSelected);
   }
 
   fetchDay(val: string): string {

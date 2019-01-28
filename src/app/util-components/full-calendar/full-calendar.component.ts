@@ -3,6 +3,8 @@ import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import * as moment from 'moment';
 import { Asignatura } from 'src/app/models/asignatura';
+import { AsignaturasService } from 'src/app/services/asignaturas.service';
+import { getRandomColor } from './colors';
 
 @Component({
   selector: 'app-full-calendar',
@@ -22,17 +24,40 @@ export class FullCalendarComponent implements OnChanges, OnInit {
     this.asignaturas = asignaturasSelected;
   };
 
+  get desdoblesEntrada(): Asignatura[] {
+    return this.desdobles
+  }
+
+  @Input() set desdoblesEntrada(desdoblesSelected: Asignatura[]) {
+    this.desdobles = desdoblesSelected;
+  };
+
   asignaturas: Asignatura[] = [];
+  desdobles: Asignatura[] = [];
 
   events = null;
+  showDate = null;
 
-  constructor() { }
+  constructor(private angularService: AsignaturasService) { }
   ngOnChanges(changes: SimpleChanges) {
-    const asign: SimpleChange = changes.asignaturasSelected;
+    const asign: SimpleChange = changes.asignaturasEntrada;
+    console.log(changes);
     if (asign) {
       this.asignaturas = asign.currentValue;
+      if (this.asignaturas.length > 0) {
+        this.updateCalendarDateView(this.asignaturas[this.asignaturas.length- 1 ].calendario.fecha_ini)
+      }
+
     }
-    this.recurEvents();
+
+    const desd: SimpleChange = changes.desdoblesEntrada;
+    if (desd) {
+      this.desdobles = desd.currentValue;
+      if (this.desdobles.length > 0) {
+        this.updateCalendarDateView(this.desdobles[this.desdobles.length -1].calendario.fecha_ini)
+      }
+    }
+    this.recurEvents(this.asignaturas, this.desdobles);
   }
   ngOnInit() {
     this.calendarOptions = {
@@ -44,7 +69,7 @@ export class FullCalendarComponent implements OnChanges, OnInit {
       weekends: false,
       slotDuration: moment.duration(1, 'h'),
       minTime: moment.duration(9, 'h'),
-      maxTime: moment.duration(20, 'h'),
+      maxTime: moment.duration(21, 'h'),
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -52,37 +77,69 @@ export class FullCalendarComponent implements OnChanges, OnInit {
       },
       events: []
     }
+
   }
 
-  recurEvents() {
-    let events = [];
+  recurEvents(asignaturas, desdobles) {
+    console.log("asignaturas", asignaturas);
+    var events = [];
+    var asignaturasEvents = this.fillEvents(asignaturas, false);
+    var desdoblesEvents = this.fillEvents(desdobles, true);
+    events= asignaturasEvents.concat(desdoblesEvents);
+    this.events = events;
+  }
 
-    // Creación del array de eventos que posteriormente se establecerá en el calendario
-    this.asignaturas.forEach(asignatura => {
-      var fechaIni = moment('2018-09-12');
-      var fechaFin = moment('2019-01-20');
+  fillEvents(asignaturas, desdobles : boolean){
+    var events = [];
+
+    asignaturas.forEach(asignatura => {
+      var fechaIni = moment(asignatura.calendario.fecha_ini);
+      var fechaFin = moment(asignatura.calendario.fecha_fin);
+
+      !asignatura.color ? asignatura.color = getRandomColor() : null;
+
+      var horario = asignatura.horario;
+      if (desdobles) {
+        horario = asignatura.desdobles[0].horario;
+      }
       while (fechaIni <= fechaFin) {
-        asignatura.horario.forEach(dia => {
+        horario.forEach(dia => {
           var weekDay = this.fetchWeekDay(null, new Date(fechaIni.format('YYYY-MM-DD')).getDay()); //0->Domingo, 1->Lunes...
           if (dia.dia === weekDay) {
-            events.push(this.addEvent(fechaIni.format('YYYY-MM-DD'), dia.hora_inicio, dia.hora_fin, asignatura));
+            events.push(this.addEvent(fechaIni.format('YYYY-MM-DD'), dia.hora_inicio, dia.hora_fin, asignatura, desdobles));
           }
         });
         var new_date = fechaIni.add('days', 1);
         fechaIni = new_date;
       }
-
     });
-
-    this.events = events; // Eventos al calendario
+    return events;
+  }
+  addEvent(fecha, hora_ini, hora_fin, asignatura: Asignatura, desdobles) {
+    return {
+      title: `[${asignatura.siglas}] ${asignatura.nombre}`,
+      start: fecha + " " + hora_ini,
+      end: fecha + " " + hora_fin,
+      backgroundColor: asignatura.color,
+      borderColor: desdobles ? "red" : asignatura.color,
+      textColor: "#454545"
+    }
   }
 
-  addEvent(fecha, hora_ini, hora_fin, asignatura: Asignatura) {
-    return {
-      title: asignatura.nombre,
-      start: fecha + " " + hora_ini,
-      end: fecha + " " + hora_fin
-    };
+  updateCalendarDateView(fecha) {
+    if (this.ucCalendar.fullCalendar('getView').name === 'month') {
+      this.ucCalendar.fullCalendar('changeView', 'agenda');
+      this.ucCalendar.fullCalendar('gotoDate', moment(fecha));
+      this.ucCalendar.fullCalendar('changeView', 'month');
+      this.ucCalendar.fullCalendar('gotoDate', moment(fecha));
+    }
+    else {
+      this.ucCalendar.fullCalendar('changeView', 'month');
+      this.ucCalendar.fullCalendar('gotoDate', moment(fecha));
+      this.ucCalendar.fullCalendar('changeView', 'agenda');
+      this.ucCalendar.fullCalendar('gotoDate', moment(fecha));
+    }
+
   }
 
   fetchWeekDay(dayChar, dayNumber) {

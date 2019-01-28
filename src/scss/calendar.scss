@@ -1,12 +1,9 @@
 @import "~fullcalendar/dist/fullcalendar.min.css";
 
-.calendar{
-    color: white;
-}
+
 .fc-today{
     color: black;
 }
-
 .fc-scroller {
     &.fc-day-grid-container {
         overflow: unset !important;
