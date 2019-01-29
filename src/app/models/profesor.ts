@@ -11,6 +11,7 @@ export class Profesor{
     pda: Number;
     categoria: string;
     departamento: String;
+    docencia: number;
 
     constructor() {
         this.usuario = new Usuario();

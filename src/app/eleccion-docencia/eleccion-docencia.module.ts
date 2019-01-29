@@ -11,6 +11,10 @@ import { MaterialModule } from '../material/material.module';
 
 import { routing } from './eleccion-docencia-routing';
 
+import { FullCalendarModule } from 'ng-fullcalendar';
+import { EleccionService } from '../services/eleccion.service';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -20,6 +24,9 @@ import { routing } from './eleccion-docencia-routing';
     FormsModule,
     ReactiveFormsModule,
     UtilComponentsModule
+  ],
+  providers: [
+    EleccionService
   ],
   declarations: [
     EleccionListComponent

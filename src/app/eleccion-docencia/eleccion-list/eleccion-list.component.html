@@ -10,18 +10,36 @@
     </mat-card>
 </div> -->
 <div class="total-container">
+  <button mat-button (click)="saveEleccion()">Guardar</button>
   <mat-card class="card" id="minimizable-container">
     <div class="list-column">
       <div class="left-minimice" (click)="minimiceLeft()">
         <mat-icon>arrow_forward_ios</mat-icon>
         <h2>Asignaturas</h2>
       </div>
-      <mat-selection-list>
-        <mat-list-option #opt *ngFor="let asignatura of asignaturas" (click)="onSelectAsignatura(asignatura, opt)">
-          <h4 mat-line><a routerLink="/asignaturas/{{asignatura.id}}">[{{asignatura.siglas}}] {{asignatura.nombre}}</a></h4>
-          <p mat-line *ngFor="let hora of asignatura.horario"> <strong> {{fetchDay(hora.dia)}}: </strong>{{hora.hora_inicio}}-{{hora.hora_fin}}</p>
-        </mat-list-option>
-      </mat-selection-list>
+      <mat-accordion class="asignaturas">
+        <mat-expansion-panel *ngFor="let asignatura of asignaturas">
+          <mat-expansion-panel-header>
+            <mat-panel-title><a routerLink="/asignaturas/{{asignatura.id}}">[{{asignatura.siglas}}]
+                {{asignatura.nombre}}</a></mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list>
+            <h3>Desde: {{asignatura.calendario.fecha_ini}} -- Hasta: {{asignatura.calendario.fecha_fin}} </h3>
+            <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)">
+              <p mat-line *ngFor="let hora of asignatura.horario">
+                <strong> {{fetchDay(hora.dia)}}: </strong>{{hora.hora_inicio}}-{{hora.hora_fin}}
+              </p>
+            </mat-list-option>
+            <mat-list-option *ngIf="asignatura.desdobles.length > 0" #optDesdobles (click)="onSelectDesdoble(asignatura, optDesdobles)">
+              Desdoble
+              <p mat-line *ngFor="let hora of asignatura.desdobles[0].horario">
+                <strong> {{fetchDay(hora.dia)}}: </strong>{{hora.hora_inicio}}-{{hora.hora_fin}}
+              </p>
+            </mat-list-option>
+          </mat-selection-list>
+
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
     <div class="state-column">
       <div class="left-minimice black" (click)="minimiceRight()">

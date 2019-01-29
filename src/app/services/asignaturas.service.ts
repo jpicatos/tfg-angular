@@ -22,6 +22,9 @@ export class AsignaturasService {
   getAsignatura(id: number): Observable<Asignatura> {
     return this.http.get<Asignatura>(this.asignaturasUrl + id);
   }
+  getAsignaturaDesdoble(idDesdoble: number): Observable<Asignatura> {
+    return this.http.get<Asignatura>(`${this.asignaturasUrl}?desdoble=${idDesdoble}`);
+  }
 
   searchAsignatura(siglas: string, nombre: string, codigo: string, curso: string, cuatrimestre: number, inicio: string, fin: string, dia: string[]): Observable<Asignatura[]> {
     var params = '&siglas=' + siglas +
