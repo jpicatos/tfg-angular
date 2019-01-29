@@ -1,5 +1,6 @@
 import { Horario } from "./horario";
 import { Desdoble } from "./desdoble";
+import { Calendario } from "./calendario";
 export class Asignatura{
     id: number;
     siglas: string;
@@ -10,8 +11,10 @@ export class Asignatura{
     curso: string;
     titulacion: string;
     departamento: string;
-    horario: Horario[]
-    desdobles: Desdoble[]
+    horario: Horario[];
+    desdobles: Desdoble[];
+    calendario: any;
+    color: string;
 
     constructor() {
         this.desdobles = [];

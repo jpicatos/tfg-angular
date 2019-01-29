@@ -47,8 +47,8 @@
         <h2>Estado de la elección</h2>
       </div>
       <div id="stateContent">
-        <div id="horarioComponent">
-          <app-horario *ngIf="fakeAsignatura" [asignaturaEntrada]="fakeAsignatura" [showTextData]=false></app-horario>
+        <div id="horarioComponent" *ngIf="asignaturasSelected">
+          <app-full-calendar [asignaturasEntrada]="asignaturasSelected" [desdoblesEntrada]="desdoblesSelected"></app-full-calendar>
         </div>
       </div>
     </div>

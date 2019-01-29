@@ -23,7 +23,8 @@ import { EleccionService } from '../services/eleccion.service';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    UtilComponentsModule
+    UtilComponentsModule,
+    FullCalendarModule
   ],
   providers: [
     EleccionService
