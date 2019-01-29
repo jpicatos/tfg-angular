@@ -42,53 +42,52 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
         this.asignaturas = asignaturas;
-        
-        asignaturas.map((asignatura) =>{
-          this.asignaturasService.getCalendarios(asignatura.calendario)
-            .subscribe(calendario =>{
-              asignatura.calendario = calendario;
-            })
-        });
-        console.log(this.asignaturas);
         this.loading = false;
       })
   }
 
 
   fillSelected() {
-    var testProfesor = 15;
+    var testProfesor = 16;
     this.profesoresService.getProfesor(testProfesor)
       .subscribe(profesor => {
-        this.eleccionService.getEleccion(profesor.docencia)
-          .subscribe({
-            next: eleccion => {
-              const { asignaturas, desdobles } = eleccion;
-              this.asignaturasSelected = [...asignaturas];
-              desdobles.map(idDesdoble => {
-                this.asignaturasService.getAsignaturaDesdoble(idDesdoble)
-                  .subscribe(asignatura => {
-                    this.desdoblesSelected = [...this.desdoblesSelected, asignatura]
-                  });
-              });
-              this.eleccion = eleccion;
-            },
-            error: err => {
-              if (err === "No encontrado") {
-                this.avisosService.enviarMensaje("Es tu primera vez, bienvenid@");
+        if (profesor.docencia != null) {
+          this.eleccionService.getEleccion(profesor.docencia)
+            .subscribe({
+              next: eleccion => {
+                const { asignaturas, desdobles } = eleccion;
+                this.asignaturasSelected = [...asignaturas];
+                desdobles.map(idDesdoble => {
+                  this.asignaturasService.getAsignaturaDesdoble(idDesdoble)
+                    .subscribe(asignatura => {
+                      this.desdoblesSelected = [...this.desdoblesSelected, asignatura]
+                    });
+                });
+                this.eleccion = eleccion;
+              },
+              error: err => {
+                if (err === "No encontrado") {
+                  this.avisosService.enviarMensaje("Es tu primera vez, bienvenid@");
+                }
+                this.eleccion = new Eleccion;
+                this.eleccion.confirmada = false;
+                this.eleccion.profesor = testProfesor;
+
               }
-              this.eleccion = new Eleccion;
-              this.eleccion.confirmada = false;
-              this.eleccion.profesor = testProfesor;
-              
-            }
-          });
+            });
+        }
+        else {
+          this.eleccion = new Eleccion;
+          this.eleccion.confirmada = false;
+          this.eleccion.profesor = testProfesor;
+        }
       });
   }
   saveEleccion() {
-    if(this.eleccion.id != undefined){
+    if (this.eleccion.id != undefined) {
       this.eleccionService.saveEleccion(this.eleccion);
     }
-    else{
+    else {
       this.eleccionService.createEleccion(this.eleccion);
     }
   }
@@ -127,7 +126,7 @@ export class EleccionListComponent implements OnInit {
         error: (error) => {
           console.log(error)
         }
-        
+
       })
   }
 
