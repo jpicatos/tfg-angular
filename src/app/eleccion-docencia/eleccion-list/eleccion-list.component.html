@@ -25,12 +25,12 @@
           </mat-expansion-panel-header>
           <mat-selection-list>
             <h3>Desde: {{asignatura.calendario.fecha_ini}} -- Hasta: {{asignatura.calendario.fecha_fin}} </h3>
-            <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)">
+            <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)" [selected]="asignatura.selected">
               <p mat-line *ngFor="let hora of asignatura.horario">
                 <strong> {{fetchDay(hora.dia)}}: </strong>{{hora.hora_inicio}}-{{hora.hora_fin}}
               </p>
             </mat-list-option>
-            <mat-list-option *ngIf="asignatura.desdobles.length > 0" #optDesdobles (click)="onSelectDesdoble(asignatura, optDesdobles)">
+            <mat-list-option *ngIf="asignatura.desdobles.length > 0" #optDesdobles (click)="onSelectDesdoble(asignatura, optDesdobles)" [selected]="asignatura.desdobles[0].selected">
               Desdoble
               <p mat-line *ngFor="let hora of asignatura.desdobles[0].horario">
                 <strong> {{fetchDay(hora.dia)}}: </strong>{{hora.hora_inicio}}-{{hora.hora_fin}}

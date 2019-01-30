@@ -15,6 +15,7 @@ export class Asignatura{
     desdobles: Desdoble[];
     calendario: any;
     color: string;
+    selected: boolean
 
     constructor() {
         this.desdobles = [];

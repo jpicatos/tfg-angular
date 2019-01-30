@@ -32,10 +32,9 @@ export class EleccionListComponent implements OnInit {
   ngOnInit() {
     MenuToolbarComponent.updateTitle("Elección Docencia");
     this.loading = true;
-    this.getAsignaturas();
     this.asignaturasSelected = [];
     this.desdoblesSelected = [];
-    this.fillSelected();
+    this.getAsignaturas();
   }
 
   getAsignaturas(): void {
@@ -43,6 +42,8 @@ export class EleccionListComponent implements OnInit {
       .subscribe((asignaturas) => {
         this.asignaturas = asignaturas;
         this.loading = false;
+
+        this.fillSelected();
       })
   }
 
@@ -59,12 +60,25 @@ export class EleccionListComponent implements OnInit {
                 console.log("elecccion", eleccion)
                 const { asignaturas, desdobles } = eleccion;
                 this.asignaturasSelected = [...asignaturas];
+                this.asignaturas.map(asignatura => {
+                  this.asignaturasSelected.map(selected => {
+                    if (selected.id == asignatura.id) {
+                      asignatura.selected = true;
+                    }
+                  })
+                })
                 desdobles.map(idDesdoble => {
                   this.asignaturasService.getAsignaturaDesdoble(idDesdoble)
                     .subscribe(asignatura => {
-                      debugger
                       console.log("asignatura", asignatura)
                       this.desdoblesSelected = [...asignatura];
+
+                      this.asignaturas.map(asignatura => {
+                        asignatura.desdobles.map(desdoble => {
+                          if (idDesdoble == desdoble.id)
+                            desdoble.selected = true;
+                        })
+                      })
                     });
                 });
                 this.eleccion = eleccion;
@@ -116,9 +130,14 @@ export class EleccionListComponent implements OnInit {
             this.asignaturasSelected.push(asignatura);
           }
           else {
-            var index = this.asignaturasSelected.indexOf(asignatura);
-            if (index > -1) {
-              this.asignaturasSelected.splice(index, 1);
+            let i = 0;
+            let found = false;
+            while (i < this.asignaturasSelected.length && !found) {
+              if (this.asignaturasSelected[i].id == asignatura.id) {
+                found = true;
+                this.asignaturasSelected.splice(i, 1);
+              }
+              else i++;
             }
           }
           // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
@@ -138,9 +157,14 @@ export class EleccionListComponent implements OnInit {
       this.desdoblesSelected.push(asignatura);
     }
     else {
-      var index = this.desdoblesSelected.indexOf(asignatura);
-      if (index > -1) {
-        this.desdoblesSelected.splice(index, 1);
+      let i = 0;
+      let found = false;
+      while (i < this.desdoblesSelected.length && !found) {
+        if (this.desdoblesSelected[i].id == asignatura.id) {
+          found = true;
+          this.desdoblesSelected.splice(i, 1);
+        }
+        else i++;
       }
     }
     // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
