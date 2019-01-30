@@ -51,16 +51,20 @@ export class EleccionListComponent implements OnInit {
     var testProfesor = 16;
     this.profesoresService.getProfesor(testProfesor)
       .subscribe(profesor => {
+        console.log("profesor", profesor);
         if (profesor.docencia != null) {
           this.eleccionService.getEleccion(profesor.docencia)
             .subscribe({
               next: eleccion => {
+                console.log("elecccion", eleccion)
                 const { asignaturas, desdobles } = eleccion;
                 this.asignaturasSelected = [...asignaturas];
                 desdobles.map(idDesdoble => {
                   this.asignaturasService.getAsignaturaDesdoble(idDesdoble)
                     .subscribe(asignatura => {
-                      this.desdoblesSelected = [...this.desdoblesSelected, asignatura]
+                      debugger
+                      console.log("asignatura", asignatura)
+                      this.desdoblesSelected = [...asignatura];
                     });
                 });
                 this.eleccion = eleccion;
@@ -106,9 +110,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   onSelectAsignatura(asignatura, opt) {
-    this.eleccionService.comprobarEleccion(this.updateEleccion())
-      .subscribe({
-        next: errores => {
+   
           var selected = opt.selected;
           if (selected) {
             this.asignaturasSelected.push(asignatura);
@@ -122,12 +124,12 @@ export class EleccionListComponent implements OnInit {
           // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
           let asignaturasNew = this.asignaturasSelected.slice();
           this.asignaturasSelected = asignaturasNew;
-        },
-        error: (error) => {
-          console.log(error)
-        }
-
-      })
+          this.eleccionService.comprobarEleccion(this.updateEleccion())
+            .subscribe({
+              next: errores => {
+                console.log(errores)
+              }
+            })
   }
 
   onSelectDesdoble(asignatura, opt) {

@@ -24,8 +24,8 @@ export class AsignaturasService {
   getAsignatura(id: number): Observable<Asignatura> {
     return this.http.get<Asignatura>(this.asignaturasUrl + id);
   }
-  getAsignaturaDesdoble(idDesdoble: number): Observable<Asignatura> {
-    return this.http.get<Asignatura>(`${this.asignaturasUrl}?desdoble=${idDesdoble}`);
+  getAsignaturaDesdoble(idDesdoble: number): Observable<Asignatura[]> {
+    return this.http.get<Asignatura[]>(`${this.asignaturasUrl}?desdoble=${idDesdoble}`);
   }
 
   getCalendarios(id: number): Observable<Calendario> {
