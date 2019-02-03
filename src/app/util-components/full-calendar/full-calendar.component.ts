@@ -45,7 +45,7 @@ export class FullCalendarComponent implements OnChanges, OnInit {
     if (asign) {
       this.asignaturas = asign.currentValue;
       if (this.asignaturas.length > 0) {
-        this.updateCalendarDateView(this.asignaturas[this.asignaturas.length- 1 ].calendario.fecha_ini)
+        this.updateCalendarDateView(this.asignaturas[this.asignaturas.length - 1].calendario.fecha_ini)
       }
 
     }
@@ -54,7 +54,7 @@ export class FullCalendarComponent implements OnChanges, OnInit {
     if (desd) {
       this.desdobles = desd.currentValue;
       if (this.desdobles.length > 0) {
-        this.updateCalendarDateView(this.desdobles[this.desdobles.length -1].calendario.fecha_ini)
+        this.updateCalendarDateView(this.desdobles[this.desdobles.length - 1].calendario.fecha_ini)
       }
     }
     this.recurEvents(this.asignaturas, this.desdobles);
@@ -75,6 +75,13 @@ export class FullCalendarComponent implements OnChanges, OnInit {
         center: 'title',
         right: 'month,agendaWeek,agendaDay'
       },
+      buttonText: {
+        today: 'hoy',
+        month: 'mes',
+        week: 'semana',
+        day: 'día',
+        list: 'lista'
+      },
       events: []
     }
 
@@ -85,11 +92,11 @@ export class FullCalendarComponent implements OnChanges, OnInit {
     var events = [];
     var asignaturasEvents = this.fillEvents(asignaturas, false);
     var desdoblesEvents = this.fillEvents(desdobles, true);
-    events= asignaturasEvents.concat(desdoblesEvents);
+    events = asignaturasEvents.concat(desdoblesEvents);
     this.events = events;
   }
 
-  fillEvents(asignaturas, desdobles : boolean){
+  fillEvents(asignaturas, desdobles: boolean) {
     var events = [];
 
     asignaturas.forEach(asignatura => {
@@ -122,7 +129,7 @@ export class FullCalendarComponent implements OnChanges, OnInit {
       end: fecha + " " + hora_fin,
       backgroundColor: asignatura.color,
       borderColor: desdobles ? "red" : asignatura.color,
-      textColor: "#454545"
+      textColor: "#454545",
     }
   }
 

@@ -22,7 +22,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         catchError((error: HttpErrorResponse) => {
           let errMsg = '';
           // Client Side Error
-          if (error.error instanceof ErrorEvent) {
+          if (error.status == 0) {
+            errMsg = "Hay problemas de conexión con el servidor";
+          }
+          else if (error.error instanceof ErrorEvent) {
             errMsg = `Error: ${error.error.message}`;
           }
           else {  // Server Side Error

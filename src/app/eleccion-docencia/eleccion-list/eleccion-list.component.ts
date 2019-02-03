@@ -45,8 +45,6 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
         this.asignaturas = asignaturas;
-        this.loading = false;
-
         this.fillSelected();
       })
   }
@@ -82,11 +80,13 @@ export class EleccionListComponent implements OnInit {
                           if (idDesdoble == desdoble.id)
                             desdoble.selected = true;
                         })
-                      })
+                      });
+                      this.eleccion = eleccion;
+                      this.updateEleccion();
+                      this.loading = false;
                     });
                 });
-                this.eleccion = eleccion;
-                this.updateEleccion();
+
               },
               error: err => {
                 if (err === "No encontrado") {
@@ -107,7 +107,7 @@ export class EleccionListComponent implements OnInit {
       });
   }
   saveEleccion() {
-    if (this.valida) {
+    if (this.valida && !this.loading) {
       if (this.eleccion.id != undefined) {
         this.eleccionService.saveEleccion(this.eleccion);
       }
@@ -123,6 +123,15 @@ export class EleccionListComponent implements OnInit {
   clearEleccion() {
     this.desdoblesSelected = [];
     this.asignaturasSelected = [];
+
+    this.asignaturas.map(asignatura => {
+      asignatura.selected = false;
+
+      asignatura.desdobles.map(desdoble => {
+        desdoble.selected = false;
+      })
+    });
+
     this.valida = true;
     this.updateEleccion();
   }
@@ -203,7 +212,7 @@ export class EleccionListComponent implements OnInit {
           && errores.J == null
           && errores.V == null;
 
-          if (!this.valida) this.avisosService.enviarMensaje("Se han encontrado problemas en la elección")
+        if (!this.valida) this.avisosService.enviarMensaje("Se han encontrado problemas en la elección")
       });
   }
 

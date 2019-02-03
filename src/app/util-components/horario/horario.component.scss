@@ -149,30 +149,7 @@ tbody tr td {
     }
 }
 
-.anotacion{
+.anotacion {
     color: $accent;
     margin: 15px;
-}
-
-.black{
-    &.calendar {
-        box-shadow: none;
-    }
-    thead {
-        background: none;
-        border-bottom: none;
-    }
-    thead th {
-        color: white;
-    }
-    .event {
-        background: white;
-        color: $primary;
-    }
-    table {
-        background: transparent;
-    }
-    tbody tr td {
-        color: white;
-    }
 }

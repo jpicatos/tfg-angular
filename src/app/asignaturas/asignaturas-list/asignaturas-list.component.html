@@ -157,12 +157,16 @@
                         <mat-option value="2º">2º</mat-option>
                         <mat-option value="3º">3º</mat-option>
                         <mat-option value="4º">4º</mat-option>
-                        <mat-option value="5º">5º</mat-option>
-                        <mat-option value="6º">6º</mat-option>
+                        <mat-option value="5º">5 DGº</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field>
-                    <input (keyup)="search()" matInput type='number' placeholder="Cuatrimestre" min=1 max=2 [(ngModel)]="searchVals.cuatrimestre" [ngModelOptions]="{standalone: true}">
+
+                 <mat-form-field>
+                    <mat-select (selectionChange)="search()" placeholder="Cuatrimestre" [(ngModel)]="searchVals.cuatrimestre" [ngModelOptions]="{standalone: true}">
+                        <mat-option value="">--</mat-option>
+                        <mat-option value="1">1º cuatrimestre</mat-option>
+                        <mat-option value="2">2º cuatrimestre</mat-option>
+                    </mat-select>
                 </mat-form-field>
 
                 <h4>Día(s)</h4>
