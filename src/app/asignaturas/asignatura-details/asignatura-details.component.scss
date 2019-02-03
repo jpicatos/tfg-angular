@@ -1,5 +1,4 @@
 @import "../../../scss/variables.scss";
-
 .total-container {
     display: flex;
     .card-container {
@@ -16,7 +15,7 @@
                 background-repeat: no-repeat;
                 background-size: cover;
             }
-            .mat-card-subtitle a{
+            .mat-card-subtitle a {
                 color: $accent;
             }
             .manualDivider {

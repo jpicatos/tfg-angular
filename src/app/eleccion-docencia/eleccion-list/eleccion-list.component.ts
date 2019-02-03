@@ -9,6 +9,7 @@ import { CastExpr } from '@angular/compiler';
 import { EleccionService } from 'src/app/services/eleccion.service';
 import { AvisosService } from 'src/app/services/avisos.service';
 import { Eleccion } from 'src/app/models/eleccion';
+import { ErroresEleccion } from 'src/app/models/erroresEleccion';
 import { ProfesoresService } from 'src/app/services/profesores.service';
 
 @Component({
@@ -26,12 +27,15 @@ export class EleccionListComponent implements OnInit {
   asignaturasSelected: Asignatura[];
   desdoblesSelected: Asignatura[];
   eleccion: Eleccion;
+  valida: boolean;
+  errores: ErroresEleccion;
 
   constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService) { }
 
   ngOnInit() {
     MenuToolbarComponent.updateTitle("Elección Docencia");
     this.loading = true;
+    this.valida = true;
     this.asignaturasSelected = [];
     this.desdoblesSelected = [];
     this.getAsignaturas();
@@ -82,6 +86,7 @@ export class EleccionListComponent implements OnInit {
                     });
                 });
                 this.eleccion = eleccion;
+                this.updateEleccion();
               },
               error: err => {
                 if (err === "No encontrado") {
@@ -102,13 +107,24 @@ export class EleccionListComponent implements OnInit {
       });
   }
   saveEleccion() {
-    if (this.eleccion.id != undefined) {
-      this.eleccionService.saveEleccion(this.eleccion);
+    if (this.valida) {
+      if (this.eleccion.id != undefined) {
+        this.eleccionService.saveEleccion(this.eleccion);
+      }
+      else {
+        this.eleccionService.createEleccion(this.eleccion);
+      }
     }
     else {
-      this.eleccionService.createEleccion(this.eleccion);
+      this.avisosService.enviarMensaje("La elección de docencia contiene errores que debe revisar");
     }
   }
+
+  clearEleccion() {
+    this.desdoblesSelected = [];
+    this.asignaturasSelected = [];
+  }
+
   updateEleccion() {
     this.eleccion.asignaturas = [];
     this.eleccion.asignaturas = this.asignaturasSelected.map(asignatura => {
@@ -124,31 +140,36 @@ export class EleccionListComponent implements OnInit {
   }
 
   onSelectAsignatura(asignatura, opt) {
-   
-          var selected = opt.selected;
-          if (selected) {
-            this.asignaturasSelected.push(asignatura);
-          }
-          else {
-            let i = 0;
-            let found = false;
-            while (i < this.asignaturasSelected.length && !found) {
-              if (this.asignaturasSelected[i].id == asignatura.id) {
-                found = true;
-                this.asignaturasSelected.splice(i, 1);
-              }
-              else i++;
-            }
-          }
-          // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
-          let asignaturasNew = this.asignaturasSelected.slice();
-          this.asignaturasSelected = asignaturasNew;
-          this.eleccionService.comprobarEleccion(this.updateEleccion())
-            .subscribe({
-              next: errores => {
-                console.log(errores)
-              }
-            })
+
+    var selected = opt.selected;
+    if (selected) {
+      this.asignaturasSelected.push(asignatura);
+    }
+    else {
+      let i = 0;
+      let found = false;
+      while (i < this.asignaturasSelected.length && !found) {
+        if (this.asignaturasSelected[i].id == asignatura.id) {
+          found = true;
+          this.asignaturasSelected.splice(i, 1);
+        }
+        else i++;
+      }
+    }
+    // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
+    let asignaturasNew = this.asignaturasSelected.slice();
+    this.asignaturasSelected = asignaturasNew;
+    this.eleccionService.comprobarEleccion(this.updateEleccion())
+      .subscribe(errores => {
+        this.errores = errores;
+        this.valida = errores.L == null
+          && errores.M == null
+          && errores.X == null
+          && errores.J == null
+          && errores.V == null;
+
+        if (!this.valida) this.avisosService.enviarMensaje("Se han encontrado problemas en la elección")
+      });
   }
 
   onSelectDesdoble(asignatura, opt) {
@@ -173,8 +194,15 @@ export class EleccionListComponent implements OnInit {
     console.log("asignatura: ", this.asignaturasSelected, "desdobles: ", this.desdoblesSelected);
     this.eleccionService.comprobarEleccion(this.updateEleccion())
       .subscribe(errores => {
-        console.log(errores);
-      })
+        this.errores = errores;
+        this.valida = errores.L == null
+          && errores.M == null
+          && errores.X == null
+          && errores.J == null
+          && errores.V == null;
+
+          if (!this.valida) this.avisosService.enviarMensaje("Se han encontrado problemas en la elección")
+      });
   }
 
   fetchDay(val: string): string {

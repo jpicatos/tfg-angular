@@ -20,19 +20,20 @@ export class EleccionService {
   }
   saveEleccion(eleccion: Eleccion): void {
     console.log("eleccion to save", eleccion);
+
     this.http.patch<Eleccion>(this.docenciaUrl + eleccion.id + '/', eleccion)
       .subscribe(data => {   // data is already a JSON object
-        console.log("Eleccion actualizada", data);
+        this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
       });
   }
   createEleccion(eleccion: Eleccion): void {
     this.http.post<Eleccion>(this.docenciaUrl, eleccion)
       .subscribe(data => {   // data is already a JSON object
-        console.log("Eleccion creada", data);
+        this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
       });
   }
-  comprobarEleccion(eleccion: Eleccion): Observable<ErroresEleccion[]> {
-    return this.http.post<ErroresEleccion[]>(this.docenciaUrl + "comprobar/", eleccion);
+  comprobarEleccion(eleccion: Eleccion): Observable<ErroresEleccion> {
+    return this.http.post<ErroresEleccion>(this.docenciaUrl + "comprobar/", eleccion);
   }
 
 }
