@@ -123,6 +123,7 @@ export class EleccionListComponent implements OnInit {
   clearEleccion() {
     this.desdoblesSelected = [];
     this.asignaturasSelected = [];
+    this.valida = true;
     this.updateEleccion();
   }
 
