@@ -3,10 +3,11 @@ import { Title, disableDebugTools } from "@angular/platform-browser";
 import { Asignatura } from '../../models/asignatura';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AsignaturasService } from '../../services/asignaturas.service';
+import { ProfesoresService } from '../../services/profesores.service';
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
 import { EliminarDialogComponent } from '../eliminar-dialog/eliminar-dialog.component';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import {DialogDesdobleComponent} from '../dialog-desdoble/dialog-desdoble.component';
+import { DialogDesdobleComponent } from '../dialog-desdoble/dialog-desdoble.component';
 
 @Component({
   selector: 'app-asignatura-details',
@@ -18,13 +19,14 @@ export class AsignaturaDetailsComponent implements OnInit {
   @Input() asignatura: Asignatura;
   loaded: boolean;
   displayedColumns: string[];
-  asignaturaData: any[];
+  asignaturaData: any;
 
-  constructor(private angularService: AsignaturasService, private dialog: MatDialog,
+  constructor(private angularService: AsignaturasService,
+    private profesoresService: ProfesoresService, private dialog: MatDialog,
     private route: ActivatedRoute, private titleService: Title) {
     this.loaded = false;
     this.asignatura = new Asignatura;
-
+    this.asignaturaData = new Object;
   }
 
   ngOnInit() {
@@ -34,16 +36,32 @@ export class AsignaturaDetailsComponent implements OnInit {
     this.angularService.getAsignatura(id).subscribe(asignatura => {
       this.update(asignatura);
       console.log(this.asignatura);
+
+      this.getProfesorName();
+
       this.loaded = true;
-    }
-
-    );
-
+    });
   }
 
   update(asignatura) {
     this.asignatura = asignatura;
     this.titleService.setTitle(this.asignatura.nombre)
+  }
+
+  getProfesorName() {
+    if (this.asignatura.docencia != null) {
+      this.profesoresService.getProfesor(this.asignatura.docencia.id).subscribe(
+        profesor => {
+          this.asignaturaData.profesor = profesor.usuario.first_name + ' ' + profesor.usuario.last_name;
+          this.asignaturaData.docenciaUrl = '/profesores/' + profesor.usuario.id;
+        }
+      );
+    }
+    else {
+      this.asignaturaData.profesor = "Sin docencia";
+      this.asignaturaData.docenciaUrl = '/eleccion-docencia/';
+    }
+    
   }
 
   eliminarDialog() {
@@ -53,13 +71,13 @@ export class AsignaturaDetailsComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     dialogConfig.data = {
-        id: this.asignatura.id
+      id: this.asignatura.id
     };
 
     const dialogRef = this.dialog.open(EliminarDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
-        asignatura => this.eliminarAsignatura(asignatura)
+      asignatura => this.eliminarAsignatura(asignatura)
     );
   }
 
@@ -72,8 +90,8 @@ export class AsignaturaDetailsComponent implements OnInit {
     }
   }
 
-  openDialog(i: number):void{
-    
+  openDialog(i: number): void {
+
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = false;
@@ -82,7 +100,7 @@ export class AsignaturaDetailsComponent implements OnInit {
     dialogConfig.data = {
       data: this.asignatura.desdobles[i]
     };
-    const dialogRef = this.dialog.open(DialogDesdobleComponent,dialogConfig);
+    const dialogRef = this.dialog.open(DialogDesdobleComponent, dialogConfig);
   }
 
 }

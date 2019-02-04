@@ -26,11 +26,15 @@
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
-                                    <h4>Cuatrimestre</h4> <span class="spacer"></span>{{asignatura.cuatrimestre}}
+                                    <h4>Cuatrimestre</h4> <span class="spacer"></span>{{asignatura.cuatrimestre}} cuatrimestre
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
-                                    <h4>Curso</h4> <span class="spacer"></span>{{asignatura.curso}}
+                                    <h4>Curso</h4> <span class="spacer"></span>{{asignatura.curso}}{{asignatura.grupo}}
+                                </mat-list-item>
+                                <span class="manualDivider"></span>
+                                <mat-list-item role="listitem">
+                                    <h4>Calendario</h4> <span class="spacer"></span> {{asignatura.calendario.nombre}} ({{asignatura.calendario.fecha_ini}} - {{asignatura.calendario.fecha_fin}})
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
@@ -38,15 +42,12 @@
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
-                                    <h4>Grupo</h4> <span class="spacer"></span>{{asignatura.grupo}}
-                                </mat-list-item>
-                                <span class="manualDivider"></span>
-                                <mat-list-item role="listitem">
-                                    <h4>Identificación</h4> <span class="spacer"></span>{{asignatura.id}}
-                                </mat-list-item>
-                                <span class="manualDivider"></span>
-                                <mat-list-item role="listitem">
                                     <h4>Titulación</h4> <span class="spacer"></span>{{asignatura.titulacion}}
+                                </mat-list-item>
+                                <span class="manualDivider"></span>
+                                <mat-list-item role="listitem">
+                                    <h4>Docencia</h4> <span class="spacer"></span>
+                                    <a [routerLink]="asignaturaData.docenciaUrl">{{asignaturaData.profesor}}</a>
                                 </mat-list-item>
                             </mat-list>
                         </div>
