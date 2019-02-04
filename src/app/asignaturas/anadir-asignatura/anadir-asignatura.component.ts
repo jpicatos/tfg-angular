@@ -146,4 +146,8 @@ export class AnadirAsignaturaComponent implements OnInit {
     }
   }
 
+  compareCuatrimestres(c1, c2) {
+    return c1 && c2 && c1 == c2;
+  }
+
 }

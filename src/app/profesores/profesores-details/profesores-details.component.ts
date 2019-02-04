@@ -1,12 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Profesor } from '../../models/profesor';
 import { ProfesoresService } from '../../services/profesores.service';
+import { AsignaturasService } from '../../services/asignaturas.service';
+import { EleccionService } from '../../services/eleccion.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
 import { EliminarDialogComponent } from 'src/app/asignaturas/eliminar-dialog/eliminar-dialog.component';
 import { Categoria } from '../../models/categoria';
+import { Eleccion } from '../../models/eleccion';
+import { Desdoble } from '../../models/desdoble';
 
 @Component({
   selector: 'app-profesores-details',
@@ -17,11 +21,13 @@ export class ProfesoresDetailsComponent implements OnInit {
   @Input() profesor: Profesor;
   loaded: boolean;
   displayedColumns: string[];
-  profesorData: any[];
+  docencia: Eleccion;
+  docenciaDesdobles: Desdoble[];
   categorias: Categoria[];
 
-  constructor(private angularService: ProfesoresService, private dialog: MatDialog,
-    private route: ActivatedRoute, private titleService: Title) {
+  constructor(private angularService: ProfesoresService, private asignaturasService: AsignaturasService,
+    private eleccionService: EleccionService,
+    private dialog: MatDialog, private route: ActivatedRoute, private titleService: Title) {
     this.loaded = false;
     this.profesor = new Profesor;
 
@@ -35,11 +41,16 @@ export class ProfesoresDetailsComponent implements OnInit {
       this.getCategoria(profesor.categoria);
       this.update(profesor);
       console.log(this.profesor);
-      this.loaded = true;
-    }
-
-    );
-
+      
+      if (this.profesor.docencia != null) {
+        this.eleccionService.getEleccion(this.profesor.docencia).subscribe(eleccion => {
+          this.docencia = eleccion;
+          this.loaded = true;
+        });
+      }
+      else this.loaded = true;
+      
+    });
   }
 
   update(profesor) {

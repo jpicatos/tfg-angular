@@ -24,7 +24,10 @@
                             <input matInput placeholder="Codigo" [(ngModel)]=asignatura.codigo [ngModelOptions]="{standalone: true}" required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput type="number" placeholder="Cuatrimestre" [(ngModel)]=asignatura.cuatrimestre [ngModelOptions]="{standalone: true}" required>
+                            <mat-select placeholder="Cuatrimestre" [(ngModel)]=asignatura.cuatrimestre [ngModelOptions]="{standalone: true}" [compareWith]="compareCuatrimestres" required>
+                                <mat-option value="1">1 cuatrimestre</mat-option>
+                                <mat-option value="2">2 cuatrimestre</mat-option>
+                            </mat-select>
                         </mat-form-field>
                         <mat-form-field>
                             <input matInput placeholder="Curso" [(ngModel)]=asignatura.curso [ngModelOptions]="{standalone: true}" required>

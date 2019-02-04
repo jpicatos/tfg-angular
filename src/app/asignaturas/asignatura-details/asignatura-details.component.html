@@ -46,8 +46,13 @@
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
-                                    <h4>Docencia</h4> <span class="spacer"></span>
-                                    <a [routerLink]="asignaturaData.docenciaUrl">{{asignaturaData.profesor}}</a>
+                                    <h4>Docencia teoría</h4> <span class="spacer"></span>
+                                    <a [routerLink]="profesorTeoriaUrl">{{profesorTeoria}}</a>
+                                </mat-list-item>
+                                <span *ngIf="asignatura.desdobles.length" class="manualDivider"></span>
+                                <mat-list-item *ngIf="asignatura.desdobles.length" role="listitem">
+                                    <h4>Docencia desdoble</h4> <span class="spacer"></span>
+                                    <a [routerLink]="profesorDesdobleUrl">{{profesorDesdoble}}</a>
                                 </mat-list-item>
                             </mat-list>
                         </div>

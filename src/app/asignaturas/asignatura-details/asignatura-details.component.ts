@@ -19,14 +19,16 @@ export class AsignaturaDetailsComponent implements OnInit {
   @Input() asignatura: Asignatura;
   loaded: boolean;
   displayedColumns: string[];
-  asignaturaData: any;
+  profesorTeoria: string;
+  profesorTeoriaUrl: string;
+  profesorDesdoble: string;
+  profesorDesdobleUrl: string;
 
   constructor(private angularService: AsignaturasService,
     private profesoresService: ProfesoresService, private dialog: MatDialog,
     private route: ActivatedRoute, private titleService: Title) {
     this.loaded = false;
     this.asignatura = new Asignatura;
-    this.asignaturaData = new Object;
   }
 
   ngOnInit() {
@@ -50,16 +52,29 @@ export class AsignaturaDetailsComponent implements OnInit {
 
   getProfesorName() {
     if (this.asignatura.docencia != null) {
-      this.profesoresService.getProfesor(this.asignatura.docencia.id).subscribe(
+      this.profesoresService.getProfesor(this.asignatura.docencia.profesor).subscribe(
         profesor => {
-          this.asignaturaData.profesor = profesor.usuario.first_name + ' ' + profesor.usuario.last_name;
-          this.asignaturaData.docenciaUrl = '/profesores/' + profesor.usuario.id;
+          this.profesorTeoria = profesor.usuario.first_name + ' ' + profesor.usuario.last_name;
+          this.profesorTeoriaUrl = '/profesores/' + profesor.usuario.id;
         }
       );
     }
     else {
-      this.asignaturaData.profesor = "Sin docencia";
-      this.asignaturaData.docenciaUrl = '/eleccion-docencia/';
+      this.profesorTeoria = "Sin docencia";
+      this.profesorTeoriaUrl = '/eleccion-docencia/';
+    }
+
+    if (this.asignatura.desdobles.length && this.asignatura.desdobles[0].docencia != null) {
+      this.profesoresService.getProfesor(this.asignatura.desdobles[0].docencia.profesor).subscribe(
+        profesor => {
+          this.profesorDesdoble = profesor.usuario.first_name + ' ' + profesor.usuario.last_name;
+          this.profesorDesdobleUrl = '/profesores/' + profesor.usuario.id;
+        }
+      );
+    }
+    else {
+      this.profesorDesdoble = "Sin docencia";
+      this.profesorDesdobleUrl = '/eleccion-docencia/';
     }
     
   }

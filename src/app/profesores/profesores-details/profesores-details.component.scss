@@ -1,5 +1,4 @@
 @import "../../../scss/variables.scss";
-
 .total-container {
     display: flex;
     .card-container {
@@ -17,7 +16,7 @@
                 background-size: cover;
                 border-radius: 0;
             }
-            .mat-card-subtitle a{
+            .mat-card-subtitle a {
                 color: $accent;
             }
             .manualDivider {
@@ -40,5 +39,24 @@
             float: right;
             margin-right: 10px;
         }
+    }
+}
+
+.docenciaProfesor {
+    font-size: 17px;
+    mat-card {
+        width: 300px;
+    }
+    mat-card-title {
+        font-size: 17px;
+    }
+    mat-card-subtitle {
+        font-size: 17px;
+    }
+    mat-card-content {
+        font-size: 17px;
+    }
+    mat-card-actions {
+        font-size: 17px;
     }
 }
