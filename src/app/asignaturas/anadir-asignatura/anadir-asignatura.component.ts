@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Desdoble } from '../../models/desdoble';
 import { Horario } from '../../models/horario';
+import { Calendario } from '../../models/calendario';
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
 import { AvisosService } from '../../services/avisos.service';
 
@@ -35,6 +36,7 @@ export class AnadirAsignaturaComponent implements OnInit {
   deletedHorarios: number[];
 
   asignatura: Asignatura;
+  calendarios: Calendario[];
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -82,6 +84,10 @@ export class AnadirAsignaturaComponent implements OnInit {
       this.editar = true;   // Al existir un ID en la URL es una edición de una asignatura existente
     }
 
+    this.angularService.getAllCalendarios().subscribe(calendarios => {
+      this.calendarios = calendarios;
+    });
+
   }
 
   newDesdoble(): void {
@@ -117,7 +123,8 @@ export class AnadirAsignaturaComponent implements OnInit {
     if (!(this.asignatura.hasOwnProperty('codigo') && this.asignatura.hasOwnProperty('cuatrimestre')
       && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
       && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
-      && this.asignatura.hasOwnProperty('siglas') && this.asignatura.hasOwnProperty('titulacion'))) {
+      && this.asignatura.hasOwnProperty('siglas') && this.asignatura.hasOwnProperty('titulacion'))
+      && this.asignatura.hasOwnProperty('calendario')) {
       this.avisosService.enviarMensaje("Debe rellenar todos los campos obligatorios");
     }
     else {

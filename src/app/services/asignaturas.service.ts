@@ -32,6 +32,10 @@ export class AsignaturasService {
     return this.http.get<Calendario>(this.calendariosUrl + id);
   }
 
+  getAllCalendarios(): Observable<Calendario[]> {
+    return this.http.get<Calendario[]>(this.calendariosUrl);
+  }
+
   searchAsignatura(siglas: string, nombre: string, codigo: string, curso: string, cuatrimestre: number, inicio: string, fin: string, dia: string[]): Observable<Asignatura[]> {
     var params = '&siglas=' + siglas +
       '&nombre=' + nombre +

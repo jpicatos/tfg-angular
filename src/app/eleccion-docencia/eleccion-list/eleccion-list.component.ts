@@ -59,6 +59,7 @@ export class EleccionListComponent implements OnInit {
           this.eleccionService.getEleccion(profesor.docencia)
             .subscribe({
               next: eleccion => {
+
                 console.log("elecccion", eleccion)
                 const { asignaturas, desdobles } = eleccion;
                 this.asignaturasSelected = [...asignaturas];
@@ -68,7 +69,12 @@ export class EleccionListComponent implements OnInit {
                       asignatura.selected = true;
                     }
                   })
-                })
+                });
+
+                this.eleccion = eleccion;
+                this.updateEleccion();
+                if (!desdobles.length) this.loading = false;
+
                 desdobles.map(idDesdoble => {
                   this.asignaturasService.getAsignaturaDesdoble(idDesdoble)
                     .subscribe(asignatura => {
@@ -103,7 +109,9 @@ export class EleccionListComponent implements OnInit {
           this.eleccion = new Eleccion;
           this.eleccion.confirmada = false;
           this.eleccion.profesor = testProfesor;
+          this.loading = false;
         }
+        
       });
   }
   saveEleccion() {

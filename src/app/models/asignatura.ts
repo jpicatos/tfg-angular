@@ -13,15 +13,25 @@ export class Asignatura{
     departamento: string;
     horario: Horario[];
     desdobles: Desdoble[];
-    calendario: any;
+    calendario: Calendario;
+    docencia: Docencia;
     color: string;
-    selected: boolean
+    selected: boolean;
 
     constructor() {
         this.desdobles = [];
         this.horario = [];
+        this.calendario = new Calendario();
+        this.docencia = new Docencia();
     }
 };
+
+export class Docencia {
+    id: number;
+    fecha: string;
+    confirmada: boolean;
+    profesor: number;
+}
 
 export class AsignaturaImportar {
     excel_file: string;

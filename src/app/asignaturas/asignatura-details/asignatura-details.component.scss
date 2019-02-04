@@ -10,13 +10,13 @@
             z-index: 2;
             width: 80%;
             overflow: hidden;
+            a {
+                color: $accent;
+            }
             .header-image {
                 background-image: url('../../../assets/books.png');
                 background-repeat: no-repeat;
                 background-size: cover;
-            }
-            .mat-card-subtitle a {
-                color: $accent;
             }
             .manualDivider {
                 border-bottom: 1px solid;
