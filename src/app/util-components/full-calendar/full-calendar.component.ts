@@ -72,11 +72,11 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 			maxTime: moment.duration(21, 'h'),
 			customButtons: {
 				primerCuatrimestre: {
-					text: '1er Cuatrimestre',
+					text: '1er Cuatri.',
 					click: () => this.moveToCuatrimestreDate(1)
 				},
 				segundoCuatrimestre: {
-					text: '2º Cuatrimestre',
+					text: '2º Cuatri.',
 					click: () => this.moveToCuatrimestreDate(3)
 				}
 			},
