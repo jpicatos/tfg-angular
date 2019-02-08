@@ -12,6 +12,8 @@ import { Eleccion } from 'src/app/models/eleccion';
 import { ErroresEleccion } from 'src/app/models/erroresEleccion';
 import { ProfesoresService } from 'src/app/services/profesores.service';
 
+import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay} from "./utils";
+
 @Component({
   selector: 'app-eleccion-list',
   templateUrl: './eleccion-list.component.html',
@@ -30,7 +32,20 @@ export class EleccionListComponent implements OnInit {
   valida: boolean;
   errores: ErroresEleccion;
 
-  constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService) { }
+  // utils functions are declared because the view code need to call them
+  isMinimiceLeft;
+  minimiceLeft;
+  isMinimiceRight;
+  minimiceRight;
+  fetchDay;
+
+  constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService) {
+    this.isMinimiceLeft = isMinimiceLeft;
+    this.minimiceLeft = minimiceLeft;
+    this.isMinimiceRight = isMinimiceRight;
+    this.minimiceRight = minimiceRight;
+    this.fetchDay = fetchDay;
+  }
 
   ngOnInit() {
     MenuToolbarComponent.updateTitle("Elección Docencia");
@@ -51,48 +66,24 @@ export class EleccionListComponent implements OnInit {
 
 
   fillSelected() {
-    var testProfesor = 16;
+    // var testProfesor = 16;
+    var testProfesor = 17;
     this.profesoresService.getProfesor(testProfesor)
       .subscribe(profesor => {
-        console.log("profesor", profesor);
-        if (profesor.docencia != null) {
+        if (profesor.docencia !== null) {
           this.eleccionService.getEleccion(profesor.docencia)
             .subscribe({
               next: eleccion => {
-
-                console.log("elecccion", eleccion)
                 const { asignaturas, desdobles } = eleccion;
-                this.asignaturasSelected = [...asignaturas];
-                this.asignaturas.map(asignatura => {
-                  this.asignaturasSelected.map(selected => {
-                    if (selected.id == asignatura.id) {
-                      asignatura.selected = true;
-                    }
-                  })
-                });
+                this.fillAsignaturasWithEleccion(asignaturas);
+
+                if (desdobles.length){ // If there are desdobles
+                  this.fillDesdoblesWithEleccion(desdobles);
+                }
 
                 this.eleccion = eleccion;
                 this.updateEleccion();
-                if (!desdobles.length) this.loading = false;
-
-                desdobles.map(idDesdoble => {
-                  this.asignaturasService.getAsignaturaDesdoble(idDesdoble)
-                    .subscribe(asignatura => {
-                      console.log("asignatura", asignatura)
-                      this.desdoblesSelected = [...asignatura];
-
-                      this.asignaturas.map(asignatura => {
-                        asignatura.desdobles.map(desdoble => {
-                          if (idDesdoble == desdoble.id)
-                            desdoble.selected = true;
-                        })
-                      });
-                      this.eleccion = eleccion;
-                      this.updateEleccion();
-                      this.loading = false;
-                    });
-                });
-
+                this.loading = false;
               },
               error: err => {
                 if (err === "No encontrado") {
@@ -111,9 +102,38 @@ export class EleccionListComponent implements OnInit {
           this.eleccion.profesor = testProfesor;
           this.loading = false;
         }
-        
+
       });
   }
+
+  fillAsignaturasWithEleccion(asignaturas) {
+    this.asignaturasSelected = [...asignaturas];
+    this.asignaturas.map(asignatura => {
+      this.asignaturasSelected.map(selected => {
+        if (selected.id === asignatura.id) {
+          asignatura.selected = true;
+        }
+      })
+    });
+  }
+
+  fillDesdoblesWithEleccion(desdobles) {
+    desdobles.map(idDesdoble => {
+
+      this.asignaturasService.getAsignaturaDesdoble(idDesdoble)
+        .subscribe(asignatura => {
+          this.desdoblesSelected = [...asignatura];
+          this.asignaturas.map(asignatura => {
+            asignatura.desdobles.map(desdoble => {
+              if (idDesdoble == desdoble.id)
+                desdoble.selected = true;
+            })
+          });
+        });
+
+    });
+  }
+
   saveEleccion() {
     if (this.valida && !this.loading) {
       if (this.eleccion.id != undefined) {
@@ -158,130 +178,40 @@ export class EleccionListComponent implements OnInit {
     return this.eleccion;
   }
 
-  onSelectAsignatura(asignatura, opt) {
-
-    var selected = opt.selected;
+  onSelectAsignatura(asignatura, {selected}) {
     if (selected) {
-      this.asignaturasSelected.push(asignatura);
+      this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
     }
-    else {
-      let i = 0;
-      let found = false;
-      while (i < this.asignaturasSelected.length && !found) {
-        if (this.asignaturasSelected[i].id == asignatura.id) {
-          found = true;
-          this.asignaturasSelected.splice(i, 1);
-        }
-        else i++;
-      }
+    else{
+      this.asignaturasSelected = this.asignaturasSelected.filter(asign => asign.id !== asignatura.id);
     }
-    // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
-    let asignaturasNew = this.asignaturasSelected.slice();
-    this.asignaturasSelected = asignaturasNew;
+
+    this.comprobarEleccion();
+  }
+
+  onSelectDesdoble(asignatura, {selected}) {
+    if (selected) {
+      this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
+    }
+    else{
+      this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
+    }
+    this.comprobarEleccion();
+  }
+
+  comprobarEleccion(){
     this.eleccionService.comprobarEleccion(this.updateEleccion())
       .subscribe(errores => {
         this.errores = errores;
-        this.valida = errores.L == null
-          && errores.M == null
-          && errores.X == null
-          && errores.J == null
-          && errores.V == null;
+        const {L, M, X, J, V} = errores;
+        this.valida = L == null
+          && M == null
+          && X == null
+          && J == null
+          && V == null;
 
         if (!this.valida) this.avisosService.enviarMensaje("Se han encontrado problemas en la elección")
       });
-  }
-
-  onSelectDesdoble(asignatura, opt) {
-    var { selected } = opt;
-    if (selected) {
-      this.desdoblesSelected.push(asignatura);
-    }
-    else {
-      let i = 0;
-      let found = false;
-      while (i < this.desdoblesSelected.length && !found) {
-        if (this.desdoblesSelected[i].id == asignatura.id) {
-          found = true;
-          this.desdoblesSelected.splice(i, 1);
-        }
-        else i++;
-      }
-    }
-    // Es necesario crear un array nuevo para que ngOnChanges detecte las nuevas asignaturas seleccionadas en el calendario
-    let desdoblesNew = this.desdoblesSelected.slice();
-    this.desdoblesSelected = desdoblesNew;
-    console.log("asignatura: ", this.asignaturasSelected, "desdobles: ", this.desdoblesSelected);
-    this.eleccionService.comprobarEleccion(this.updateEleccion())
-      .subscribe(errores => {
-        this.errores = errores;
-        this.valida = errores.L == null
-          && errores.M == null
-          && errores.X == null
-          && errores.J == null
-          && errores.V == null;
-
-        if (!this.valida) this.avisosService.enviarMensaje("Se han encontrado problemas en la elección")
-      });
-  }
-
-  fetchDay(val: string): string {
-    switch (val) {
-      case 'L':
-        return "Lunes";
-        break;
-      case 'M':
-        return "Martes";
-        break;
-      case 'X':
-        return "Miércoles";
-        break;
-      case 'J':
-        return "Jueves";
-        break;
-      case 'V':
-        return "Viernes";
-        break;
-      default:
-        break;
-    }
-    return;
-  }
-
-  minimiceLeft() {
-    console.log("Minimice Left");
-    var minimizable = document.getElementById('minimizable-container');
-    if (this.isMinimiceLeft()) {
-      minimizable.classList.remove("left-minimiced");
-    }
-    else {
-      if (this.isMinimiceRight) {
-        minimizable.classList.remove("right-minimiced");
-      }
-      minimizable.classList.add("left-minimiced");
-    }
-
-  }
-
-  minimiceRight() {
-    console.log("Minimice Left");
-    var minimizable = document.getElementById('minimizable-container');
-    if (this.isMinimiceRight()) {
-      minimizable.classList.remove("right-minimiced");
-    }
-    else {
-      if (this.isMinimiceLeft) {
-        minimizable.classList.remove("left-minimiced");
-      }
-      minimizable.classList.add("right-minimiced");
-    }
-  }
-
-  isMinimiceRight(): boolean {
-    return document.getElementById('minimizable-container').classList.contains("right-minimiced")
-  }
-
-  isMinimiceLeft(): boolean {
-    return document.getElementById('minimizable-container').classList.contains("left-minimiced")
   }
 
 }
