@@ -36,6 +36,7 @@
     "fullcalendar": "^3.6.1",
     "jquery": "^3.3.1",
     "ng-fullcalendar": "^1.7.1",
+    "ngx-cacheable": "^1.0.9",
     "path": "^0.12.7",
     "rxjs": "~6.2.0",
     "sass": "^1.15.0",

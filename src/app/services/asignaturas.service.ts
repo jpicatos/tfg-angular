@@ -7,6 +7,7 @@ import { Desdoble } from "../models/desdoble";
 import { Horario } from "../models/horario";
 import { AvisosService } from './avisos.service';
 import { Calendario } from '../models/calendario';
+import { Cacheable } from 'ngx-cacheable';
 
 
 @Injectable()
@@ -16,7 +17,7 @@ export class AsignaturasService {
   private calendariosUrl = '/api/asignaturas/calendarios/';
 
   constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) { }
-
+  @Cacheable()
   getAsignaturas(): Observable<Asignatura[]> {
     return this.http.get<Asignatura[]>(this.asignaturasUrl);
   }
@@ -27,7 +28,8 @@ export class AsignaturasService {
   getAsignaturaDesdoble(idDesdoble: number): Observable<Asignatura[]> {
     return this.http.get<Asignatura[]>(`${this.asignaturasUrl}?desdoble=${idDesdoble}`);
   }
-
+  
+  @Cacheable()
   getCalendarios(id: number): Observable<Calendario> {
     return this.http.get<Calendario>(this.calendariosUrl + id);
   }

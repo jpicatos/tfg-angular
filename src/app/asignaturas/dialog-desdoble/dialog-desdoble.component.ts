@@ -19,7 +19,6 @@ export class DialogDesdobleComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log('desdoble', typeof(this.horario), this.horario);
   }
   
   onNoClick(): void {

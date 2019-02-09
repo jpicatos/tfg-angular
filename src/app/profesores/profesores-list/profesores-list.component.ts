@@ -90,7 +90,6 @@ export class ProfesoresListComponent implements OnInit {
             return a.escalafon - b.escalafon;
           });
           this.loading = false;
-          console.log(this.profesores);
         }
       )
   }
@@ -98,14 +97,12 @@ export class ProfesoresListComponent implements OnInit {
     this.selectedProfesor = profesor;
   }
   updateNumCols(menosUno, num) {
-    console.log(this.numCols + '|' + menosUno);
     if (menosUno) {
       this.numCols = this.numCols - num;
     }
     else {
       this.numCols = this.numCols + num;
     }
-    console.log(this.numCols + '|' + menosUno);
   }
   search(): void {
     this.loading = true;

@@ -80,26 +80,21 @@ export class AsignaturasListComponent implements OnInit {
       .subscribe(asignaturas => {
         this.asignaturas = asignaturas;
         this.loading = false;
-        console.log(this.asignaturas);
       });
   }
   onSelect(asignatura: Asignatura) {
     this.selectedAsignatura = asignatura;
   }
   updateNumCols(menosUno, num) {
-    console.log(this.numCols + '|' + menosUno);
     if (menosUno) {
       this.numCols = this.numCols - num;
     }
     else {
       this.numCols = this.numCols + num;
     }
-    console.log(this.numCols + '|' + menosUno);
   }
   updateDias(dia: string) {
-    console.log(dia);
     var index = this.searchVals.dias.indexOf(dia);
-    console.log(index);
     if (index === -1) {
       this.searchVals.dias.push(dia);
     }
@@ -109,7 +104,6 @@ export class AsignaturasListComponent implements OnInit {
   }
   search(): void {
     this.loading=true;
-    console.log(this.searchVals);
     var diasAux = []
     if (this.searchVals.dias.length < 5) {
       diasAux = this.searchVals.dias;
@@ -141,12 +135,10 @@ export class AsignaturasListComponent implements OnInit {
 
   horaIni($event): void {
     this.searchVals.ini = $event;
-    console.log($event);
   }
 
   horaFin($event): void {
     this.searchVals.fin = $event;
-    console.log($event);
   }
 
 }

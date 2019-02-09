@@ -40,7 +40,6 @@ export class ProfesoresDetailsComponent implements OnInit {
     this.angularService.getProfesor(id).subscribe(profesor => {
       this.getCategoria(profesor.categoria);
       this.update(profesor);
-      console.log(this.profesor);
       
       if (this.profesor.docencia != null) {
         this.eleccionService.getEleccion(this.profesor.docencia).subscribe(eleccion => {

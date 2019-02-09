@@ -1,4 +1,5 @@
 @import "../../../scss/variables.scss";
+@import "../../../scss/styles.scss";
 .mwlResizable {
     box-sizing: border-box; // required for the enableGhostResize option to work
     min-width: min-content;
@@ -107,4 +108,17 @@
     left: auto !important;
     position: fixed !important;
     background-color: $accent;
+}
+
+.withIcon {
+    display: flex !important;
+    align-items: center;
+    padding: 1px;
+    width: fit-content;
+    mat-icon {
+        margin-right: 5px;
+        font-size: inherit;
+        height: unset;
+        width: unset;
+    }
 }

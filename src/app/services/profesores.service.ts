@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Profesor, ProfesorImportar } from "../models/profesor";
 import { AvisosService } from './avisos.service';
 import { Categoria } from '../models/categoria';
-
+import { Cacheable } from "ngx-cacheable";
 
 @Injectable()
 export class ProfesoresService {
@@ -13,7 +13,7 @@ export class ProfesoresService {
   private profesoresUrl = '/api/profesores/';
 
   constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) { }
-
+  @Cacheable()
   getProfesores(): Observable<Profesor[]> {
     return this.http.get<Profesor[]>(this.profesoresUrl);
   }
@@ -48,7 +48,8 @@ export class ProfesoresService {
   getCategoria(cate: string): Observable<Categoria> {
     return this.http.get<Categoria>(this.profesoresUrl + "categorias/" + cate);
   }
-
+  
+  @Cacheable()
   getCategorias(): Observable<Categoria[]> {
     return this.http.get<Categoria[]>(this.profesoresUrl + "categorias");
   }
@@ -67,7 +68,6 @@ export class ProfesoresService {
       params += '&escalafon=' + escalafon;
     }
 
-    console.log(params);
     return this.http.get<Profesor[]>(this.profesoresUrl + '?' + params);
   }
 

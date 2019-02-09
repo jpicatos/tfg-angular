@@ -46,7 +46,6 @@ export class AnadirProfesorComponent implements OnInit {
     if (id != null) {
       this.angularService.getProfesor(Number(id)).subscribe(
         profesor => {
-          console.log(profesor);
           this.profesor = profesor;
           this.username = profesor.usuario.username;
           this.password = profesor.usuario.password;
@@ -70,7 +69,6 @@ export class AnadirProfesorComponent implements OnInit {
 
 
   save(): void {
-    console.log(this.profesor);
 
     /*
     La petición a la API no debe llevar el username ni el password si no han sido modificados

@@ -174,7 +174,6 @@ export class EleccionListComponent implements OnInit {
     this.eleccion.desdobles = this.desdoblesSelected.map(desdoble => {
       return desdoble.desdobles[0].id;
     })
-    console.log(this.eleccion);
     return this.eleccion;
   }
 

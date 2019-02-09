@@ -41,7 +41,6 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 	constructor(private angularService: AsignaturasService) { }
 	ngOnChanges(changes: SimpleChanges) {
 		const asign: SimpleChange = changes.asignaturasEntrada;
-		console.log(changes);
 		if (asign) {
 			this.asignaturas = asign.currentValue;
 			if (this.asignaturas.length > 0) {
@@ -97,7 +96,6 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 	}
 
 	recurEvents(asignaturas, desdobles) {
-		console.log("asignaturas", asignaturas);
 		var events = [];
 		var asignaturasEvents = this.fillEvents(asignaturas, false);
 		var desdoblesEvents = this.fillEvents(desdobles, true);
@@ -107,9 +105,9 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 
 	moveToCuatrimestreDate(id) {
 		this.angularService.getCalendarios(id)
-							.subscribe(result => {
-								this.updateCalendarDateView(moment(result.fecha_ini));
-							});
+			.subscribe(result => {
+				this.updateCalendarDateView(moment(result.fecha_ini));
+			});
 	}
 
 	fillEvents(asignaturas, desdobles: boolean) {

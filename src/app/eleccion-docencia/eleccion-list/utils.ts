@@ -22,7 +22,6 @@ export const fetchDay = (val: string) => {
 }
 
 export const minimiceLeft = () => {
-  console.log("Minimice Left");
   var minimizable = document.getElementById('minimizable-container');
   if (isMinimiceLeft()) {
     minimizable.classList.remove("left-minimiced");
@@ -35,7 +34,6 @@ export const minimiceLeft = () => {
   }
 }
 export const minimiceRight = () => {
-  console.log("Minimice Left");
   var minimizable = document.getElementById('minimizable-container');
   if (isMinimiceRight()) {
     minimizable.classList.remove("right-minimiced");

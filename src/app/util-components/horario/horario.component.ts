@@ -37,7 +37,6 @@ export class HorarioComponent implements OnChanges, OnInit {
     if (asign) {
       this.asignatura = asign.currentValue;
     }
-    console.log("La asignatura ha cambiado")
     this.ngOnInit();
   }
 
@@ -61,7 +60,6 @@ export class HorarioComponent implements OnChanges, OnInit {
     ];
     this.setClass();
     this.setDesdoble();
-    console.log(this.horario);
   }
 
   fetchDay(val: string): string {
