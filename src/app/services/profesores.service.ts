@@ -68,7 +68,6 @@ export class ProfesoresService {
       params += '&escalafon=' + escalafon;
     }
 
-    console.log(params);
     return this.http.get<Profesor[]>(this.profesoresUrl + '?' + params);
   }
 

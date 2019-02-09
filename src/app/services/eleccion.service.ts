@@ -19,7 +19,6 @@ export class EleccionService {
     return this.http.get<Eleccion>(this.docenciaUrl + id);
   }
   saveEleccion(eleccion: Eleccion): void {
-    console.log("eleccion to save", eleccion);
 
     this.http.patch<Eleccion>(this.docenciaUrl + eleccion.id + '/', eleccion)
       .subscribe(data => {   // data is already a JSON object

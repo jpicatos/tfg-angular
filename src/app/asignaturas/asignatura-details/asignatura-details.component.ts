@@ -37,7 +37,6 @@ export class AsignaturaDetailsComponent implements OnInit {
     MenuToolbarComponent.updateTitle("Asignaturas");
     this.angularService.getAsignatura(id).subscribe(asignatura => {
       this.update(asignatura);
-      console.log(this.asignatura);
 
       this.getProfesorName();
 

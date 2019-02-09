@@ -118,8 +118,6 @@ export class AnadirAsignaturaComponent implements OnInit {
   }
 
   save(): void {
-    console.log(this.asignatura);
-
     if (!(this.asignatura.hasOwnProperty('codigo') && this.asignatura.hasOwnProperty('cuatrimestre')
       && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
       && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
