@@ -107,9 +107,9 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 
 	moveToCuatrimestreDate(id) {
 		this.angularService.getCalendarios(id)
-							.subscribe(result => {
-								this.updateCalendarDateView(moment(result.fecha_ini));
-							});
+			.subscribe(result => {
+				this.updateCalendarDateView(moment(result.fecha_ini));
+			});
 	}
 
 	fillEvents(asignaturas, desdobles: boolean) {
