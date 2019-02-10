@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild, OnDestroy } from '@angular/core';
 import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 import { Asignatura } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
@@ -12,7 +12,9 @@ import { Eleccion } from 'src/app/models/eleccion';
 import { ErroresEleccion } from 'src/app/models/erroresEleccion';
 import { ProfesoresService } from 'src/app/services/profesores.service';
 
-import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay} from "./utils";
+import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay } from "./utils";
+import { SearchSidenavComponent } from 'src/app/util-components/search-sidenav/search-sidenav.component';
+import { BootstrapOptions } from '@angular/core/src/application_ref';
 
 @Component({
   selector: 'app-eleccion-list',
@@ -31,6 +33,7 @@ export class EleccionListComponent implements OnInit {
   eleccion: Eleccion;
   valida: boolean;
   errores: ErroresEleccion;
+  @ViewChild(SearchSidenavComponent) child: SearchSidenavComponent;
 
   // utils functions are declared because the view code need to call them
   isMinimiceLeft;
@@ -55,7 +58,14 @@ export class EleccionListComponent implements OnInit {
     this.desdoblesSelected = [];
     this.getAsignaturas();
   }
-
+  updateLoading(state: boolean){
+    console.log("updateLoading", state);
+    this.loading = state;
+  }
+  updateAsignaturas(asignaturas: Asignatura[]){
+    console.log("updateAsignaturas", asignaturas);
+    this.asignaturas = asignaturas;
+  }
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
@@ -77,7 +87,7 @@ export class EleccionListComponent implements OnInit {
                 const { asignaturas, desdobles } = eleccion;
                 this.fillAsignaturasWithEleccion(asignaturas);
 
-                if (desdobles.length){ // If there are desdobles
+                if (desdobles.length) { // If there are desdobles
                   this.fillDesdoblesWithEleccion(desdobles);
                 }
 
@@ -177,32 +187,32 @@ export class EleccionListComponent implements OnInit {
     return this.eleccion;
   }
 
-  onSelectAsignatura(asignatura, {selected}) {
+  onSelectAsignatura(asignatura, { selected }) {
     if (selected) {
       this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
     }
-    else{
+    else {
       this.asignaturasSelected = this.asignaturasSelected.filter(asign => asign.id !== asignatura.id);
     }
 
     this.comprobarEleccion();
   }
 
-  onSelectDesdoble(asignatura, {selected}) {
+  onSelectDesdoble(asignatura, { selected }) {
     if (selected) {
       this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
     }
-    else{
+    else {
       this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
     }
     this.comprobarEleccion();
   }
 
-  comprobarEleccion(){
+  comprobarEleccion() {
     this.eleccionService.comprobarEleccion(this.updateEleccion())
       .subscribe(errores => {
         this.errores = errores;
-        const {L, M, X, J, V} = errores;
+        const { L, M, X, J, V } = errores;
         this.valida = L == null
           && M == null
           && X == null

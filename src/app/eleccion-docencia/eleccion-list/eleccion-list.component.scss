@@ -122,3 +122,19 @@
         width: unset;
     }
 }
+
+.sidenav{
+    width: 30%;
+}
+
+.topMenu{
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+.buscar{
+    display: flex;
+}
+.separator{
+    flex: 1;
+}

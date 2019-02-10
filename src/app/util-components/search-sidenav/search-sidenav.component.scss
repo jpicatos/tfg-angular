@@ -1,0 +1,32 @@
+.mostrar {
+    margin-left: 0;
+}
+
+.columnizar {
+    display: flex;
+    flex-direction: column;
+}
+
+.mat-expansion-panel-header-title {
+    font-size: 20px;
+}
+
+.mat-checkbox {
+    width: fit-content;
+}
+
+.buscar {
+    display: flex;
+}
+
+.buscar .mat-form-field {
+    flex-grow: 1;
+}
+
+.opts button {
+    display: block;
+}
+
+.searchContainer{
+    padding: 0 20px 20px 20px;
+}
