@@ -34,6 +34,9 @@ export class EleccionListComponent implements OnInit {
   valida: boolean;
   errores: ErroresEleccion;
   @ViewChild(SearchSidenavComponent) child: SearchSidenavComponent;
+  searchVals:{
+    nombre: string
+  }
 
   // utils functions are declared because the view code need to call them
   isMinimiceLeft;
@@ -48,6 +51,9 @@ export class EleccionListComponent implements OnInit {
     this.isMinimiceRight = isMinimiceRight;
     this.minimiceRight = minimiceRight;
     this.fetchDay = fetchDay;
+    this.searchVals = {
+      nombre: ''
+    }
   }
 
   ngOnInit() {
@@ -58,14 +64,27 @@ export class EleccionListComponent implements OnInit {
     this.desdoblesSelected = [];
     this.getAsignaturas();
   }
-  updateLoading(state: boolean){
+
+  search(): void {
+    this.loading = true;
+    this.asignaturasService.searchAsignatura("", this.searchVals.nombre, "", "", 0, "", "", [])
+      .subscribe(asignaturas => {
+         this.updateAsignaturas(asignaturas);
+         this.loading = false;
+        });
+  }
+
+  updateLoading(state: boolean) {
     console.log("updateLoading", state);
     this.loading = state;
   }
-  updateAsignaturas(asignaturas: Asignatura[]){
+
+  updateAsignaturas(asignaturas: Asignatura[]) {
     console.log("updateAsignaturas", asignaturas);
     this.asignaturas = asignaturas;
+    this.fillSelected();
   }
+
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {

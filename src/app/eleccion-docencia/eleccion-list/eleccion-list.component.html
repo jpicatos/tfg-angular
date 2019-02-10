@@ -10,7 +10,7 @@
             <div class="topMenu">
                 <form class="buscar">
                     <mat-form-field>
-                        <input (keyup)="search()" matInput>
+                        <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
                         <mat-placeholder>
                             Buscar por nombre
                         </mat-placeholder>
