@@ -15,6 +15,7 @@ import { AuthenticationService } from './auth/authentication.service';
 
 import { HttpErrorInterceptor } from './errors/error-handler';
 import { EleccionDocenciaModule } from './eleccion-docencia/eleccion-docencia.module';
+import { UtilComponentsModule } from "./util-components/util-components.module";
 // import { CustomGoogleCalendarComponent } from './custom-google-calendar/custom-google-calendar.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { EleccionDocenciaModule } from './eleccion-docencia/eleccion-docencia.mo
     BrowserModule,
     BrowserAnimationsModule,
     routing,
+    UtilComponentsModule
   ],
   exports: [
     HttpClientModule,

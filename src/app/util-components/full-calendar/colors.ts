@@ -16,6 +16,7 @@ const Colors = [
     "#CCD1D1",
     "#AEB6BF",
     "#ABB2B9",
+    "#e5c6a0"
 ];
 export const getRandomColor = () => {
     var num = Math.round(Math.random() * (Colors.length - 0) + 0);
