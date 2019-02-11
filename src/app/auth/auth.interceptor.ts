@@ -1,33 +1,100 @@
+import { HttpErrorResponse, HttpHandler, HttpHeaderResponse, HttpInterceptor, HttpProgressEvent, HttpRequest, HttpResponse, HttpSentEvent, HttpUserEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-    HttpRequest,
-    HttpHandler,
-    HttpEvent,
-    HttpInterceptor
-} from '@angular/common/http';
-import { AuthenticationService } from './authentication.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, empty, Observable, throwError } from 'rxjs';
+import { catchError, filter, finalize, switchMap, take } from "rxjs/internal/operators";
+import { AvisosService } from '../services/avisos.service';
+import { AuthenticationService, Token } from './authentication.service';
+
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(public auth: AuthenticationService, private router: Router) { }
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const url = 'http://tfg.davidarroyo.es';
-        let headers = {};
+  constructor(private authService: AuthenticationService, private avisosService: AvisosService) { }
 
-        let token = JSON.parse(localStorage.getItem('token'));
+  isRefreshingToken: boolean = false;
+  tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-        if (token) {
-            headers = { Authorization: "Token " + token };
-        }
+  intercept(request: HttpRequest<any>, next: HttpHandler) : Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any> | any> {
 
-        request = request.clone({
-            url: url + request.url,
-            setHeaders: headers
-        });
-        
-        return next.handle(request);
+    let errMsg = '';
+
+    return next.handle(this.addTokenToRequest(request, this.authService.getAuthToken()))
+      .pipe(
+        catchError(err => {
+          if (err instanceof HttpErrorResponse) {
+
+            if (err.url) {
+              if (err.url.includes('/token/') || err.url.includes('/token/refresh/')) {
+                for (var key in err.error) {
+                  if (err.error.hasOwnProperty(key)) {
+                    errMsg = JSON.stringify(err.error[key]).replace(/[^\w\s]/gi, " ");
+                  }
+                }
+                this.avisosService.enviarMensaje(errMsg);
+              }
+            }
+
+            switch ((<HttpErrorResponse>err).status) {
+              case 401:
+                return this.handle401Error(request, next);
+              case 400:
+                return <any>this.authService.logout();
+              case 0:
+                this.avisosService.enviarMensaje("Hay problemas de conexión con el servidor");
+                return empty();
+            }
+          } else {
+            return throwError(err);
+          }
+        }));
+  }
+
+  private addTokenToRequest(request: HttpRequest<any>, token: string) : HttpRequest<any> {
+    const url = 'http://tfg.davidarroyo.es';
+    return request.clone({ url: url + request.url, setHeaders: { Authorization: `Bearer ${token}`}});
+  }
+
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+
+    if (this.authService.refreshed) {
+      return <any>this.authService.logout();
     }
+
+    else if(!this.isRefreshingToken) {
+      this.isRefreshingToken = true;
+
+      // Reset here so that the following requests wait until the token
+      // comes back from the refreshToken call.
+      this.tokenSubject.next(null);
+
+      return this.authService.refresh()
+        .pipe(
+          switchMap((user: Token) => {
+            
+            if(user) {
+              this.tokenSubject.next(user.access);
+              localStorage.setItem('currentUser', JSON.stringify(user));
+              return next.handle(this.addTokenToRequest(request, user.access));
+            }
+
+            return <any>this.authService.logout();
+          }),
+          catchError(err => {
+            return <any>this.authService.logout();
+          }),
+          finalize(() => {
+            this.isRefreshingToken = false;
+          })
+        );
+    } else {
+      this.isRefreshingToken = false;
+
+      return this.tokenSubject
+        .pipe(filter(token => token != null),
+          take(1),
+          switchMap(token => {
+          return next.handle(this.addTokenToRequest(request, token));
+        }));
+    }
+  }
 }

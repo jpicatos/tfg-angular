@@ -79,7 +79,25 @@
                                         <p>{{e.cuatrimestre}} cuatrimestre - {{e.curso}}{{e.grupo}}</p>
                                         <mat-card-content>
                                             <mat-chip-list>
-                                                <mat-chip>Teoría</mat-chip>
+                                                <mat-chip>Teoría + desdoble</mat-chip>
+                                            </mat-chip-list>
+                                        </mat-card-content>
+                                        <mat-card-actions>
+                                            <button mat-button [routerLink]="'/asignaturas/' + e.id">DETALLES</button>
+                                        </mat-card-actions>
+                                    </mat-card>
+                                </mat-grid-tile>
+                                <mat-grid-tile *ngFor="let e of docenciaDesdobles">
+                                    <mat-card>
+                                        <mat-card-title>[{{e.siglas}}] {{e.nombre}}</mat-card-title>
+                                        <mat-card-subtitle>
+                                            <strong>Horario: </strong>
+                                            <p *ngFor="let h of e.horario">{{h.dia}}: {{h.hora_inicio}}-{{h.hora_fin}} ({{h.aula}})</p>
+                                        </mat-card-subtitle>
+                                        <p>{{e.cuatrimestre}} cuatrimestre - {{e.curso}}{{e.grupo}}</p>
+                                        <mat-card-content>
+                                            <mat-chip-list>
+                                                <mat-chip>Desdoble</mat-chip>
                                             </mat-chip-list>
                                         </mat-card-content>
                                         <mat-card-actions>

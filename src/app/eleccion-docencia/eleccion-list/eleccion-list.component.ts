@@ -147,14 +147,14 @@ export class EleccionListComponent implements OnInit {
   }
 
   fillDesdoblesWithEleccion(desdobles) {
-    desdobles.map(idDesdoble => {
+    desdobles.map(_desdoble => {
 
-      this.asignaturasService.getAsignaturaDesdoble(idDesdoble)
+      this.asignaturasService.getAsignaturaDesdoble(_desdoble.id)
         .subscribe(asignatura => {
           this.desdoblesSelected = [...asignatura];
           this.asignaturas.map(asignatura => {
             asignatura.desdobles.map(desdoble => {
-              if (idDesdoble == desdoble.id)
+              if (_desdoble.id == desdoble.id)
                 desdoble.selected = true;
             })
           });

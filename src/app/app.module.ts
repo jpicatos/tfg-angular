@@ -13,15 +13,12 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { AuthGuardService as AuthGuard } from './auth/auth-guard.service';
 import { AuthenticationService } from './auth/authentication.service';
 
-import { HttpErrorInterceptor } from './errors/error-handler';
 import { EleccionDocenciaModule } from './eleccion-docencia/eleccion-docencia.module';
 import { UtilComponentsModule } from "./util-components/util-components.module";
-// import { CustomGoogleCalendarComponent } from './custom-google-calendar/custom-google-calendar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // CustomGoogleCalendarComponent
   ],
   imports: [
     AsignaturasModule,
@@ -42,11 +39,6 @@ import { UtilComponentsModule } from "./util-components/util-components.module";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
       multi: true
     },
     AuthenticationService,

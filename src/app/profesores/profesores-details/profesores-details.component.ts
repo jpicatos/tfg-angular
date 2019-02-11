@@ -11,6 +11,7 @@ import { EliminarDialogComponent } from 'src/app/asignaturas/eliminar-dialog/eli
 import { Categoria } from '../../models/categoria';
 import { Eleccion } from '../../models/eleccion';
 import { Desdoble } from '../../models/desdoble';
+import { Asignatura } from 'src/app/models/asignatura';
 
 @Component({
   selector: 'app-profesores-details',
@@ -22,7 +23,7 @@ export class ProfesoresDetailsComponent implements OnInit {
   loaded: boolean;
   displayedColumns: string[];
   docencia: Eleccion;
-  docenciaDesdobles: Desdoble[];
+  docenciaDesdobles: Asignatura[];
   categorias: Categoria[];
 
   constructor(private angularService: ProfesoresService, private asignaturasService: AsignaturasService,
@@ -30,7 +31,7 @@ export class ProfesoresDetailsComponent implements OnInit {
     private dialog: MatDialog, private route: ActivatedRoute, private titleService: Title) {
     this.loaded = false;
     this.profesor = new Profesor;
-
+    this.docenciaDesdobles = [];
   }
 
   ngOnInit() {
@@ -44,6 +45,14 @@ export class ProfesoresDetailsComponent implements OnInit {
       if (this.profesor.docencia != null) {
         this.eleccionService.getEleccion(this.profesor.docencia).subscribe(eleccion => {
           this.docencia = eleccion;
+          eleccion.desdobles.map(desdoble => {
+            this.asignaturasService.getAsignaturaDesdoble(desdoble.id).subscribe(
+              asignaturaDesdoble => {
+                asignaturaDesdoble[0].horario = desdoble.horario;
+                this.docenciaDesdobles.push(asignaturaDesdoble[0]);
+              }
+            );
+          });
           this.loaded = true;
         });
       }
