@@ -39,8 +39,13 @@ export class AuthInterceptor implements HttpInterceptor {
                 return this.handle401Error(request, next);
               case 400:
                 return <any>this.authService.logout();
+              case 403:
+                this.avisosService.enviarMensaje("No tienes permisos para realizar la acción");
+                return empty();
               case 0:
                 this.avisosService.enviarMensaje("Hay problemas de conexión con el servidor");
+                return empty();
+              default:
                 return empty();
             }
           } else {
@@ -56,11 +61,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
 
-    if (this.authService.refreshed) {
-      return <any>this.authService.logout();
-    }
-
-    else if(!this.isRefreshingToken) {
+    if(!this.isRefreshingToken) {
       this.isRefreshingToken = true;
 
       // Reset here so that the following requests wait until the token
@@ -73,7 +74,7 @@ export class AuthInterceptor implements HttpInterceptor {
             
             if(user) {
               this.tokenSubject.next(user.access);
-              localStorage.setItem('currentUser', JSON.stringify(user));
+              localStorage.setItem('currentUser', JSON.stringify(user.access));
               return next.handle(this.addTokenToRequest(request, user.access));
             }
 
