@@ -19,11 +19,21 @@
                         <mat-icon>search</mat-icon>
                     </button>
                 </form>
+                <form class="profesores">
+                    Elección de docencia de: 
+                    <mat-form-field>
+                        <mat-select (selectionChange)="fillSelected()" placeholder="Profesor" [(ngModel)]="profesor"
+                            [ngModelOptions]="{standalone: true}">
+                            <mat-option *ngFor="let profe of profesores" [value]=profe>{{profe.usuario.first_name}} {{profe.usuario.last_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
                 <span class="separator"></span>
                 <button mat-icon-button (click)="sidenav.toggle()">
                     <mat-icon aria-label="Filtrar">local_bar</mat-icon>
                 </button>
             </div>
+            <h4 *ngIf="eleccion && !eleccion.asignaturas.length">Este profesor aún no tiene asignaturas en su elección</h4>
             <button class="mat-fab-bottom-right1" mat-fab (click)="clearEleccion()">
                 <mat-icon>delete</mat-icon>
             </button>

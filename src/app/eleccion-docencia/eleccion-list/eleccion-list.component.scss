@@ -138,3 +138,12 @@
 .separator{
     flex: 1;
 }
+.profesores{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    margin: auto;
+    mat-form-field{
+        margin-left: 10px;
+    }
+}

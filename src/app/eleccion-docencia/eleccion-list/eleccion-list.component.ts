@@ -15,6 +15,7 @@ import { ProfesoresService } from 'src/app/services/profesores.service';
 import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay } from "./utils";
 import { SearchSidenavComponent } from 'src/app/util-components/search-sidenav/search-sidenav.component';
 import { BootstrapOptions } from '@angular/core/src/application_ref';
+import { Profesor } from 'src/app/models/profesor';
 
 @Component({
   selector: 'app-eleccion-list',
@@ -33,8 +34,10 @@ export class EleccionListComponent implements OnInit {
   eleccion: Eleccion;
   valida: boolean;
   errores: ErroresEleccion;
+  profesor: Profesor;
+  profesores: Profesor[];
   @ViewChild(SearchSidenavComponent) child: SearchSidenavComponent;
-  searchVals:{
+  searchVals: {
     nombre: string
   }
 
@@ -63,24 +66,26 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasSelected = [];
     this.desdoblesSelected = [];
     this.getAsignaturas();
+    this.profesoresService.getProfesores()
+      .subscribe((profesores) => {
+        this.profesores = profesores;
+      })
   }
 
   search(): void {
     this.loading = true;
     this.asignaturasService.searchAsignatura("", this.searchVals.nombre, "", "", 0, "", "", [])
       .subscribe(asignaturas => {
-         this.updateAsignaturas(asignaturas);
-         this.loading = false;
-        });
+        this.updateAsignaturas(asignaturas);
+        this.loading = false;
+      });
   }
 
   updateLoading(state: boolean) {
-    console.log("updateLoading", state);
     this.loading = state;
   }
 
   updateAsignaturas(asignaturas: Asignatura[]) {
-    console.log("updateAsignaturas", asignaturas);
     this.asignaturas = asignaturas;
     this.fillSelected();
   }
@@ -89,50 +94,42 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
         this.asignaturas = asignaturas;
-        this.fillSelected();
+
+        this.profesoresService.getProfesores()
+          .subscribe((profesores) => {
+            this.profesores = profesores;
+            !this.profesor ? this.profesor = this.profesores[0] : null;
+            this.fillSelected();
+          })
       })
   }
 
-
   fillSelected() {
-    // var testProfesor = 16;
-    var testProfesor = 17;
-    this.profesoresService.getProfesor(testProfesor)
-      .subscribe(profesor => {
-        if (profesor.docencia !== null) {
-          this.eleccionService.getEleccion(profesor.docencia)
-            .subscribe({
-              next: eleccion => {
-                const { asignaturas, desdobles } = eleccion;
-                this.fillAsignaturasWithEleccion(asignaturas);
+    this.loading = true;
+    MenuToolbarComponent.updateTitle(`Elección Docencia (${this.profesor.usuario.first_name} ${this.profesor.usuario.last_name})`);
+    this.eleccion = new Eleccion;
+    this.eleccion.asignaturas = new Array;
+    this.eleccion.desdobles = new Array;
+    this.eleccion.confirmada = false;
+    this.eleccion.profesor = this.profesor.usuario.id;
+    this.clearEleccion();
+    if (this.profesor.docencia !== null) {
+      this.eleccionService.getEleccion(this.profesor.docencia)
+        .subscribe(eleccion => {
+          const { asignaturas, desdobles } = eleccion;
+          this.fillAsignaturasWithEleccion(asignaturas);
 
-                if (desdobles.length) { // If there are desdobles
-                  this.fillDesdoblesWithEleccion(desdobles);
-                }
-
-                this.eleccion = eleccion;
-                this.updateEleccion();
-                this.loading = false;
-              },
-              error: err => {
-                if (err === "No encontrado") {
-                  this.avisosService.enviarMensaje("Es tu primera vez, bienvenid@");
-                }
-                this.eleccion = new Eleccion;
-                this.eleccion.confirmada = false;
-                this.eleccion.profesor = testProfesor;
-
-              }
-            });
-        }
-        else {
-          this.eleccion = new Eleccion;
-          this.eleccion.confirmada = false;
-          this.eleccion.profesor = testProfesor;
+          if (desdobles.length) { // If there are desdobles
+            this.fillDesdoblesWithEleccion(desdobles);
+          }
           this.loading = false;
-        }
-
-      });
+          this.updateEleccion();
+          this.eleccion = eleccion;
+        });
+    }
+    else {
+      this.loading = false;
+    }
   }
 
   fillAsignaturasWithEleccion(asignaturas) {
@@ -180,7 +177,6 @@ export class EleccionListComponent implements OnInit {
   clearEleccion() {
     this.desdoblesSelected = [];
     this.asignaturasSelected = [];
-
     this.asignaturas.map(asignatura => {
       asignatura.selected = false;
 
@@ -195,23 +191,23 @@ export class EleccionListComponent implements OnInit {
 
   updateEleccion() {
     this.eleccion.asignaturas = [];
-    this.eleccion.asignaturas = this.asignaturasSelected.map(asignatura => {
-      return asignatura.id
-    })
+    this.eleccion.asignaturas = this.asignaturasSelected.map(asignatura => asignatura.id)
 
     this.eleccion.desdobles = [];
-    this.eleccion.desdobles = this.desdoblesSelected.map(desdoble => {
-      return desdoble.desdobles[0].id;
-    })
+    this.eleccion.desdobles = this.desdoblesSelected.map(desdoble => desdoble.desdobles[0].id)
+
     return this.eleccion;
   }
 
   onSelectAsignatura(asignatura, { selected }) {
     if (selected) {
       this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
+      this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
+
     }
     else {
       this.asignaturasSelected = this.asignaturasSelected.filter(asign => asign.id !== asignatura.id);
+      this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
     }
 
     this.comprobarEleccion();
@@ -220,6 +216,13 @@ export class EleccionListComponent implements OnInit {
   onSelectDesdoble(asignatura, { selected }) {
     if (selected) {
       this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
+      this.asignaturas.map(asignaturaMap => {
+        if (asignatura === asignaturaMap) {
+          asignatura.desdobles.map(desdoble => {
+            desdoble.selected = true;
+          })
+        }
+      });
     }
     else {
       this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
