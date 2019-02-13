@@ -12,6 +12,7 @@ export class Asignatura{
     titulacion: string;
     departamento: string;
     horario: Horario[];
+    creditos: number;
     desdobles: Desdoble[];
     calendario: Calendario;
     docencia: Docencia;

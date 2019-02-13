@@ -123,27 +123,31 @@
     }
 }
 
-.sidenav{
+.sidenav {
     width: 30%;
 }
 
-.topMenu{
+.topMenu {
     display: flex;
     align-items: center;
     padding: 0 10px;
+    font-size: 0.8em;
 }
-.buscar{
+
+.buscar {
     display: flex;
 }
-.separator{
+
+.separator {
     flex: 1;
 }
-.profesores{
+
+.profesores {
     display: flex;
     align-items: center;
     justify-items: center;
     margin: auto;
-    mat-form-field{
+    mat-form-field {
         margin-left: 10px;
     }
 }

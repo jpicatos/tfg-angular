@@ -27,6 +27,16 @@
     display: block;
 }
 
-.searchContainer{
+.searchContainer {
     padding: 0 20px 20px 20px;
+    .title-buscar {
+        overflow: hidden;
+        .close {
+            float: right;
+            margin-top: 10px;
+        }
+        .title {
+            float: left;
+        }
+    }
 }

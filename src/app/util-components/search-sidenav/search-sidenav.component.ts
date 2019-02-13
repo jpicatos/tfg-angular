@@ -1,6 +1,8 @@
-import { Component, OnInit, NgModule, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, NgModule, Output, EventEmitter, Input } from '@angular/core';
 import { Asignatura } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
+import { MatSidenav } from '@angular/material';
+
 
 @Component({
   selector: 'app-search-sidenav',
@@ -26,6 +28,8 @@ export class SearchSidenavComponent implements OnInit {
 
   ayudaHoraIni = "A partir de la hora...";
   ayudaHoraFin = "Antes de la hora...";
+  @Input() sidenav: MatSidenav;
+
   constructor(private asignaturasService: AsignaturasService) {
     this.asignaturas = [];
     this.selected = 1;

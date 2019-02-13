@@ -4,6 +4,7 @@ import { Docencia } from "./asignatura";
 export class Desdoble {
     id: number;
     horario: Horario[];
+    creditos: number;
     docencia: Docencia;
     selected: boolean;
 

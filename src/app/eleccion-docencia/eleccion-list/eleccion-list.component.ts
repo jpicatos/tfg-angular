@@ -36,6 +36,7 @@ export class EleccionListComponent implements OnInit {
   errores: ErroresEleccion;
   profesor: Profesor;
   profesores: Profesor[];
+  creditos: number;
   @ViewChild(SearchSidenavComponent) child: SearchSidenavComponent;
   searchVals: {
     nombre: string
@@ -57,6 +58,7 @@ export class EleccionListComponent implements OnInit {
     this.searchVals = {
       nombre: ''
     }
+    this.creditos = 0;
   }
 
   ngOnInit() {
@@ -76,7 +78,7 @@ export class EleccionListComponent implements OnInit {
     this.loading = true;
     this.asignaturasService.searchAsignatura("", this.searchVals.nombre, "", "", 0, "", "", [])
       .subscribe(asignaturas => {
-        this.updateAsignaturas(asignaturas);
+        this.updateAsignaturas(asignaturas, false);
         this.loading = false;
       });
   }
@@ -85,21 +87,19 @@ export class EleccionListComponent implements OnInit {
     this.loading = state;
   }
 
-  updateAsignaturas(asignaturas: Asignatura[]) {
+  updateAsignaturas(asignaturas: Asignatura[], refreshSelected: boolean) {
     this.asignaturas = asignaturas;
-    this.fillSelected();
+    if (refreshSelected) this.fillSelected();
   }
 
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
-        this.asignaturas = asignaturas;
-
         this.profesoresService.getProfesores()
           .subscribe((profesores) => {
             this.profesores = profesores;
             !this.profesor ? this.profesor = this.profesores[0] : null;
-            this.fillSelected();
+            this.updateAsignaturas(asignaturas, true);
           })
       })
   }
@@ -137,6 +137,7 @@ export class EleccionListComponent implements OnInit {
     this.asignaturas.map(asignatura => {
       this.asignaturasSelected.map(selected => {
         if (selected.id === asignatura.id) {
+          this.creditos += selected.creditos;
           asignatura.selected = true;
         }
       })
@@ -151,8 +152,10 @@ export class EleccionListComponent implements OnInit {
           this.desdoblesSelected = [...asignatura];
           this.asignaturas.map(asignatura => {
             asignatura.desdobles.map(desdoble => {
-              if (_desdoble.id == desdoble.id)
+              if (_desdoble.id == desdoble.id) {
+                this.creditos += desdoble.creditos;
                 desdoble.selected = true;
+              }
             })
           });
         });
@@ -203,11 +206,13 @@ export class EleccionListComponent implements OnInit {
     if (selected) {
       this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
       this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
+      this.creditos += asignatura.creditos;
 
     }
     else {
       this.asignaturasSelected = this.asignaturasSelected.filter(asign => asign.id !== asignatura.id);
       this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
+      this.creditos -= asignatura.creditos;
     }
 
     this.comprobarEleccion();
@@ -219,6 +224,7 @@ export class EleccionListComponent implements OnInit {
       this.asignaturas.map(asignaturaMap => {
         if (asignatura === asignaturaMap) {
           asignatura.desdobles.map(desdoble => {
+            this.creditos += desdoble.creditos;
             desdoble.selected = true;
           })
         }
@@ -226,6 +232,7 @@ export class EleccionListComponent implements OnInit {
     }
     else {
       this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
+      this.creditos -= asignatura.desdobles[0].creditos;
     }
     this.comprobarEleccion();
   }
