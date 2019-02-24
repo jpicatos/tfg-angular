@@ -16,6 +16,7 @@ export class Asignatura{
     desdobles: Desdoble[];
     calendario: Calendario;
     docencia: Docencia;
+    divisible: boolean;
     color: string;
     selected: boolean;
 
@@ -31,6 +32,8 @@ export class Docencia {
     id: number;
     fecha: string;
     confirmada: boolean;
+    pda: number;
+    deuda: number;
     profesor: number;
 }
 
