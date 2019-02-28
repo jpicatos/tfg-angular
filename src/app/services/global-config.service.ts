@@ -43,7 +43,7 @@ export class GlobalConfigService {
   saveUserInfo(user_id, admin): void {
     this.globalConfig.admin = admin;
     this.globalConfig.user_id = user_id;
-    this.profesoresService.getProfesor(2)
+    this.profesoresService.getProfesor(user_id)
       .subscribe(profe => {
         this.globalConfig.usuario.next(profe);
         console.log('userInfoSaved')
