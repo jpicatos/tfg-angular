@@ -17,6 +17,7 @@ import { SearchSidenavComponent } from 'src/app/util-components/search-sidenav/s
 import { BootstrapOptions } from '@angular/core/src/application_ref';
 import { Profesor } from 'src/app/models/profesor';
 import { GlobalConfigService } from 'src/app/services/global-config.service';
+import { Usuario } from 'src/app/models/usuario';
 
 @Component({
   selector: 'app-eleccion-list',
@@ -28,6 +29,7 @@ import { GlobalConfigService } from 'src/app/services/global-config.service';
   providers: [AsignaturasService, EleccionService]
 })
 export class EleccionListComponent implements OnInit {
+  admin: boolean;
   asignaturas: Asignatura[];
   loading: boolean;
   asignaturasSelected: Asignatura[];
@@ -51,6 +53,10 @@ export class EleccionListComponent implements OnInit {
   fetchDay;
 
   constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService) {
+    this.admin = this.globalConfigService.isAdmin()
+    this.profesor = new Profesor;
+    this.profesor.usuario = new Usuario;
+    
     this.isMinimiceLeft = isMinimiceLeft;
     this.minimiceLeft = minimiceLeft;
     this.isMinimiceRight = isMinimiceRight;
@@ -60,7 +66,6 @@ export class EleccionListComponent implements OnInit {
       nombre: ''
     }
     this.creditos = 0;
-    console.log(this.globalConfigService.isAdmin())
   }
 
   ngOnInit() {
@@ -69,11 +74,19 @@ export class EleccionListComponent implements OnInit {
     this.valida = true;
     this.asignaturasSelected = [];
     this.desdoblesSelected = [];
-    this.getAsignaturas();
-    this.profesoresService.getProfesores()
-      .subscribe((profesores) => {
-        this.profesores = profesores;
-      })
+    this.globalConfigService.getUserinfo().subscribe(profe => {
+      this.profesor = profe
+      this.getAsignaturas();
+      console.log(profe)
+    });
+
+    if (this.admin) {
+      this.profesoresService.getProfesores()
+        .subscribe((profesores) => {
+          this.profesores = profesores;
+        })
+    }
+
   }
 
   search(): void {
@@ -97,18 +110,20 @@ export class EleccionListComponent implements OnInit {
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
-        this.profesoresService.getProfesores()
-          .subscribe((profesores) => {
-            this.profesores = profesores;
-            !this.profesor ? this.profesor = this.profesores[0] : null;
-            this.updateAsignaturas(asignaturas, true);
-          })
+
+        if (this.admin) {
+          this.profesoresService.getProfesores()
+            .subscribe((profesores) => {
+              this.profesores = profesores;
+              this.profesor ? this.profesor = this.profesores[0] : null;
+            })
+        }
+        this.updateAsignaturas(asignaturas, true);
       })
   }
 
   fillSelected() {
     this.loading = true;
-    MenuToolbarComponent.updateTitle(`Elección Docencia (${this.profesor.usuario.first_name} ${this.profesor.usuario.last_name})`);
     this.eleccion = new Eleccion;
     this.eleccion.asignaturas = new Array;
     this.eleccion.desdobles = new Array;
@@ -116,6 +131,7 @@ export class EleccionListComponent implements OnInit {
     this.eleccion.profesor = this.profesor.usuario.id;
     this.clearEleccion();
     if (this.profesor.docencia !== null) {
+      debugger
       this.eleccionService.getEleccion(this.profesor.docencia)
         .subscribe(eleccion => {
           const { asignaturas, desdobles } = eleccion;

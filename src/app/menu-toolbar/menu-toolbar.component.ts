@@ -12,15 +12,16 @@ import { Usuario } from '../models/usuario';
 })
 
 export class MenuToolbarComponent implements OnInit {
-
+  admin: boolean;
   private static routeTitle: string;
   usuario: Profesor;
 
   constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService) {
     MenuToolbarComponent.routeTitle = "";
+    this.admin = this.globalConfigService.isAdmin();
     this.usuario = new Profesor;
     this.usuario.usuario = new Usuario;
-    this.globalConfigService.getUserinfo().subscribe(u => this.usuario = u)
+    this.globalConfigService.getUserinfo().subscribe(u => this.usuario = u);
   }
 
   ngOnInit() {

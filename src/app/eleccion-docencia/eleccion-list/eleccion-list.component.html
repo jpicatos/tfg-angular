@@ -1,8 +1,6 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
-{{admin}}
 <div class="total-container">
     <mat-sidenav-container>
-        <!-- <app-search-sidenav>loading</app-search-sidenav> -->
         <mat-sidenav #sidenav [autoFocus]="false" [mode]="over" position="end" class="sidenav">
             <app-search-sidenav [sidenav]="sidenav" (updateLoading)="updateLoading($event)" (updateAsignaturas)="updateAsignaturas($event)"></app-search-sidenav>
         </mat-sidenav>
@@ -21,7 +19,7 @@
                         <mat-icon>search</mat-icon>
                     </button>
                         </form>
-                        <form class="profesores">
+                        <form class="profesores" *ngIf="admin">
                             Elección de docencia de:
                             <mat-form-field>
                                 <mat-select (selectionChange)="fillSelected()" [(ngModel)]="profesor" [ngModelOptions]="{standalone: true}">

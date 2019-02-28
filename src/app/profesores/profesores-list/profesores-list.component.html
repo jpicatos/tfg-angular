@@ -120,11 +120,11 @@
         </div>
     </mat-card>
     <div class="opts">
-        <button mat-raised-button color="accent" routerLink="/add-profesor" class="addButton">
+        <button mat-raised-button color="accent" routerLink="/add-profesor" class="addButton" *ngIf="admin">
             <mat-icon>add</mat-icon>Añadir nuevo profesor
         </button>
 
-        <button mat-raised-button color="accent" routerLink="/importar-profesores" class="addButton">
+        <button mat-raised-button color="accent" routerLink="/importar-profesores" class="addButton" *ngIf="admin">
             <mat-icon>cloud_upload</mat-icon> Importar profesores
         </button>
         <mat-expansion-panel class="mostrar card" [expanded]="true">

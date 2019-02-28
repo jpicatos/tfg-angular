@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AsignaturasService } from "../../services/asignaturas.service";
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
+import { GlobalConfigService } from 'src/app/services/global-config.service';
 
 @Component({
   selector: 'app-asignaturas',
@@ -16,6 +17,8 @@ import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component'
   providers: [AsignaturasService]
 })
 export class AsignaturasListComponent implements OnInit {
+  admin: boolean;
+
   asignaturas: Asignatura[];
   selectedAsignatura: Asignatura;
   selected: number;
@@ -44,8 +47,10 @@ export class AsignaturasListComponent implements OnInit {
   ayudaHoraIni = "A partir de la hora...";
   ayudaHoraFin = "Antes de la hora...";
 
-  constructor(private asignaturasService: AsignaturasService, private router: Router, private titleService: Title) {
+  constructor(private asignaturasService: AsignaturasService, private router: Router, private titleService: Title, private globalConfigservice: GlobalConfigService) {
     this.titleService.setTitle("Asignaturas");
+    this.admin = this.globalConfigservice.isAdmin();
+    
     this.selected = 1;
     this.opts = {
       codigo: true,

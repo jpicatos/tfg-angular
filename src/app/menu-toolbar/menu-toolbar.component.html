@@ -3,7 +3,7 @@
         <div class="user-container">
             <div class="icon-container">
                 <div class="user-icon"></div>
-                <!-- <span>Admin</span> -->
+                <span *ngIf="admin">Admin</span>
             </div>
             <div class="username-container">
                 <span>{{usuario.usuario.first_name}} {{usuario.usuario.last_name}} </span>
@@ -36,6 +36,7 @@
                 </span>
             </button>
             <mat-divider></mat-divider>
+            <p class="menu-title">Docencia</p>
             <button mat-button routerLink="/eleccion-docencia" (click)="sidenav.toggle()">
                 <span class="menu-button-content">
                     <mat-icon>view_list</mat-icon>
@@ -43,14 +44,14 @@
                 </span>
             </button>
             <mat-divider></mat-divider>
-            <p class="menu-title">Configuración</p>
-            <button mat-button>
+            <p class="menu-title"  *ngIf="admin">Configuración</p>
+            <button mat-button  *ngIf="admin">
                 <span class="menu-button-content">
                     <mat-icon>settings</mat-icon>
                     CONFIGURACIÓN
                 </span>
             </button>
-            <mat-divider></mat-divider>
+            <mat-divider *ngIf="admin"></mat-divider>
             <mat-divider></mat-divider>
             <button mat-button class="dash-button" routerLink="/salir">
                 <span class="menu-button-content">

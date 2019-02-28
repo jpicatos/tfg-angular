@@ -12,6 +12,7 @@ import { Categoria } from '../../models/categoria';
 import { Eleccion } from '../../models/eleccion';
 import { Desdoble } from '../../models/desdoble';
 import { Asignatura } from 'src/app/models/asignatura';
+import { GlobalConfigService } from 'src/app/services/global-config.service';
 
 @Component({
   selector: 'app-profesores-details',
@@ -19,6 +20,8 @@ import { Asignatura } from 'src/app/models/asignatura';
   styleUrls: ['./profesores-details.component.scss']
 })
 export class ProfesoresDetailsComponent implements OnInit {
+  admin: boolean;
+
   @Input() profesor: Profesor;
   loaded: boolean;
   displayedColumns: string[];
@@ -26,12 +29,17 @@ export class ProfesoresDetailsComponent implements OnInit {
   docenciaDesdobles: Asignatura[];
   categorias: Categoria[];
 
-  constructor(private angularService: ProfesoresService, private asignaturasService: AsignaturasService,
+  constructor(private angularService: ProfesoresService,
+    private asignaturasService: AsignaturasService,
     private eleccionService: EleccionService,
-    private dialog: MatDialog, private route: ActivatedRoute, private titleService: Title) {
-    this.loaded = false;
-    this.profesor = new Profesor;
-    this.docenciaDesdobles = [];
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private titleService: Title,
+    private globalConfigService: GlobalConfigService) {
+      this.admin = this.globalConfigService.isAdmin();
+      this.loaded = false;
+      this.profesor = new Profesor;
+      this.docenciaDesdobles = [];  
   }
 
   ngOnInit() {
@@ -41,7 +49,7 @@ export class ProfesoresDetailsComponent implements OnInit {
     this.angularService.getProfesor(id).subscribe(profesor => {
       this.getCategoria(profesor.categoria);
       this.update(profesor);
-      
+
       if (this.profesor.docencia != null) {
         this.eleccionService.getEleccion(this.profesor.docencia).subscribe(eleccion => {
           this.docencia = eleccion;
@@ -57,7 +65,7 @@ export class ProfesoresDetailsComponent implements OnInit {
         });
       }
       else this.loaded = true;
-      
+
     });
   }
 
@@ -85,13 +93,13 @@ export class ProfesoresDetailsComponent implements OnInit {
     );
   }
 
-  getCategoria(cate){
+  getCategoria(cate) {
     this.angularService.getCategoria(cate)
       .subscribe(categoria => {
         this.profesor.categoria = categoria.categoria;
       });
   }
-  getCategorias(){
+  getCategorias() {
     this.angularService.getCategorias()
       .subscribe(categorias => {
         this.categorias = categorias;

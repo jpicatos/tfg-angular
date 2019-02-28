@@ -8,6 +8,7 @@ import { Deuda } from '../../models/deuda';
 import { PrefixNot } from '@angular/compiler';
 import { Usuario } from '../../models/usuario';
 import { Categoria } from '../../models/categoria';
+import { GlobalConfigService } from 'src/app/services/global-config.service';
 
 @Component({
   selector: 'app-profesores-list',
@@ -18,6 +19,8 @@ import { Categoria } from '../../models/categoria';
   providers: [ProfesoresService]
 })
 export class ProfesoresListComponent implements OnInit {
+  admin: boolean;
+
   profesores: Profesor[];
   selectedProfesor: Profesor;
   selected: number;
@@ -45,8 +48,9 @@ export class ProfesoresListComponent implements OnInit {
 
   categorias: Categoria[];
 
-  constructor(private profesoresService: ProfesoresService, private router: Router, private titleService: Title) {
+  constructor(private profesoresService: ProfesoresService, private router: Router, private titleService: Title, private globalConfigService: GlobalConfigService) {
     this.titleService.setTitle("Profesores");
+    this.admin = this.globalConfigService.isAdmin();
     this.selected = 1;
     this.opts = {
       escalafon: true,

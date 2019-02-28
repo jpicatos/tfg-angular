@@ -8,6 +8,7 @@ import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component'
 import { EliminarDialogComponent } from '../eliminar-dialog/eliminar-dialog.component';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { DialogDesdobleComponent } from '../dialog-desdoble/dialog-desdoble.component';
+import { GlobalConfigService } from 'src/app/services/global-config.service';
 
 @Component({
   selector: 'app-asignatura-details',
@@ -15,6 +16,7 @@ import { DialogDesdobleComponent } from '../dialog-desdoble/dialog-desdoble.comp
   styleUrls: ['./asignatura-details.component.scss']
 })
 export class AsignaturaDetailsComponent implements OnInit {
+  admin: boolean;
 
   @Input() asignatura: Asignatura;
   loaded: boolean;
@@ -25,10 +27,15 @@ export class AsignaturaDetailsComponent implements OnInit {
   profesorDesdobleUrl: string;
 
   constructor(private angularService: AsignaturasService,
-    private profesoresService: ProfesoresService, private dialog: MatDialog,
-    private route: ActivatedRoute, private titleService: Title) {
+    private profesoresService: ProfesoresService,
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private titleService: Title,
+    private globalConfigService: GlobalConfigService
+  ) {
     this.loaded = false;
     this.asignatura = new Asignatura;
+    this.admin = this.globalConfigService.isAdmin()
   }
 
   ngOnInit() {
@@ -75,7 +82,7 @@ export class AsignaturaDetailsComponent implements OnInit {
       this.profesorDesdoble = "Sin docencia";
       this.profesorDesdobleUrl = '/eleccion-docencia/';
     }
-    
+
   }
 
   eliminarDialog() {

@@ -36,7 +36,7 @@ export class GlobalConfigService {
     return this.globalConfig.usuario.asObservable();
   }
 
-  isAdmin(): Observable<any>{
+  isAdmin(): boolean{
     return this.globalConfig.admin;
   }
 
