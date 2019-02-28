@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { AvisosService } from './services/avisos.service';
+import { GlobalConfigService } from './services/global-config.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { AvisosService } from './services/avisos.service';
 export class AppComponent implements OnInit {
   title = 'tfg-angular';
 
-  constructor(private avisosService: AvisosService, private snackBar: MatSnackBar) {
+  constructor(private avisosService: AvisosService, private snackBar: MatSnackBar, private globalConfigService: GlobalConfigService) {
   }
 
   ngOnInit(): void {
@@ -21,5 +22,7 @@ export class AppComponent implements OnInit {
         duration: 3000
       });
     })
+    this.globalConfigService.getDepartamento()
+      .subscribe(dep => this.globalConfigService.saveDepartamento(dep));
   }
 }

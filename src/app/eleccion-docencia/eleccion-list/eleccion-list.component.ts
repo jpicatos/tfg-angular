@@ -16,6 +16,7 @@ import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay 
 import { SearchSidenavComponent } from 'src/app/util-components/search-sidenav/search-sidenav.component';
 import { BootstrapOptions } from '@angular/core/src/application_ref';
 import { Profesor } from 'src/app/models/profesor';
+import { GlobalConfigService } from 'src/app/services/global-config.service';
 
 @Component({
   selector: 'app-eleccion-list',
@@ -49,7 +50,7 @@ export class EleccionListComponent implements OnInit {
   minimiceRight;
   fetchDay;
 
-  constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService) {
+  constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService) {
     this.isMinimiceLeft = isMinimiceLeft;
     this.minimiceLeft = minimiceLeft;
     this.isMinimiceRight = isMinimiceRight;
@@ -59,6 +60,7 @@ export class EleccionListComponent implements OnInit {
       nombre: ''
     }
     this.creditos = 0;
+    console.log(this.globalConfigService.isAdmin())
   }
 
   ngOnInit() {

@@ -1,5 +1,5 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
-
+{{admin}}
 <div class="total-container">
     <mat-sidenav-container>
         <!-- <app-search-sidenav>loading</app-search-sidenav> -->
@@ -53,7 +53,9 @@
                                 <mat-list-item>
 
                                     <h4>
-                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos a escoger: {{profesor.creditos_escoger}} créditos</h4>
+                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos a escoger: créditos
+                                         <!-- {{profesor.creditos_escoger}} -->
+                                    </h4>
                                 </mat-list-item>
                                 <mat-list-item>
 

@@ -15,6 +15,7 @@ import { AuthenticationService } from './auth/authentication.service';
 
 import { EleccionDocenciaModule } from './eleccion-docencia/eleccion-docencia.module';
 import { UtilComponentsModule } from "./util-components/util-components.module";
+import { GlobalConfigService } from './services/global-config.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { UtilComponentsModule } from "./util-components/util-components.module";
       multi: true
     },
     AuthenticationService,
-    AuthGuard
+    AuthGuard,
+    GlobalConfigService
   ],
   bootstrap: [AppComponent],
   entryComponents: []

@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ChildActivationStart } from '@angular/router';
 import { empty, Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AvisosService } from '../services/avisos.service';
 import * as jwt_decode from 'jwt-decode';
+import { GlobalConfigService } from '../services/global-config.service';
 
 export class Token {
   access: string;
@@ -17,7 +18,7 @@ export class Token {
 export class AuthenticationService {
   name: BehaviorSubject<string>;
 
-  constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) {
+  constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService, private configService: GlobalConfigService) {
     this.name = new BehaviorSubject("Iniciar sesión");
    }
 
@@ -26,6 +27,7 @@ export class AuthenticationService {
 
     try {
       var decoded = jwt_decode(token);
+      this.configService.saveUserInfo(decoded.user_id, decoded.staff)
       this.name.next(decoded.name);
     }
     catch (error) { console.log("Invalid token") }

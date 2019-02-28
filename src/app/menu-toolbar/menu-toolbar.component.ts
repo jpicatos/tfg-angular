@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../auth/authentication.service';
+import { GlobalConfigService } from '../services/global-config.service';
+import { Profesor } from '../models/profesor';
+import { Usuario } from '../models/usuario';
 
 @Component({
   selector: 'app-menu-toolbar',
@@ -11,14 +14,17 @@ import { AuthenticationService } from '../auth/authentication.service';
 export class MenuToolbarComponent implements OnInit {
 
   private static routeTitle: string;
-  name: string;
+  usuario: Profesor;
 
-  constructor(private route: ActivatedRoute, private authService: AuthenticationService) { 
+  constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService) {
     MenuToolbarComponent.routeTitle = "";
+    this.usuario = new Profesor;
+    this.usuario.usuario = new Usuario;
+    this.globalConfigService.getUserinfo().subscribe(u => this.usuario = u)
   }
 
   ngOnInit() {
-    this.authService.name.subscribe(name => this.name = name)
+
   }
 
   public static updateTitle(title: string): void {
