@@ -37,12 +37,13 @@
             </button>
             <mat-divider></mat-divider>
             <p class="menu-title">Docencia</p>
-            <button mat-button routerLink="/eleccion-docencia" (click)="sidenav.toggle()">
+            <button mat-button routerLink="/eleccion-docencia" (click)="sidenav.toggle()" *ngIf="tuTurno">
                 <span class="menu-button-content">
                     <mat-icon>view_list</mat-icon>
                     DOCENCIA
                 </span>
             </button>
+            <h5 *ngIf="!tuTurno">Todavía no es el turno de tu elección</h5>
             <mat-divider></mat-divider>
             <p class="menu-title"  *ngIf="admin">Configuración</p>
             <button mat-button  *ngIf="admin">
@@ -75,8 +76,9 @@
             </mat-toolbar-row>
 
         </mat-toolbar>
-
+<h2 *ngIf="loading">Loading</h2>
         <router-outlet></router-outlet>
+        
 
 
 

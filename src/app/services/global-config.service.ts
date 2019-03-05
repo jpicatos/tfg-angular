@@ -17,7 +17,7 @@ export class GlobalConfigService {
   }
 
   constructor(private http: HttpClient, private profesoresService: ProfesoresService) { 
-    console.log(this.globalConfig);
+    
   }
 
   getDepartamento(): Observable<Departamento> {
@@ -46,7 +46,6 @@ export class GlobalConfigService {
     this.profesoresService.getProfesor(user_id)
       .subscribe(profe => {
         this.globalConfig.usuario.next(profe);
-        console.log('userInfoSaved')
       })
   }
 

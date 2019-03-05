@@ -49,16 +49,8 @@
                                     </h4>
                                 </mat-list-item>
                                 <mat-list-item>
-
                                     <h4>
-                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos a escoger: créditos
-                                         <!-- {{profesor.creditos_escoger}} -->
-                                    </h4>
-                                </mat-list-item>
-                                <mat-list-item>
-
-                                    <h4>
-                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos seleccionados: {{creditos}} créditos</h4>
+                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos seleccionados: {{creditos}} de 24 créditos</h4>
                                 </mat-list-item>
                             </mat-list>
                         </mat-grid-tile>
@@ -93,7 +85,8 @@
                     </div>
                     <mat-selection-list class="asignaturas">
                         <div *ngFor="let asignatura of asignaturas">
-                            <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)" [selected]="asignatura.selected">
+                            <!-- Asignatura no divisible -->
+                            <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)" [selected]="asignatura.selected" *ngIf="!asignatura.divisible">
                                 <h3 mat-line class="wrapedText">
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
                                         [{{asignatura.siglas}}]
@@ -113,6 +106,31 @@
                                     <strong>Créditos: </strong>{{asignatura.creditos}}
                                 </p>
                             </mat-list-option>
+
+                            <!-- Asignatura divisible -->
+                            <mat-list-item #opt  *ngIf="asignatura.divisible">
+                                <h3 mat-line class="wrapedText">
+                                    <a routerLink="/asignaturas/{{asignatura.id}}">
+                                        [{{asignatura.siglas}}]
+                                        {{asignatura.nombre}}
+                                    </a>
+                                </h3>
+                                <p mat-line>
+                                    <mat-chip class="withIcon">
+                                        <mat-icon>calendar_today</mat-icon>{{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
+                                    </mat-chip>
+                                </p>
+
+                                <p mat-line *ngFor="let hora of asignatura.horario">
+                                    <strong> {{fetchDay(hora.dia)}}: </strong>{{hora.hora_inicio}}-{{hora.hora_fin}}
+                                </p>
+                                <p mat-line>
+                                    <strong>Créditos disponibles: </strong>{{asignatura.maxCreditos}}/{{asignatura.creditos}}
+                                </p>
+                                <input #cred id="divisible{{asignatura.id}}" type="number"  (change)="changeCreditVal(cred, asignatura)" min={{asignatura.minCreditos}} max={{asignatura.maxCreditos}}>
+                            </mat-list-item>
+
+                            <!-- Desdoble común para asignaturas divisibles y no divisibles -->
                             <mat-list-option *ngIf="asignatura.desdobles.length > 0" #optDesdobles (click)="onSelectDesdoble(asignatura, optDesdobles)" [selected]="asignatura.desdobles[0].selected">
                                 <h3 class="wrapedText">
                                     <mat-chip color="accent" selected>Desdoble</mat-chip>
@@ -150,7 +168,7 @@
 
                     <div id="stateContent">
                         <div id="horarioComponent" *ngIf="asignaturasSelected">
-                            <app-full-calendar [asignaturasEntrada]="asignaturasSelected" [desdoblesEntrada]="desdoblesSelected"></app-full-calendar>
+                            <app-full-calendar [asignaturasEntrada]="asignaturasSelected" [desdoblesEntrada]="desdoblesSelected" [asignaturasDivisiblesEntrada]="asignaturasDivisiblesSelected"></app-full-calendar>
                         </div>
 
                         <div *ngIf="!valida" class="errores">

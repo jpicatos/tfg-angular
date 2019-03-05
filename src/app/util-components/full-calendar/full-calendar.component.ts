@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewC
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import * as moment from 'moment';
-import { Asignatura } from 'src/app/models/asignatura';
+import { Asignatura, AsignaturaDivisible } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
 import { getRandomColor } from './colors';
 
@@ -32,8 +32,17 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 		this.desdobles = desdoblesSelected;
 	};
 
+	get asignaturasDivisiblesEntrada(): AsignaturaDivisible[] {
+		return this.asignaturasDivisibles
+	}
+
+	@Input() set asignaturasDivisiblesEntrada(asignaturasDivisiblesSelected: AsignaturaDivisible[]) {
+		this.asignaturasDivisibles = asignaturasDivisiblesSelected;
+	};
+
 	asignaturas: Asignatura[] = [];
 	desdobles: Asignatura[] = [];
+	asignaturasDivisibles: AsignaturaDivisible[] = [];
 
 	events = null;
 	showDate = null;
@@ -56,7 +65,17 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 				this.updateCalendarDateView(this.desdobles[this.desdobles.length - 1].calendario.fecha_ini)
 			}
 		}
-		this.recurEvents(this.asignaturas, this.desdobles);
+
+		const asignD: SimpleChange = changes.asignaturasDivisiblesEntrada;
+		if (asignD) {
+			this.asignaturasDivisibles = asignD.currentValue;
+			if (this.asignaturasDivisibles.length > 0) {
+				this.updateCalendarDateView(this.asignaturasDivisibles[this.asignaturasDivisibles.length - 1].asignatura.calendario.fecha_ini)
+			}
+
+		}
+
+		this.recurEvents(this.asignaturas, this.desdobles, this.asignaturasDivisibles);
 	}
 	ngOnInit() {
 		this.calendarOptions = {
@@ -95,11 +114,14 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 
 	}
 
-	recurEvents(asignaturas, desdobles) {
+	recurEvents(asignaturas, desdobles, asignaturasDivisibles) {
 		var events = [];
-		var asignaturasEvents = this.fillEvents(asignaturas, false);
-		var desdoblesEvents = this.fillEvents(desdobles, true);
+		var asignaturasEvents = this.fillEvents(asignaturas, false, false);
+		var desdoblesEvents = this.fillEvents(desdobles, true, false);
+		var asignaturasDivisiblesEvents = this.fillEvents(asignaturasDivisibles, false, true);
+		
 		events = asignaturasEvents.concat(desdoblesEvents);
+		events = events.concat(asignaturasDivisiblesEvents);
 		this.events = events;
 	}
 
@@ -110,24 +132,27 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 			});
 	}
 
-	fillEvents(asignaturas, desdobles: boolean) {
+	fillEvents(asignaturas, desdobles: boolean, divisible: boolean) {
 		var events = [];
-
 		asignaturas.forEach(asignatura => {
-			var fechaIni = moment(asignatura.calendario.fecha_ini);
-			var fechaFin = moment(asignatura.calendario.fecha_fin);
+			var asignaturaAux = asignatura
+			if(divisible){
+				asignaturaAux = asignatura.asignatura;
+			}
+			var fechaIni = moment(asignaturaAux.calendario.fecha_ini);
+			var fechaFin = moment(asignaturaAux.calendario.fecha_fin);
 
-			!asignatura.color ? asignatura.color = getRandomColor() : null;
+			!asignaturaAux.color ? asignaturaAux.color = getRandomColor() : null;
 
-			var horario = asignatura.horario;
+			var horario = asignaturaAux.horario;
 			if (desdobles) {
-				horario = asignatura.desdobles[0].horario;
+				horario = asignaturaAux.desdobles[0].horario;
 			}
 			while (fechaIni <= fechaFin) {
 				horario.forEach(dia => {
 					var weekDay = this.fetchWeekDay(null, new Date(fechaIni.format('YYYY-MM-DD')).getDay()); //0->Domingo, 1->Lunes...
 					if (dia.dia === weekDay) {
-						events.push(this.addEvent(fechaIni.format('YYYY-MM-DD'), dia.hora_inicio, dia.hora_fin, asignatura, desdobles));
+						events.push(this.addEvent(fechaIni.format('YYYY-MM-DD'), dia.hora_inicio, dia.hora_fin, asignaturaAux, desdobles));
 					}
 				});
 				var new_date = fechaIni.add('days', 1);

@@ -58,11 +58,13 @@ export class ProfesoresService {
     var params = 'nombre=' + encodeURIComponent(nombre) +
       '&apellido=' + encodeURIComponent(apellidos) +
       '&usuario=' + encodeURIComponent(email) +
-      '&telefono=' + encodeURIComponent(telefono) +
-      '&categoria=' + encodeURIComponent(categoria);
+      '&telefono=' + encodeURIComponent(telefono);
 
     if (despacho) {
       params += '&despacho=' + despacho;
+    }
+    if(categoria){
+      params+='&categoria=' + encodeURIComponent(categoria);
     }
     if (escalafon) {
       params += '&escalafon=' + escalafon;

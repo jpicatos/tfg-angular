@@ -1,6 +1,7 @@
 import { Horario } from "./horario";
 import { Desdoble } from "./desdoble";
 import { Calendario } from "./calendario";
+import { Eleccion } from "./eleccion";
 export class Asignatura{
     id: number;
     siglas: string;
@@ -15,27 +16,32 @@ export class Asignatura{
     creditos: number;
     desdobles: Desdoble[];
     calendario: Calendario;
-    docencia: Docencia;
+    docencia: Eleccion;
+    docencia_divisible: AsignaturaDivisible[];
     divisible: boolean;
     color: string;
     selected: boolean;
+    minCreditos: number;
+    maxCreditos: number;
 
     constructor() {
         this.desdobles = [];
         this.horario = [];
         this.calendario = new Calendario();
-        this.docencia = new Docencia();
+        this.docencia = new Eleccion();
     }
 };
 
-export class Docencia {
+export class AsignaturaDivisible{
     id: number;
-    fecha: string;
-    confirmada: boolean;
-    pda: number;
-    deuda: number;
-    profesor: number;
+    creditos: number;
+    asignatura: Asignatura;
+
+    constructor(){
+        this.asignatura = new Asignatura();
+    }
 }
+
 
 export class AsignaturaImportar {
     excel_file: string;
