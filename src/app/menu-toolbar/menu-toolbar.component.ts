@@ -31,6 +31,7 @@ export class MenuToolbarComponent implements OnInit {
   ngOnInit() {
     this.tuTurno = false;
     this.globalConfigService.getUserinfo().subscribe(u => {
+      this.tuTurno = false;
       this.usuario = u;
       if (!this.usuario.docencia) {
         if (this.usuario.escalafon - 1 < 1) {
@@ -47,7 +48,13 @@ export class MenuToolbarComponent implements OnInit {
           })
         }
       }
+
     });
+    if (this.loading) {
+      this.usuario.usuario.first_name = "Administrador";
+      this.tuTurno = true;
+      this.loading = false;
+    }
 
   }
 

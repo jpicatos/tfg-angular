@@ -81,7 +81,7 @@ export class EleccionListComponent implements OnInit {
       this.profesor = profe
       this.getAsignaturas();
     });
-
+    this.getAsignaturas();
     if (this.admin) {
       this.profesoresService.getProfesores()
         .subscribe((profesores) => {
