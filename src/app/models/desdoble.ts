@@ -1,15 +1,16 @@
 import { Horario } from "./horario";
-import { Docencia } from "./asignatura";
+
+import { Eleccion } from "./eleccion";
 
 export class Desdoble {
     id: number;
     horario: Horario[];
     creditos: number;
-    docencia: Docencia;
+    docencia: Eleccion;
     selected: boolean;
 
     constructor() {
         this.horario = [new Horario];
-        this.docencia = new Docencia();
+        this.docencia = new Eleccion();
     }
 }
