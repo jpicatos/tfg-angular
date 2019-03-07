@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AsignaturasModule } from './asignaturas/asignaturas.module';
-import { ProfesoresModule} from './profesores/profesores.module';
 import { routing } from './app-routing';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -16,6 +15,8 @@ import { AuthenticationService } from './auth/authentication.service';
 import { EleccionDocenciaModule } from './eleccion-docencia/eleccion-docencia.module';
 import { UtilComponentsModule } from "./util-components/util-components.module";
 import { GlobalConfigService } from './services/global-config.service';
+import { ProfesoresModule } from './profesores/profesores.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { GlobalConfigService } from './services/global-config.service';
     BrowserModule,
     BrowserAnimationsModule,
     routing,
-    UtilComponentsModule
+    UtilComponentsModule,
+    DashboardModule
   ],
   exports: [
     HttpClientModule,
