@@ -21,40 +21,13 @@ export class MenuToolbarComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService, private profesoresService: ProfesoresService) {
     MenuToolbarComponent.routeTitle = "";
-    this.admin = this.globalConfigService.isAdmin();
     this.usuario = new Profesor;
     this.usuario.usuario = new Usuario;
-
-    this.loading = true;
+    this.initData();
   }
 
   ngOnInit() {
-    this.tuTurno = false;
-    this.globalConfigService.getUserinfo().subscribe(u => {
-      this.tuTurno = false;
-      this.usuario = u;
-      if (!this.usuario.docencia) {
-        if (this.usuario.escalafon - 1 < 1) {
-          this.tuTurno = true;
-          this.loading = false;
-        }
-        else {
-          console.log(this.usuario.escalafon - 1)
-          this.profesoresService.searchProfesor("", "", "", "", null, this.usuario.escalafon - 1, null).subscribe(profesores => {
-            if (profesores[0].docencia) {
-              this.tuTurno = true;
-            }
-            this.loading = false;
-          })
-        }
-      }
-
-    });
-    if (this.loading) {
-      this.usuario.usuario.first_name = "Administrador";
-      this.tuTurno = true;
-      this.loading = false;
-    }
+    
 
   }
 
@@ -66,4 +39,45 @@ export class MenuToolbarComponent implements OnInit {
     return MenuToolbarComponent.routeTitle;
   }
 
+  initData(): void {
+    console.log("initData");
+    this.globalConfigService.getStartLoading().subscribe(loading => {
+      console.log("initData");
+      this.loading = true;
+      this.admin = this.globalConfigService.isAdmin();
+      this.tuTurno = false;
+      if (!this.admin) {
+        this.globalConfigService.getUserinfo().subscribe(u => {
+          this.tuTurno = false;
+          this.usuario = u;
+
+          if (!this.usuario.docencia) {
+            if (this.usuario.escalafon - 1 < 1) {
+              this.tuTurno = true;
+              this.loading = false;
+            }
+            else {
+              this.profesoresService.searchProfesor("", "", "", "", null, this.usuario.escalafon - 1, null).subscribe(profesores => {
+                if (profesores[0].docencia) {
+                  this.tuTurno = true;
+                }
+                this.loading = false;
+              })
+            }
+          }
+          else {
+            this.loading = false;
+          }
+        });
+      }
+      else {
+        this.usuario.usuario.first_name = "Administrador";
+        this.tuTurno = true;
+        this.globalConfigService.getDepartamento().subscribe(departamento => {
+          // setTimeout(()=> { this.loading = false }, 5000);
+          this.loading = false;
+        });
+      }
+    })
+  }
 }

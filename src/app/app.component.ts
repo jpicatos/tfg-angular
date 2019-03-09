@@ -22,7 +22,5 @@ export class AppComponent implements OnInit {
         duration: 3000
       });
     })
-    this.globalConfigService.getDepartamento()
-      .subscribe(dep => this.globalConfigService.saveDepartamento(dep));
   }
 }

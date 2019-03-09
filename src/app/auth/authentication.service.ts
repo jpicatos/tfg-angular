@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { AvisosService } from '../services/avisos.service';
 import * as jwt_decode from 'jwt-decode';
 import { GlobalConfigService } from '../services/global-config.service';
+import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 
 export class Token {
   access: string;
@@ -27,7 +28,10 @@ export class AuthenticationService {
 
     try {
       var decoded = jwt_decode(token);
-      this.configService.saveUserInfo(decoded.user_id, decoded.staff)
+      if(!this.configService.dataLoaded()){
+        this.configService.saveUserInfo(decoded.user_id, decoded.staff);
+        this.configService.loadDepartamento();
+      }
       this.name.next(decoded.name);
     }
     catch (error) { console.log("Invalid token") }

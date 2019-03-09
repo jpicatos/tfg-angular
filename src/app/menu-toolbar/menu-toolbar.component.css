@@ -90,3 +90,13 @@
     height: -webkit-fill-available;
     /* padding: 20px; */
 }
+
+.loading{
+    background-color: black;
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    opacity: 0.5;
+    width: 100%;
+    transition: all 1s;
+}

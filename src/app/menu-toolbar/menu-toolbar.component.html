@@ -3,7 +3,6 @@
         <div class="user-container">
             <div class="icon-container">
                 <div class="user-icon"></div>
-                <span *ngIf="admin">Admin</span>
             </div>
             <div class="username-container">
                 <span>{{usuario.usuario.first_name}} {{usuario.usuario.last_name}} </span>
@@ -76,7 +75,7 @@
             </mat-toolbar-row>
 
         </mat-toolbar>
-<h2 *ngIf="loading">Loading</h2>
+
         <router-outlet></router-outlet>
         
 
@@ -84,3 +83,4 @@
 
     </mat-sidenav-content>
 </mat-sidenav-container>
+<div *ngIf="loading" class="loading"></div>
