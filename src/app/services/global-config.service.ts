@@ -10,8 +10,8 @@ export class GlobalConfigService {
 
   private departamentoUrl = '/api/departamentos';
   private globalConfig = {
-    departamento: new Subject<any>(),
-    usuario: new Subject<any>(),
+    departamento: new Departamento,
+    usuario: new Profesor,
     admin: null,
     user_id: null
   }
@@ -28,35 +28,37 @@ export class GlobalConfigService {
     this.loading.next(true);
   }
 
-  getDepartamento(): Observable<Departamento> {
-    return this.globalConfig.departamento.asObservable();
+  getDepartamento(): Departamento {
+    return this.globalConfig.departamento;
   }
 
-  loadDepartamento(): void {
-    this.http.get<Departamento>(this.departamentoUrl)
-      .subscribe(departamento => {
-        this.globalConfig.departamento.next(departamento[0]);
-      });
+  loadDepartamento(): Observable<Departamento> {
+    return this.http.get<Departamento>(this.departamentoUrl)
   }
 
-  getUserinfo(): Observable<any> {
-    return this.globalConfig.usuario.asObservable();
+  saveDepartamento(departamento: Departamento):void{
+    this.globalConfig.departamento = departamento;
+  }
+
+  getUserinfo(): Profesor {
+    return this.globalConfig.usuario;
   }
 
   isAdmin(): boolean {
     return this.globalConfig.admin;
   }
 
+  userId(): number{
+    return this.globalConfig.user_id;
+  }
+
   saveUserInfo(user_id, admin): void {
     this.globalConfig.admin = admin;
     this.globalConfig.user_id = user_id;
-    this.startLoading();
-    if (!admin) {
-      this.profesoresService.getProfesor(user_id)
-        .subscribe(profe => {
-          this.globalConfig.usuario.next(profe);
-        })
-    }
+  }
+
+  saveProfeInfo(profesor):void{
+    this.globalConfig.usuario = profesor;
   }
 
   dataLoaded(): boolean {

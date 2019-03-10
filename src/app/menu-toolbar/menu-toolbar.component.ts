@@ -26,10 +26,7 @@ export class MenuToolbarComponent implements OnInit {
     this.initData();
   }
 
-  ngOnInit() {
-    
-
-  }
+  ngOnInit() {}
 
   public static updateTitle(title: string): void {
     MenuToolbarComponent.routeTitle = title;
@@ -40,16 +37,16 @@ export class MenuToolbarComponent implements OnInit {
   }
 
   initData(): void {
-    console.log("initData");
     this.globalConfigService.getStartLoading().subscribe(loading => {
       console.log("initData");
       this.loading = true;
       this.admin = this.globalConfigService.isAdmin();
+      var userid = this.globalConfigService.userId();
       this.tuTurno = false;
       if (!this.admin) {
-        this.globalConfigService.getUserinfo().subscribe(u => {
-          this.tuTurno = false;
-          this.usuario = u;
+        this.profesoresService.getProfesor(userid).subscribe(usuario => {
+          this.globalConfigService.saveProfeInfo(usuario);
+          this.usuario = usuario;
 
           if (!this.usuario.docencia) {
             if (this.usuario.escalafon - 1 < 1) {
@@ -73,7 +70,8 @@ export class MenuToolbarComponent implements OnInit {
       else {
         this.usuario.usuario.first_name = "Administrador";
         this.tuTurno = true;
-        this.globalConfigService.getDepartamento().subscribe(departamento => {
+        this.globalConfigService.loadDepartamento().subscribe(departamento => {
+          this.globalConfigService.saveDepartamento(departamento);
           // setTimeout(()=> { this.loading = false }, 5000);
           this.loading = false;
         });

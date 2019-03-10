@@ -77,10 +77,7 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasSelected = [];
     this.asignaturasDivisiblesSelected = [];
     this.desdoblesSelected = [];
-    this.globalConfigService.getUserinfo().subscribe(profe => {
-      this.profesor = profe
-      this.getAsignaturas();
-    });
+    this.profesor = this.globalConfigService.getUserinfo();
     this.getAsignaturas();
     if (this.admin) {
       this.profesoresService.getProfesores()

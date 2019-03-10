@@ -12,7 +12,6 @@ export class AuthGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const path = route.routeConfig.path;
     const admin = this.globalConfigService.isAdmin();
-    console.log(notAdminRoutes, path, notAdminRoutes.indexOf(path));
     if (!this.auth.isAuthenticated()) {
       this.router.navigate(['login']);
       return false;

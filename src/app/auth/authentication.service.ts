@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { AvisosService } from '../services/avisos.service';
 import * as jwt_decode from 'jwt-decode';
 import { GlobalConfigService } from '../services/global-config.service';
-import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 
 export class Token {
   access: string;
@@ -28,16 +27,18 @@ export class AuthenticationService {
 
     try {
       var decoded = jwt_decode(token);
-      if(!this.configService.dataLoaded()){
-        this.configService.saveUserInfo(decoded.user_id, decoded.staff);
-        this.configService.loadDepartamento();
-      }
       this.name.next(decoded.name);
     }
     catch (error) { console.log("Invalid token") }
     
-
-    return token ? true : false;
+    if (token) {
+      if(!this.configService.dataLoaded()){
+        this.configService.saveUserInfo(decoded.user_id, decoded.staff);
+        this.configService.startLoading();
+      }
+      return true
+    }
+    return false;
   }
 
   login(usuario, password) {
@@ -82,6 +83,7 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('currentUserRefresh');
     this.router.navigate(['/login/']);
+    window.location.reload();
     this.name.next("Iniciar sesión");
     return empty();
   }
