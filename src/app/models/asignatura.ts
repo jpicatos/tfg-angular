@@ -23,6 +23,7 @@ export class Asignatura{
     selected: boolean;
     minCreditos: number;
     maxCreditos: number;
+    disponible: boolean;
 
     constructor() {
         this.desdobles = [];

@@ -5,6 +5,7 @@ import { GlobalConfigService } from '../services/global-config.service';
 import { Profesor } from '../models/profesor';
 import { Usuario } from '../models/usuario';
 import { ProfesoresService } from '../services/profesores.service';
+import { EleccionService } from '../services/eleccion.service';
 
 @Component({
   selector: 'app-menu-toolbar',
@@ -19,14 +20,14 @@ export class MenuToolbarComponent implements OnInit {
   loading: boolean;
   tuTurno: boolean;
 
-  constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService, private profesoresService: ProfesoresService) {
+  constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService, private profesoresService: ProfesoresService, private eleccionService: EleccionService) {
     MenuToolbarComponent.routeTitle = "";
     this.usuario = new Profesor;
     this.usuario.usuario = new Usuario;
     this.initData();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public static updateTitle(title: string): void {
     MenuToolbarComponent.routeTitle = title;
@@ -43,33 +44,18 @@ export class MenuToolbarComponent implements OnInit {
       this.admin = this.globalConfigService.isAdmin();
       var userid = this.globalConfigService.userId();
       this.tuTurno = false;
+      this.globalConfigService.saveTurno(false);
       if (!this.admin) {
         this.profesoresService.getProfesor(userid).subscribe(usuario => {
           this.globalConfigService.saveProfeInfo(usuario);
           this.usuario = usuario;
-
-          if (!this.usuario.docencia) {
-            if (this.usuario.escalafon - 1 < 1) {
-              this.tuTurno = true;
-              this.loading = false;
-            }
-            else {
-              this.profesoresService.searchProfesor("", "", "", "", null, this.usuario.escalafon - 1, null).subscribe(profesores => {
-                if (profesores[0].docencia) {
-                  this.tuTurno = true;
-                }
-                this.loading = false;
-              })
-            }
-          }
-          else {
-            this.loading = false;
-          }
+          this.turno();
         });
       }
       else {
         this.usuario.usuario.first_name = "Administrador";
         this.tuTurno = true;
+        this.globalConfigService.saveTurno(true);
         this.globalConfigService.loadDepartamento().subscribe(departamento => {
           this.globalConfigService.saveDepartamento(departamento);
           // setTimeout(()=> { this.loading = false }, 5000);
@@ -77,5 +63,39 @@ export class MenuToolbarComponent implements OnInit {
         });
       }
     })
+  }
+
+  turno(): void {
+    if (!this.usuario.docencia) {
+      if (this.usuario.escalafon - 1 < 1) {
+        this.loading = false;
+        this.tuTurno = true;
+        this.globalConfigService.saveTurno(true);
+      }
+      else {
+        this.profesoresService.searchProfesor("", "", "", "", null, this.usuario.escalafon - 1, null).subscribe(profesores => {
+          if (profesores[0].docencia) {
+            this.eleccionService.getEleccion(profesores[0].docencia).subscribe(docencia => {
+              this.loading = false;
+              if (docencia.confirmada) {
+                this.tuTurno = true;
+                this.globalConfigService.saveTurno(true);
+              }
+            });
+          }
+          else {
+            this.loading = false;
+          }
+        })
+      }
+    }
+    else {
+      this.eleccionService.getEleccion(this.usuario.docencia).subscribe(docencia => {
+        docencia.confirmada ? this.tuTurno = false : this.tuTurno = true;
+        this.globalConfigService.saveTurno(this.tuTurno);
+        this.loading = false;
+      })
+      
+    }
   }
 }

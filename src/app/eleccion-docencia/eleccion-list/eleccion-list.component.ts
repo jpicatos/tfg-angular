@@ -3,9 +3,6 @@ import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 import { Asignatura, AsignaturaDivisible } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
-import { Horario } from 'src/app/models/horario';
-import { optimizeGroupPlayer } from '@angular/animations/browser/src/render/shared';
-import { CastExpr } from '@angular/compiler';
 import { EleccionService } from 'src/app/services/eleccion.service';
 import { AvisosService } from 'src/app/services/avisos.service';
 import { Eleccion } from 'src/app/models/eleccion';
@@ -14,11 +11,11 @@ import { ProfesoresService } from 'src/app/services/profesores.service';
 
 import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay } from "./utils";
 import { SearchSidenavComponent } from 'src/app/util-components/search-sidenav/search-sidenav.component';
-import { BootstrapOptions } from '@angular/core/src/application_ref';
 import { Profesor } from 'src/app/models/profesor';
 import { GlobalConfigService } from 'src/app/services/global-config.service';
 import { Usuario } from 'src/app/models/usuario';
-import { debug } from 'util';
+import { MatDialog } from '@angular/material';
+import { ConfirmEleccionComponent } from '../confirm-eleccion/confirm-eleccion.component';
 
 @Component({
   selector: 'app-eleccion-list',
@@ -54,11 +51,14 @@ export class EleccionListComponent implements OnInit {
   minimiceRight;
   fetchDay;
 
-  constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService) {
+  constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog) {
     this.admin = this.globalConfigService.isAdmin()
-    this.profesor = new Profesor;
-    this.profesor.usuario = new Usuario;
-
+    if (this.globalConfigService.getUserinfo().telefono) {
+      this.profesor = this.globalConfigService.getUserinfo()
+    } else {
+      this.profesor = new Profesor;
+      this.profesor.usuario = new Usuario;
+    }
     this.isMinimiceLeft = isMinimiceLeft;
     this.minimiceLeft = minimiceLeft;
     this.isMinimiceRight = isMinimiceRight;
@@ -71,21 +71,34 @@ export class EleccionListComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger
     MenuToolbarComponent.updateTitle("Elección Docencia");
     this.loading = true;
     this.valida = true;
     this.asignaturasSelected = [];
     this.asignaturasDivisiblesSelected = [];
     this.desdoblesSelected = [];
-    this.profesor = this.globalConfigService.getUserinfo();
     this.getAsignaturas();
-    if (this.admin) {
-      this.profesoresService.getProfesores()
-        .subscribe((profesores) => {
-          this.profesores = profesores;
-        })
-    }
+  }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmEleccionComponent, {
+      data: {
+        message: "",
+        confirm: false,
+        admin: this.admin
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result.message, result.confirm);
+      if (result.confirm) {
+        if (!this.admin) {
+          this.eleccion.mensaje = result.message || " ";
+        }
+        this.saveEleccion();
+      }
+    });
   }
 
   search(): void {
@@ -109,38 +122,60 @@ export class EleccionListComponent implements OnInit {
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
-        if (this.admin) {
-          this.profesoresService.getProfesores()
-            .subscribe((profesores) => {
-              this.profesores = profesores;
-              this.profesor ? this.profesor = this.profesores[0] : null;
-            })
-        }
         asignaturas.map(asignatura => {
           if (asignatura.divisible) {
             asignatura.minCreditos = asignatura.creditos / 3;
             var creditosUsados = 0;
             asignatura.docencia_divisible.map(docencia => {
-              console.log(docencia.creditos)
               creditosUsados = creditosUsados + docencia.creditos;
             })
             var creditosDisponibles = asignatura.creditos - creditosUsados;
-            asignatura.maxCreditos = creditosDisponibles;
+            if (creditosDisponibles > 0) {
+              asignatura.maxCreditos = creditosDisponibles;
+            }
+            else {
+              creditosDisponibles = 0;
+              asignatura.maxCreditos = 0;
+              asignatura.minCreditos = 0;
+            }
+          }
+          else{
+            if(!this.admin){
+              asignatura.disponible=this.asignaturaDisponible(asignatura)
+            }
+            else{
+              asignatura.disponible = true;
+            }
+            
           }
         })
-        this.updateAsignaturas(asignaturas, true);
+        if (this.admin) {
+          this.profesoresService.getProfesores()
+            .subscribe((profesores) => {
+              this.profesores = profesores;
+              this.profesor = profesores[0];
+              this.updateAsignaturas(asignaturas, true);
+            })
+        }
+        else {
+          this.updateAsignaturas(asignaturas, true);
+        }
       })
   }
-
+  asignaturaDisponible(asignatura):boolean{
+    if(asignatura.docencia.lenght > 0){
+      if(asignatura.docencia.profesor !== this.profesor.usuario.id){
+        return false;
+      }
+    }
+    return true;
+  }
   fillSelected() {
-    this.loading = true;
-    this.eleccion = new Eleccion;
-    this.eleccion.asignaturas = new Array;
-    this.eleccion.desdobles = new Array;
-    this.eleccion.confirmada = false;
+    this.reset();
     this.eleccion.profesor = this.profesor.usuario.id;
     this.clearEleccion();
     if (this.profesor.docencia !== null) {
+      debugger
       this.eleccionService.getEleccion(this.profesor.docencia)
         .subscribe(eleccion => {
           const { asignaturas, desdobles, asignaturas_divisibles } = eleccion;
@@ -149,7 +184,7 @@ export class EleccionListComponent implements OnInit {
           if (desdobles.length) { // If there are desdobles
             this.fillDesdoblesWithEleccion(desdobles);
           }
-          if (asignaturas_divisibles.length){
+          if (asignaturas_divisibles.length) {
             this.fillAsignaturasDivisiblesWithEleccion(asignaturas_divisibles);
           }
           this.loading = false;
@@ -160,7 +195,6 @@ export class EleccionListComponent implements OnInit {
     else {
       this.loading = false;
     }
-    console.log(this.asignaturasSelected)
   }
 
   fillAsignaturasWithEleccion(asignaturas) {
@@ -203,10 +237,11 @@ export class EleccionListComponent implements OnInit {
 
   saveEleccion() {
     if (this.valida && !this.loading) {
-      if(this.admin){
+      if (this.admin) {
         this.eleccion.confirmada = true;
       }
-      if (this.eleccion.id != undefined) {
+      if (this.eleccion.id !== undefined) {
+        console.log(this.eleccion)
         this.eleccionService.saveEleccion(this.eleccion);
       }
       else {
@@ -239,7 +274,7 @@ export class EleccionListComponent implements OnInit {
 
     this.eleccion.asignaturas_divisibles = [];
     this.eleccion.asignaturas_divisibles = this.asignaturasDivisiblesSelected.map(asignatura => {
-      return {id: asignatura.id, creditos: asignatura.creditos, asignatura: asignatura.id}
+      return { id: asignatura.id, creditos: asignatura.creditos, asignatura: asignatura.id }
     })
 
     this.eleccion.desdobles = [];
@@ -284,7 +319,7 @@ export class EleccionListComponent implements OnInit {
   changeCreditVal(credits, asignatura) {
     if (credits.valueAsNumber) {
       let asignaturaD;
-      
+
       this.asignaturasDivisiblesSelected.map(a => {
         if (a.asignatura === asignatura) {
           this.creditos -= a.creditos;
@@ -293,12 +328,12 @@ export class EleccionListComponent implements OnInit {
         }
       });
       if (!asignaturaD) {
-        this.asignaturasDivisiblesSelected = [...[{ id: 0, creditos: credits.valueAsNumber, asignatura: asignatura}]]
+        this.asignaturasDivisiblesSelected = [...[{ id: 0, creditos: credits.valueAsNumber, asignatura: asignatura }]]
       }
       this.creditos += credits.valueAsNumber;
     }
     else {
-      
+
       let asignaturaD = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id == asignatura.id)
       this.creditos -= asignaturaD[0].creditos;
       this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id !== asignatura.id)
@@ -319,6 +354,18 @@ export class EleccionListComponent implements OnInit {
 
         if (!this.valida) this.avisosService.enviarMensaje("Se han encontrado problemas en la elección")
       });
+  }
+
+  reset() {
+    this.asignaturasSelected = new Array;
+    this.desdoblesSelected = new Array;
+    this.asignaturasDivisiblesSelected = new Array;
+    this.eleccion = new Eleccion;
+    this.valida = true;
+    this.errores = new ErroresEleccion;
+    this.loading = true;
+    this.eleccion.confirmada = false;
+    this.creditos = 0;
   }
 
 }

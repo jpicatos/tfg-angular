@@ -13,6 +13,7 @@ import { routing } from './eleccion-docencia-routing';
 
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { EleccionService } from '../services/eleccion.service';
+import { ConfirmEleccionComponent } from './confirm-eleccion/confirm-eleccion.component';
 
 
 @NgModule({
@@ -30,7 +31,9 @@ import { EleccionService } from '../services/eleccion.service';
     EleccionService
   ],
   declarations: [
-    EleccionListComponent
-  ]
+    EleccionListComponent,
+    ConfirmEleccionComponent
+  ],
+  entryComponents: [ConfirmEleccionComponent]
 })
 export class EleccionDocenciaModule { }

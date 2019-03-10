@@ -1,0 +1,12 @@
+<h1 mat-dialog-title *ngIf="!data.admin">Mensaje para el administrador</h1>
+<h1 mat-dialog-title *ngIf="data.admin">Confirmar docencia?</h1>
+<div mat-dialog-content *ngIf="!data.admin">
+  <mat-form-field>
+    <textarea matInput placeholder="Mensaje" [(ngModel)]="data.message"></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button  *ngIf="!data.admin" color="accent" [mat-dialog-close]="{message: data.message, confirm: true}" cdkFocusInitial>Enviar</button>
+  <button mat-raised-button  *ngIf="data.admin" color="accent" [mat-dialog-close]="{confirm: true}" cdkFocusInitial>Confirmar</button>
+</div>

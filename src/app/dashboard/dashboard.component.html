@@ -1,0 +1,6 @@
+<h2 *ngIf="admin"> Eres administrador </h2>
+<h2 *ngIf="!admin">
+  No eres administrador 
+  <span *ngIf="tuTurno"> y es tu turno así que <a routerLink="/eleccion-docencia">empieza a elegir asignaturas</a></span>
+  <span *ngIf="!tuTurno"> pero no es tu turno, vuelve más tarde</span>
+</h2>

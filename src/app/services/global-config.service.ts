@@ -13,7 +13,8 @@ export class GlobalConfigService {
     departamento: new Departamento,
     usuario: new Profesor,
     admin: null,
-    user_id: null
+    user_id: null,
+    tuTurno: null
   }
   private loading = new Subject<any>();
 
@@ -36,7 +37,7 @@ export class GlobalConfigService {
     return this.http.get<Departamento>(this.departamentoUrl)
   }
 
-  saveDepartamento(departamento: Departamento):void{
+  saveDepartamento(departamento: Departamento): void {
     this.globalConfig.departamento = departamento;
   }
 
@@ -48,7 +49,7 @@ export class GlobalConfigService {
     return this.globalConfig.admin;
   }
 
-  userId(): number{
+  userId(): number {
     return this.globalConfig.user_id;
   }
 
@@ -57,8 +58,16 @@ export class GlobalConfigService {
     this.globalConfig.user_id = user_id;
   }
 
-  saveProfeInfo(profesor):void{
+  saveProfeInfo(profesor): void {
     this.globalConfig.usuario = profesor;
+  }
+
+  saveTurno(turno): void {
+    this.globalConfig.tuTurno = turno;
+  }
+
+  getTurno(): boolean{
+    return this.globalConfig.tuTurno;
   }
 
   dataLoaded(): boolean {

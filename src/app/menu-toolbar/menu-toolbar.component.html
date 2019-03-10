@@ -14,7 +14,7 @@
         <mat-divider></mat-divider>
 
         <div class="slidenav-buttons">
-            <button mat-button class="dash-button">
+            <button mat-button class="dash-button" routerLink="/dashboard">
                 <span class="menu-button-content">
                     <mat-icon>home</mat-icon>
                     DASHBOARD
@@ -76,7 +76,7 @@
 
         </mat-toolbar>
 
-        <router-outlet></router-outlet>
+        <router-outlet *ngIf="!loading"></router-outlet>
         
 
 

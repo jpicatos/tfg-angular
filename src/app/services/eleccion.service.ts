@@ -19,7 +19,11 @@ export class EleccionService {
     return this.http.get<Eleccion>(this.docenciaUrl + id);
   }
   saveEleccion(eleccion: Eleccion): void {
-
+    
+    eleccion.asignaturas_divisibles.map(asignatura => {
+      delete asignatura.id;
+    })
+    console.log("eleccion: ", eleccion)
     this.http.patch<Eleccion>(this.docenciaUrl + eleccion.id + '/', eleccion)
       .subscribe(data => {   // data is already a JSON object
         this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");

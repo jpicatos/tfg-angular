@@ -10,4 +10,5 @@ export class Eleccion {
     profesor: number;
     pda: number;
     deuda: number;
+    mensaje: string;
 };

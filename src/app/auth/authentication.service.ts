@@ -82,8 +82,8 @@ export class AuthenticationService {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     localStorage.removeItem('currentUserRefresh');
-    this.router.navigate(['/login/']);
     window.location.reload();
+    this.router.navigate(['/dashboard']);
     this.name.next("Iniciar sesión");
     return empty();
   }

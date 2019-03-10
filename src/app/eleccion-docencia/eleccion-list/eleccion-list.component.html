@@ -1,4 +1,6 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
+<div *ngIf="loading" class="loading"></div>
+
 <div class="total-container">
     <mat-sidenav-container>
         <mat-sidenav #sidenav [autoFocus]="false" [mode]="over" position="end" class="sidenav">
@@ -50,7 +52,7 @@
                                 </mat-list-item>
                                 <mat-list-item>
                                     <h4>
-                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos seleccionados: {{creditos}} de 24 créditos</h4>
+                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos seleccionados: {{creditos}} de {{profesor.creditos_escoger}} créditos</h4>
                                 </mat-list-item>
                             </mat-list>
                         </mat-grid-tile>
@@ -74,8 +76,9 @@
             <button class="mat-fab-bottom-right1" mat-fab (click)="clearEleccion()">
                 <mat-icon>delete</mat-icon>
             </button>
-            <button class="mat-fab-bottom-right2" mat-fab (click)="saveEleccion()">
-                <mat-icon>done</mat-icon>
+            <button class="mat-fab-bottom-right2" mat-fab (click)="openDialog()">
+                <mat-icon *ngIf="!admin">send</mat-icon>
+                <mat-icon *ngIf="admin">done</mat-icon>
             </button>
             <mat-card class="card" id="minimizable-container">
                 <div class="list-column">
@@ -84,9 +87,12 @@
                         <h2>Asignaturas</h2>
                     </div>
                     <mat-selection-list class="asignaturas">
+                        
                         <div *ngFor="let asignatura of asignaturas">
+                            
                             <!-- Asignatura no divisible -->
                             <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)" [selected]="asignatura.selected" *ngIf="!asignatura.divisible">
+                                    <div class="asignatura-no-disponible" *ngIf="!asignatura.disponible"></div>
                                 <h3 mat-line class="wrapedText">
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
                                         [{{asignatura.siglas}}]
@@ -127,7 +133,7 @@
                                 <p mat-line>
                                     <strong>Créditos disponibles: </strong>{{asignatura.maxCreditos}}/{{asignatura.creditos}}
                                 </p>
-                                <input #cred id="divisible{{asignatura.id}}" type="number"  (change)="changeCreditVal(cred, asignatura)" min={{asignatura.minCreditos}} max={{asignatura.maxCreditos}}>
+                                <input #cred id="divisible{{asignatura.id}}" type="number"  (change)="changeCreditVal(cred, asignatura)" min={{asignatura.minCreditos}} max={{asignatura.maxCreditos}} [disabled]="asignatura.maxCreditos <= 0">
                             </mat-list-item>
 
                             <!-- Desdoble común para asignaturas divisibles y no divisibles -->
