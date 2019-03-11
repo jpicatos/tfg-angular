@@ -71,7 +71,6 @@ export class EleccionListComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger
     MenuToolbarComponent.updateTitle("Elección Docencia");
     this.loading = true;
     this.valida = true;
@@ -175,7 +174,6 @@ export class EleccionListComponent implements OnInit {
     this.eleccion.profesor = this.profesor.usuario.id;
     this.clearEleccion();
     if (this.profesor.docencia !== null) {
-      debugger
       this.eleccionService.getEleccion(this.profesor.docencia)
         .subscribe(eleccion => {
           const { asignaturas, desdobles, asignaturas_divisibles } = eleccion;
