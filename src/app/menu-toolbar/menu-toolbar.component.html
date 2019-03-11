@@ -8,7 +8,8 @@
                 <span>{{usuario.usuario.first_name}} {{usuario.usuario.last_name}} </span>
                 <div class="spacer"></div><button mat-icon-button>
                     <mat-icon>more_vert</mat-icon>
-                </button></div>
+                </button>
+            </div>
         </div>
         <mat-divider></mat-divider>
         <mat-divider></mat-divider>
@@ -44,8 +45,8 @@
             </button>
             <h5 *ngIf="!tuTurno">Todavía no es el turno de tu elección</h5>
             <mat-divider></mat-divider>
-            <p class="menu-title"  *ngIf="admin">Configuración</p>
-            <button mat-button  *ngIf="admin">
+            <p class="menu-title" *ngIf="admin">Configuración</p>
+            <button mat-button *ngIf="admin">
                 <span class="menu-button-content">
                     <mat-icon>settings</mat-icon>
                     CONFIGURACIÓN
@@ -77,10 +78,18 @@
         </mat-toolbar>
 
         <router-outlet *ngIf="!loading"></router-outlet>
-        
+
 
 
 
     </mat-sidenav-content>
 </mat-sidenav-container>
-<div *ngIf="loading" class="loading"></div>
+<div *ngIf="loading" class="loading">
+    <div class="logo">
+        <img src="../../assets/logo-eleccion.png">
+    </div>
+    <div class="logo cargando">
+        <img src="../../assets/cargando.gif">
+    </div>
+
+</div>

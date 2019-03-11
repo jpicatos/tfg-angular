@@ -92,11 +92,31 @@
 }
 
 .loading{
-    background-color: black;
+    background-color: white;
     position: absolute;
     z-index: 1;
     height: 100%;
-    opacity: 0.5;
+    /* opacity: 0.5; */
     width: 100%;
     transition: all 1s;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    .logo {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img{
+            height: inherit;
+        }
+    }
+    .cargando {
+        height: 30px;
+        margin-top: 5px;
+    }
+    
 }

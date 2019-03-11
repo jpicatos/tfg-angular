@@ -51,7 +51,7 @@ export class AuthenticationService {
       res => {
         localStorage.setItem('currentUser', JSON.stringify(res.access));
         localStorage.setItem('currentUserRefresh', JSON.stringify(res.refresh));
-        this.router.navigate(['/asignaturas/']);
+        this.router.navigate(['/dashboard/']);
         this.avisosService.enviarMensaje("Ha iniciado sesión correctamente");
       });
   }
