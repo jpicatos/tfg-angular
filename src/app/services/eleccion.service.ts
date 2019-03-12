@@ -39,7 +39,6 @@ export class EleccionService {
   }
 
   parseEleccion(eleccion:Eleccion): Eleccion{
-    debugger
     eleccion.asignaturas_divisibles.map(asignatura => {
       delete asignatura.id;
     })

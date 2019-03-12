@@ -168,9 +168,6 @@ export class EleccionListComponent implements OnInit {
       })
   }
   asignaturaDisponible(asignatura): boolean {
-    debugger
-    var creditosUsados = 0;
-    console.log(asignatura.docencia.length)
     if (asignatura.docencia.length > 0) {
       if (asignatura.docencia[0].profesor !== this.profesor.usuario.id) {
         return false;
