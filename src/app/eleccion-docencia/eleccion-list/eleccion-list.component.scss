@@ -113,6 +113,16 @@ mat-list-option {
     margin-top: 10px;
 }
 
+.mat-fab-bottom-right3 {
+    z-index: 1000;
+    top: auto !important;
+    right: 170px !important;
+    bottom: 10px !important;
+    left: auto !important;
+    position: fixed !important;
+    background-color: $links;
+}
+
 .mat-fab-bottom-right1 {
     z-index: 1000;
     top: auto !important;

@@ -26,12 +26,9 @@ export class EleccionService {
         this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
       });
   }
-  createEleccion(eleccion: Eleccion): void {
+  createEleccion(eleccion: Eleccion): Observable<Eleccion> {
     eleccion = this.parseEleccion(eleccion)
-    this.http.post<Eleccion>(this.docenciaUrl, eleccion)
-      .subscribe(data => {   // data is already a JSON object
-        this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
-      });
+    return this.http.post<Eleccion>(this.docenciaUrl, eleccion)
   }
   comprobarEleccion(eleccion: Eleccion): Observable<ErroresEleccion> {
     eleccion = this.parseEleccion(eleccion)
@@ -54,6 +51,14 @@ export class EleccionService {
     eleccion.desdobles = desdoblesAux;
 
     return eleccion;
+  }
+
+  deleteEleccion(id: number): void {
+    this.http.delete<Eleccion>(this.docenciaUrl + id)
+    .subscribe(docencia => { 
+      this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
+      window.location.reload() 
+    });;
   }
 
 }

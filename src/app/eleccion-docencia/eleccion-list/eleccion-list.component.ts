@@ -29,6 +29,7 @@ import { ConfirmEleccionComponent } from '../confirm-eleccion/confirm-eleccion.c
 export class EleccionListComponent implements OnInit {
   admin: boolean;
   asignaturas: Asignatura[];
+  todasAsignaturas: Asignatura[];
   loading: boolean;
   asignaturasSelected: Asignatura[];
   desdoblesSelected: Asignatura[];
@@ -100,6 +101,26 @@ export class EleccionListComponent implements OnInit {
     });
   }
 
+  mostrarOnlyAvailable(event) {
+    if (event.checked) {
+      this.asignaturas = this.asignaturas.filter(asignatura => {
+        if (asignatura.desdobles.length && asignatura.desdobles[0].disponible) {
+          return true
+        }
+        if (asignatura.disponible && asignatura.desdobles.length && !asignatura.desdobles[0].disponible) {
+          asignatura.desdobles.pop();
+          return true
+        }
+        if (asignatura.disponible && !asignatura.desdobles.length) {
+          return true;
+        }
+      })
+    }
+    else {
+      this.search();
+    }
+  }
+
   search(): void {
     this.loading = true;
     this.asignaturasService.searchAsignatura("", this.searchVals.nombre, "", "", 0, "", "", [])
@@ -114,7 +135,16 @@ export class EleccionListComponent implements OnInit {
   }
 
   updateAsignaturas(asignaturas: Asignatura[], refreshSelected: boolean) {
+    asignaturas.map(asignatura => {
+      if(!asignatura.divisible){
+        this.checkDisponibilidad(asignatura);
+      }
+      else{
+        asignatura.maxCreditos > 0 ? asignatura.disponible = true : asignatura.disponible = false;
+      }
+    })
     this.asignaturas = asignaturas;
+    this.todasAsignaturas = asignaturas;
     if (refreshSelected) this.fillSelected();
   }
 
@@ -137,20 +167,10 @@ export class EleccionListComponent implements OnInit {
               asignatura.maxCreditos = 0;
               asignatura.minCreditos = 0;
             }
+            asignatura.maxCreditos > 0 ? asignatura.disponible = true : asignatura.disponible = false;
           }
-          else{
-            if(!this.admin){
-              asignatura.disponible=this.asignaturaDisponible(asignatura)
-              asignatura.desdobles.map(desdoble=>{
-                desdoble.disponible = this.asignaturaDisponible(desdoble);
-              })
-            }
-            else{
-              asignatura.disponible = true;
-              asignatura.desdobles.map(desdoble=>{
-                desdoble.disponible = true;
-              })
-            }
+          else {
+            this.checkDisponibilidad(asignatura)
 
           }
         })
@@ -166,6 +186,20 @@ export class EleccionListComponent implements OnInit {
           this.updateAsignaturas(asignaturas, true);
         }
       })
+  }
+  checkDisponibilidad(asignatura) {
+    if (!this.admin) {
+      asignatura.disponible = this.asignaturaDisponible(asignatura)
+      asignatura.desdobles.map(desdoble => {
+        desdoble.disponible = this.asignaturaDisponible(desdoble);
+      })
+    }
+    else {
+      asignatura.disponible = true;
+      asignatura.desdobles.map(desdoble => {
+        desdoble.disponible = true;
+      })
+    }
   }
   asignaturaDisponible(asignatura): boolean {
     if (asignatura.docencia.length > 0) {
@@ -250,7 +284,11 @@ export class EleccionListComponent implements OnInit {
         this.eleccionService.saveEleccion(this.eleccion);
       }
       else {
-        this.eleccionService.createEleccion(this.eleccion);
+        this.eleccionService.createEleccion(this.eleccion).subscribe(data => {   // data is already a JSON object
+          this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
+          console.log(data)
+          this.eleccion = data;
+        });;
       }
     }
     else {
@@ -271,6 +309,11 @@ export class EleccionListComponent implements OnInit {
 
     this.valida = true;
     this.updateEleccion();
+  }
+
+  deleteEleccion(){
+    this.clearEleccion();
+    this.eleccionService.deleteEleccion(this.eleccion.id);
   }
 
   updateEleccion() {

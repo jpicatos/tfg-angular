@@ -19,6 +19,7 @@
                                     Buscar por nombre
                                 </mat-placeholder>
                             </mat-form-field>
+                            <mat-slide-toggle #available (change)="mostrarOnlyAvailable(available)">Mostrar solo asignaturas disponibles</mat-slide-toggle>
                             <button mat-button type="submit" (click)="search()">
                                 <mat-icon>search</mat-icon>
                             </button>
@@ -79,10 +80,13 @@
 
             </mat-card>
 
-
+<button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()">
+                    <mat-icon>delete</mat-icon>
+                </button>
             <button class="mat-fab-bottom-right1" mat-fab (click)="clearEleccion()">
-                <mat-icon>delete</mat-icon>
+                <mat-icon>clear</mat-icon>
             </button>
+            
             <button class="mat-fab-bottom-right2" mat-fab (click)="openDialog()">
                 <mat-icon *ngIf="!admin">send</mat-icon>
                 <mat-icon *ngIf="admin">done</mat-icon>
@@ -124,7 +128,7 @@
                             </mat-list-option>
 
                             <!-- Asignatura divisible -->
-                            <mat-list-item #opt *ngIf="asignatura.divisible" [ngClass]="{'disabled': asignatura.maxCreditos <= 0}">
+                            <mat-list-item #opt *ngIf="asignatura.divisible" [ngClass]="{'disabled': !asignatura.disponible}">
                                 <h3 mat-line class="wrapedText">
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
                                         [{{asignatura.siglas}}]
