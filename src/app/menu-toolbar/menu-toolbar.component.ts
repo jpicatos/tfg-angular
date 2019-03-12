@@ -39,31 +39,32 @@ export class MenuToolbarComponent implements OnInit {
 
   initData(): void {
     this.globalConfigService.getStartLoading().subscribe(loading => {
+
       console.log("initData");
       this.loading = true;
       this.admin = this.globalConfigService.isAdmin();
       var userid = this.globalConfigService.userId();
       this.tuTurno = false;
       this.globalConfigService.saveTurno(false);
-      if (!this.admin) {
-        this.profesoresService.getProfesor(userid).subscribe(usuario => {
-          this.globalConfigService.saveProfeInfo(usuario);
-          this.usuario = usuario;
-          this.turno();
-        });
-      }
-      else {
-        this.usuario.usuario.first_name = "Administrador";
-        this.tuTurno = true;
-        this.globalConfigService.saveTurno(true);
-        this.globalConfigService.loadDepartamento().subscribe(departamento => {
-          this.globalConfigService.saveDepartamento(departamento);
+      this.globalConfigService.loadDepartamento().subscribe(departamento => {
+        this.globalConfigService.saveDepartamento(departamento);
+        if (departamento[0].docencia_iniciada && !this.admin) {
+          this.profesoresService.getProfesor(userid).subscribe(usuario => {
+            this.globalConfigService.saveProfeInfo(usuario);
+            this.usuario = usuario;
+            this.turno();
+          });
+        }
+        else {
+          this.usuario.usuario.first_name = "Administrador";
+          this.tuTurno = true;
+          this.globalConfigService.saveTurno(true);
           // setTimeout(()=> { this.loading = false }, 5000);
           setTimeout(() => {
             this.loading = false;
-          }, 4000 );
-        });
-      }
+          }, 4000);
+        }
+      });
     })
   }
 
@@ -72,7 +73,7 @@ export class MenuToolbarComponent implements OnInit {
       if (this.usuario.escalafon - 1 < 1) {
         setTimeout(() => {
           this.loading = false;
-        }, 4000 );
+        }, 4000);
         this.tuTurno = true;
         this.globalConfigService.saveTurno(true);
       }
@@ -82,7 +83,7 @@ export class MenuToolbarComponent implements OnInit {
             this.eleccionService.getEleccion(profesores[0].docencia).subscribe(docencia => {
               setTimeout(() => {
                 this.loading = false;
-              }, 4000 );
+              }, 4000);
               if (docencia.confirmada) {
                 this.tuTurno = true;
                 this.globalConfigService.saveTurno(true);
@@ -92,7 +93,7 @@ export class MenuToolbarComponent implements OnInit {
           else {
             setTimeout(() => {
               this.loading = false;
-            }, 4000 );
+            }, 4000);
           }
         })
       }
@@ -103,10 +104,11 @@ export class MenuToolbarComponent implements OnInit {
         this.globalConfigService.saveTurno(this.tuTurno);
         setTimeout(() => {
           this.loading = false;
-        }, 4000 );
+        }, 4000);
         // this.loading = false;
       })
-      
+
     }
   }
+
 }

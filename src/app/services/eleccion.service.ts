@@ -19,10 +19,7 @@ export class EleccionService {
     return this.http.get<Eleccion>(this.docenciaUrl + id);
   }
   saveEleccion(eleccion: Eleccion): void {
-    
-    eleccion.asignaturas_divisibles.map(asignatura => {
-      delete asignatura.id;
-    })
+    eleccion = this.parseEleccion(eleccion)
     console.log("eleccion: ", eleccion)
     this.http.patch<Eleccion>(this.docenciaUrl + eleccion.id + '/', eleccion)
       .subscribe(data => {   // data is already a JSON object
@@ -30,13 +27,34 @@ export class EleccionService {
       });
   }
   createEleccion(eleccion: Eleccion): void {
+    eleccion = this.parseEleccion(eleccion)
     this.http.post<Eleccion>(this.docenciaUrl, eleccion)
       .subscribe(data => {   // data is already a JSON object
         this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
       });
   }
   comprobarEleccion(eleccion: Eleccion): Observable<ErroresEleccion> {
+    eleccion = this.parseEleccion(eleccion)
     return this.http.post<ErroresEleccion>(this.docenciaUrl + "comprobar/", eleccion);
+  }
+
+  parseEleccion(eleccion:Eleccion): Eleccion{
+    debugger
+    eleccion.asignaturas_divisibles.map(asignatura => {
+      delete asignatura.id;
+    })
+    var asignaturasAux = eleccion.asignaturas.map(asignatura => asignatura.id)
+    eleccion.asignaturas = asignaturasAux;
+
+    var asignaturasDivisiblesAux = eleccion.asignaturas_divisibles.map(asignatura => {
+      return {creditos: asignatura.creditos, asignatura: asignatura.id}
+    });
+    eleccion.asignaturas_divisibles = asignaturasDivisiblesAux;
+
+    var desdoblesAux = eleccion.desdobles.map(desdoble => desdoble.desdobles[0].id)
+    eleccion.desdobles = desdoblesAux;
+
+    return eleccion;
   }
 
 }

@@ -93,7 +93,7 @@ export class EleccionListComponent implements OnInit {
       console.log('The dialog was closed', result.message, result.confirm);
       if (result.confirm) {
         if (!this.admin) {
-          this.eleccion.mensaje = result.message || " ";
+          this.eleccion.mensaje = result.message || this.eleccion.mensaje || ".";
         }
         this.saveEleccion();
       }
@@ -141,11 +141,17 @@ export class EleccionListComponent implements OnInit {
           else{
             if(!this.admin){
               asignatura.disponible=this.asignaturaDisponible(asignatura)
+              asignatura.desdobles.map(desdoble=>{
+                desdoble.disponible = this.asignaturaDisponible(desdoble);
+              })
             }
             else{
               asignatura.disponible = true;
+              asignatura.desdobles.map(desdoble=>{
+                desdoble.disponible = true;
+              })
             }
-            
+
           }
         })
         if (this.admin) {
@@ -161,9 +167,12 @@ export class EleccionListComponent implements OnInit {
         }
       })
   }
-  asignaturaDisponible(asignatura):boolean{
-    if(asignatura.docencia.lenght > 0){
-      if(asignatura.docencia.profesor !== this.profesor.usuario.id){
+  asignaturaDisponible(asignatura): boolean {
+    debugger
+    var creditosUsados = 0;
+    console.log(asignatura.docencia.length)
+    if (asignatura.docencia.length > 0) {
+      if (asignatura.docencia[0].profesor !== this.profesor.usuario.id) {
         return false;
       }
     }
@@ -234,6 +243,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   saveEleccion() {
+    this.updateEleccion();
     if (this.valida && !this.loading) {
       if (this.admin) {
         this.eleccion.confirmada = true;
@@ -268,50 +278,53 @@ export class EleccionListComponent implements OnInit {
 
   updateEleccion() {
     this.eleccion.asignaturas = [];
-    this.eleccion.asignaturas = this.asignaturasSelected.map(asignatura => asignatura.id)
+    this.eleccion.asignaturas = this.asignaturasSelected;
 
     this.eleccion.asignaturas_divisibles = [];
-    this.eleccion.asignaturas_divisibles = this.asignaturasDivisiblesSelected.map(asignatura => {
-      return { id: asignatura.id, creditos: asignatura.creditos, asignatura: asignatura.id }
-    })
+    this.eleccion.asignaturas_divisibles = this.asignaturasDivisiblesSelected;
 
     this.eleccion.desdobles = [];
-    this.eleccion.desdobles = this.desdoblesSelected.map(desdoble => desdoble.desdobles[0].id)
+    this.eleccion.desdobles = this.desdoblesSelected;
     return this.eleccion;
   }
 
   onSelectAsignatura(asignatura, { selected }) {
-    if (selected) {
-      this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
-      this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
-      this.creditos += asignatura.creditos;
+    if (this.asignaturaDisponible(asignatura)) {
+      if (selected) {
+        this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
+        this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
+        this.creditos += asignatura.creditos;
 
+      }
+      else {
+        this.asignaturasSelected = this.asignaturasSelected.filter(asign => asign.id !== asignatura.id);
+        this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
+        this.creditos -= asignatura.creditos;
+      }
+      this.comprobarEleccion();
     }
-    else {
-      this.asignaturasSelected = this.asignaturasSelected.filter(asign => asign.id !== asignatura.id);
-      this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
-      this.creditos -= asignatura.creditos;
-    }
-    this.comprobarEleccion();
+
   }
 
   onSelectDesdoble(asignatura, { selected }) {
-    if (selected) {
-      this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
-      this.asignaturas.map(asignaturaMap => {
-        if (asignatura === asignaturaMap) {
-          asignatura.desdobles.map(desdoble => {
-            this.creditos += desdoble.creditos;
-            desdoble.selected = true;
-          })
-        }
-      });
+    if (this.asignaturaDisponible(asignatura.desdobles[0])) {
+      if (selected) {
+        this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
+        this.asignaturas.map(asignaturaMap => {
+          if (asignatura === asignaturaMap) {
+            asignatura.desdobles.map(desdoble => {
+              this.creditos += desdoble.creditos;
+              desdoble.selected = true;
+            })
+          }
+        });
+      }
+      else {
+        this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
+        this.creditos -= asignatura.desdobles[0].creditos;
+      }
+      this.comprobarEleccion();
     }
-    else {
-      this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
-      this.creditos -= asignatura.desdobles[0].creditos;
-    }
-    this.comprobarEleccion();
   }
 
   changeCreditVal(credits, asignatura) {

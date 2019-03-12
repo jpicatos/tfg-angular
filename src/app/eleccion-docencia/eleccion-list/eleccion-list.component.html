@@ -4,7 +4,8 @@
 <div class="total-container">
     <mat-sidenav-container>
         <mat-sidenav #sidenav [autoFocus]="false" [mode]="over" position="end" class="sidenav">
-            <app-search-sidenav [sidenav]="sidenav" (updateLoading)="updateLoading($event)" (updateAsignaturas)="updateAsignaturas($event)"></app-search-sidenav>
+            <app-search-sidenav [sidenav]="sidenav" (updateLoading)="updateLoading($event)"
+                (updateAsignaturas)="updateAsignaturas($event)"></app-search-sidenav>
         </mat-sidenav>
         <mat-sidenav-content>
             <mat-toolbar>
@@ -12,27 +13,30 @@
                     <div class="topMenu">
                         <form class="buscar">
                             <mat-form-field>
-                                <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
+                                <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre"
+                                    [ngModelOptions]="{standalone: true}">
                                 <mat-placeholder>
                                     Buscar por nombre
                                 </mat-placeholder>
                             </mat-form-field>
                             <button mat-button type="submit" (click)="search()">
-                        <mat-icon>search</mat-icon>
-                    </button>
+                                <mat-icon>search</mat-icon>
+                            </button>
                         </form>
                         <form class="profesores" *ngIf="admin">
                             Elección de docencia de:
                             <mat-form-field>
-                                <mat-select (selectionChange)="fillSelected()" [(ngModel)]="profesor" [ngModelOptions]="{standalone: true}">
-                                    <mat-option *ngFor="let profe of profesores" [value]=profe>{{profe.usuario.first_name}} {{profe.usuario.last_name}}</mat-option>
+                                <mat-select (selectionChange)="fillSelected()" [(ngModel)]="profesor"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let profe of profesores" [value]=profe>
+                                        {{profe.usuario.first_name}} {{profe.usuario.last_name}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </form>
 
                         <button mat-icon-button (click)="sidenav.toggle()">
-                    <mat-icon aria-label="Filtrar">local_bar</mat-icon>
-                </button>
+                            <mat-icon aria-label="Filtrar">local_bar</mat-icon>
+                        </button>
                     </div>
                 </mat-toolbar-row>
             </mat-toolbar>
@@ -45,14 +49,17 @@
                     <mat-grid-list cols="2" rowHeight="fit" style="height: 150px">
                         <mat-grid-tile>
                             <mat-list>
-                                <mat-list-item *ngIf="eleccion && !eleccion.asignaturas.length && !eleccion.desdobles.length">
+                                <mat-list-item
+                                    *ngIf="eleccion && !eleccion.asignaturas.length && !eleccion.desdobles.length">
                                     <h4>
                                         Este profesor aún no tiene asignaturas en su elección
                                     </h4>
                                 </mat-list-item>
                                 <mat-list-item>
                                     <h4>
-                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos seleccionados: {{creditos}} de {{profesor.creditos_escoger}} créditos</h4>
+                                        <mat-icon mat-list-icon>school</mat-icon>Cŕeditos seleccionados: {{creditos}} de
+                                        {{profesor.creditos_escoger}} créditos
+                                    </h4>
                                 </mat-list-item>
                             </mat-list>
                         </mat-grid-tile>
@@ -87,12 +94,14 @@
                         <h2>Asignaturas</h2>
                     </div>
                     <mat-selection-list class="asignaturas">
-                        
+
                         <div *ngFor="let asignatura of asignaturas">
-                            
+                            <!-- <div class="asignatura-no-disponible" *ngIf="!admin && !asignaturaDisponible(asignatura)">HIOSJLHDKJBKLCBVlksdvcbdlkscvsdlk</div>   -->
                             <!-- Asignatura no divisible -->
-                            <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)" [selected]="asignatura.selected" *ngIf="!asignatura.divisible">
-                                    <div class="asignatura-no-disponible" *ngIf="!asignatura.disponible"></div>
+                            <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)"
+                                [selected]="asignatura.selected" *ngIf="!asignatura.divisible"
+                                [disabled]="!asignatura.disponible"
+                                [ngClass]="{'disabled': !asignatura.disponible}">
                                 <h3 mat-line class="wrapedText">
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
                                         [{{asignatura.siglas}}]
@@ -101,7 +110,8 @@
                                 </h3>
                                 <p mat-line>
                                     <mat-chip class="withIcon">
-                                        <mat-icon>calendar_today</mat-icon>{{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
+                                        <mat-icon>calendar_today</mat-icon>
+                                        {{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
                                     </mat-chip>
                                 </p>
 
@@ -114,7 +124,7 @@
                             </mat-list-option>
 
                             <!-- Asignatura divisible -->
-                            <mat-list-item #opt  *ngIf="asignatura.divisible">
+                            <mat-list-item #opt *ngIf="asignatura.divisible" [ngClass]="{'disabled': asignatura.maxCreditos <= 0}">
                                 <h3 mat-line class="wrapedText">
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
                                         [{{asignatura.siglas}}]
@@ -123,7 +133,8 @@
                                 </h3>
                                 <p mat-line>
                                     <mat-chip class="withIcon">
-                                        <mat-icon>calendar_today</mat-icon>{{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
+                                        <mat-icon>calendar_today</mat-icon>
+                                        {{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
                                     </mat-chip>
                                 </p>
 
@@ -131,13 +142,21 @@
                                     <strong> {{fetchDay(hora.dia)}}: </strong>{{hora.hora_inicio}}-{{hora.hora_fin}}
                                 </p>
                                 <p mat-line>
-                                    <strong>Créditos disponibles: </strong>{{asignatura.maxCreditos}}/{{asignatura.creditos}}
+                                    <strong>Créditos disponibles:
+                                    </strong>{{asignatura.maxCreditos}}/{{asignatura.creditos}}
                                 </p>
-                                <input #cred id="divisible{{asignatura.id}}" type="number"  (change)="changeCreditVal(cred, asignatura)" min={{asignatura.minCreditos}} max={{asignatura.maxCreditos}} [disabled]="asignatura.maxCreditos <= 0">
+                                <input #cred id="divisible{{asignatura.id}}" type="number"
+                                    (change)="changeCreditVal(cred, asignatura)" min={{asignatura.minCreditos}}
+                                    max={{asignatura.maxCreditos}} [disabled]="asignatura.maxCreditos <= 0">
                             </mat-list-item>
 
                             <!-- Desdoble común para asignaturas divisibles y no divisibles -->
-                            <mat-list-option *ngIf="asignatura.desdobles.length > 0" #optDesdobles (click)="onSelectDesdoble(asignatura, optDesdobles)" [selected]="asignatura.desdobles[0].selected">
+                            <mat-list-option *ngIf="asignatura.desdobles.length > 0" #optDesdobles
+                                (click)="onSelectDesdoble(asignatura, optDesdobles)"
+                                [selected]="asignatura.desdobles[0].selected"
+                                [disabled]="!asignatura.desdobles[0].disponible"
+                                [ngClass]="{'disabled': !asignatura.desdobles[0].disponible}">
+                                <!-- <div class="asignatura-no-disponible" *ngIf="!admin && !asignaturaDisponible(asignatura.desdobles[0])">vdvdfvdfsvsdvsdvsdvs</div>    -->
                                 <h3 class="wrapedText">
                                     <mat-chip color="accent" selected>Desdoble</mat-chip>
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
@@ -147,7 +166,8 @@
                                 </h3>
                                 <p mat-line>
                                     <mat-chip class="withIcon">
-                                        <mat-icon>calendar_today</mat-icon>{{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
+                                        <mat-icon>calendar_today</mat-icon>
+                                        {{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
                                     </mat-chip>
                                 </p>
                                 <p mat-line *ngFor="let hora of asignatura.desdobles[0].horario">
@@ -174,7 +194,9 @@
 
                     <div id="stateContent">
                         <div id="horarioComponent" *ngIf="asignaturasSelected">
-                            <app-full-calendar [asignaturasEntrada]="asignaturasSelected" [desdoblesEntrada]="desdoblesSelected" [asignaturasDivisiblesEntrada]="asignaturasDivisiblesSelected"></app-full-calendar>
+                            <app-full-calendar [asignaturasEntrada]="asignaturasSelected"
+                                [desdoblesEntrada]="desdoblesSelected"
+                                [asignaturasDivisiblesEntrada]="asignaturasDivisiblesSelected"></app-full-calendar>
                         </div>
 
                         <div *ngIf="!valida" class="errores">
@@ -190,14 +212,18 @@
                                         <h3 *ngIf="errores.L.primer_cuatrimestre.length">Primer cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.L.primer_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
                                         <h3 *ngIf="errores.L.segundo_cuatrimestre.length">Segundo cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.L.segundo_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
@@ -209,14 +235,18 @@
                                         <h3 *ngIf="errores.M.primer_cuatrimestre.length">Primer cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.M.primer_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
                                         <h3 *ngIf="errores.M.segundo_cuatrimestre.length">Segundo cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.M.segundo_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
@@ -228,14 +258,18 @@
                                         <h3 *ngIf="errores.X.primer_cuatrimestre.length">Primer cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.X.primer_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
                                         <h3 *ngIf="errores.X.segundo_cuatrimestre.length">Segundo cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.X.segundo_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
@@ -247,14 +281,18 @@
                                         <h3 *ngIf="errores.J.primer_cuatrimestre.length">Primer cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.J.primer_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
                                         <h3 *ngIf="errores.J.segundo_cuatrimestre.length">Segundo cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.J.segundo_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
@@ -266,14 +304,18 @@
                                         <h3 *ngIf="errores.V.primer_cuatrimestre.length">Primer cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.V.primer_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 
                                         <h3 *ngIf="errores.V.segundo_cuatrimestre.length">Segundo cuatrimestre</h3>
                                         <ng-container *ngFor="let error of errores.V.segundo_cuatrimestre">
                                             <h4>{{error[0].nombre }} con {{ error[1].nombre}}</h4>
-                                            <li><strong>Horario solapado:</strong> {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
+                                            <li><strong>Horario solapado:</strong>
+                                                {{error[0].horario_solapado[0]}}-{{error[0].horario_solapado[1]}} con
+                                                {{error[1].horario_solapado[0]}}-{{error[1].horario_solapado[1]}}
                                             </li>
                                         </ng-container>
 

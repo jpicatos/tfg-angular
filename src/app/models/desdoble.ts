@@ -8,6 +8,7 @@ export class Desdoble {
     creditos: number;
     docencia: Eleccion;
     selected: boolean;
+    disponible: boolean;
 
     constructor() {
         this.horario = [new Horario];
