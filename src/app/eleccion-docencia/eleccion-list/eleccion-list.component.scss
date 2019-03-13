@@ -13,10 +13,11 @@ mat-list-option {
         opacity: 0.4;
         background: none;
         &:hover {
-            background:none;
+            background: none;
         }
     }
 }
+
 .disabled {
     opacity: 0.4;
 }
@@ -172,7 +173,7 @@ mat-list-option {
 }
 
 .separator {
-    flex: 1;
+    flex: 1 1 auto;
 }
 
 .profesores {

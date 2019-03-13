@@ -35,7 +35,7 @@ export class EleccionService {
     return this.http.post<ErroresEleccion>(this.docenciaUrl + "comprobar/", eleccion);
   }
 
-  parseEleccion(eleccion:Eleccion): Eleccion{
+  parseEleccion(eleccion: Eleccion): Eleccion {
     eleccion.asignaturas_divisibles.map(asignatura => {
       delete asignatura.id;
     })
@@ -43,9 +43,11 @@ export class EleccionService {
     eleccion.asignaturas = asignaturasAux;
 
     var asignaturasDivisiblesAux = eleccion.asignaturas_divisibles.map(asignatura => {
-      return {creditos: asignatura.creditos, asignatura: asignatura.id}
+      return { creditos: asignatura.creditos, asignatura: asignatura.asignatura.id }
     });
     eleccion.asignaturas_divisibles = asignaturasDivisiblesAux;
+
+
 
     var desdoblesAux = eleccion.desdobles.map(desdoble => desdoble.desdobles[0].id)
     eleccion.desdobles = desdoblesAux;
@@ -55,10 +57,10 @@ export class EleccionService {
 
   deleteEleccion(id: number): void {
     this.http.delete<Eleccion>(this.docenciaUrl + id)
-    .subscribe(docencia => { 
-      this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
-      window.location.reload() 
-    });;
+      .subscribe(docencia => {
+        this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
+        window.location.reload()
+      });;
   }
 
 }
