@@ -18,6 +18,11 @@ import { UtilComponentsModule } from "./util-components/util-components.module";
 import { GlobalConfigService } from './services/global-config.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+import { ChartsModule } from 'ng2-charts';
+import { MaterialModule } from './material/material.module';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +36,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     BrowserModule,
     BrowserAnimationsModule,
     routing,
-    UtilComponentsModule
+    UtilComponentsModule,
+    ChartsModule,
+    MaterialModule
   ],
   exports: [
     HttpClientModule,

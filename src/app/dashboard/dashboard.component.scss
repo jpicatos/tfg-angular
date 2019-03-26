@@ -1,0 +1,30 @@
+.grafics-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    margin: 5px;
+
+    .grafica {
+        flex: 1 0 35%;
+        width: 100%;
+        margin: 10px;
+
+        li {
+            display: flex;
+            line-height: 2;
+
+            span {
+                flex: 1 0 40%;
+            }
+
+            b {
+                flex: 1 0 40%;
+            }
+
+            canvas {
+                width: 100%;
+            }
+        }
+    }
+}

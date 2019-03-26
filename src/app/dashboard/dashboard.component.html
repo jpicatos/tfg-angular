@@ -1,6 +1,72 @@
-<h2 *ngIf="admin"> Eres administrador </h2>
+<h2 *ngIf="admin">Como administrador puedes acceder a la <a routerLink="/config">configuración</a> para editar los
+  valores que se muestran a continuación</h2>
 <h2 *ngIf="!admin">
-  No eres administrador 
-  <span *ngIf="tuTurno"> y es tu turno así que <a routerLink="/eleccion-docencia">empieza a elegir asignaturas</a></span>
-  <span *ngIf="!tuTurno"> pero no es tu turno, vuelve más tarde</span>
+  No eres administrador
+  <span *ngIf="tuTurno"> y es tu turno así que <a routerLink="/eleccion-docencia">empieza a elegir
+      asignaturas</a></span>
+  <span *ngIf="!tuTurno && departamento.docencia_iniciada"> pero no es tu turno, vuelve más tarde</span>
+  <span *ngIf="!departamento.docencia_iniciada">y la elección de docencia aún no ha empezado</span>
 </h2>
+
+<div class="grafics-container">
+  <mat-card class="grafica">
+    <mat-card-header>
+      <mat-card-title>Créditos asignados y sin asignar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div style="display: block">
+        <canvas baseChart [datasets]="graficaCreditos.datas" [labels]="graficaCreditos.labels"
+          [chartType]="graficaCreditos.type" [options]="options"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="grafica">
+    <mat-card-header>
+      <mat-card-title>Número de créditos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div style="display: block">
+        <canvas baseChart [datasets]="graficaNumCreditos.datas" [labels]="graficaNumCreditos.labels"
+          [chartType]="graficaNumCreditos.type" [options]="optionsBar" [legend]="false"
+          [colors]="graficaNumCreditos.colour"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="grafica">
+    <mat-card-header>
+      <mat-card-title>Deudas y PDA</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div style="display: block">
+        <canvas baseChart [datasets]="graficaDeudaPDA.datas" [labels]="graficaDeudaPDA.labels"
+          [chartType]="graficaDeudaPDA.type" [options]="optionsBar" [legend]="false"
+          [colors]="graficaDeudaPDA.colour"></canvas>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="grafica">
+    <mat-card-header>
+      <mat-card-title>Datos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ul>
+        <li><b>Docencia iniciada:</b><span>{{departamento.docencia_iniciada}}</span></li>
+        <li><b>Siglas del departamento:</b> <span>{{departamento.siglas}}</span></li>
+        <li><b>Nombre del departamento:</b> <span>{{departamento.nombre}}</span></li>
+        <li><b>Total de créditos:</b> <span>{{departamento.total_creditos}}</span></li>
+        <li><b>Total créditos carga:</b> <span>{{departamento.total_creditos_carga}}</span>
+        </li>
+        <li><b>Créditos fijos:</b> <span>{{departamento.creditos_fijos}}</span></li>
+        <li><b>Resto de créditos:</b> <span>{{departamento.resto_creditos}}</span></li>
+        <li><b>Créditos asignados:</b> <span>{{departamento.creditos_asignados}}</span></li>
+        <li><b>Créditos sin asignar:</b> <span>{{departamento.creditos_sin_asignar}}</span>
+        </li>
+        <li><b>Capacidad restante:</b> <span>{{departamento.capacidad_restante}}</span></li>
+        <li><b>Carga dinámica:</b> <span>{{departamento.carga_dinamica}}</span></li>
+        <li><b>Deudas:</b> <span>{{departamento.deudas}}</span></li>
+        <li><b>Deudas Corregidas:</b> <span>{{departamento.deudas_corregidas}}</span></li>
+        <li><b>PDA:</b> <span>{{departamento.pda}}</span></li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+</div>
