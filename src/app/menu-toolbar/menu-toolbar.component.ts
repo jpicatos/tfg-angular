@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../auth/authentication.service';
 import { GlobalConfigService } from '../services/global-config.service';
 import { Profesor } from '../models/profesor';
@@ -20,7 +20,7 @@ export class MenuToolbarComponent implements OnInit {
   loading: boolean;
   tuTurno: boolean;
 
-  constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService, private profesoresService: ProfesoresService, private eleccionService: EleccionService) {
+  constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService, private profesoresService: ProfesoresService, private eleccionService: EleccionService, private router: Router) {
     MenuToolbarComponent.routeTitle = "";
     this.usuario = new Profesor;
     this.usuario.usuario = new Usuario;
@@ -39,7 +39,6 @@ export class MenuToolbarComponent implements OnInit {
 
   initData(): void {
     this.globalConfigService.getStartLoading().subscribe(loading => {
-
       console.log("initData");
       this.loading = true;
       this.admin = this.globalConfigService.isAdmin();
@@ -48,7 +47,15 @@ export class MenuToolbarComponent implements OnInit {
       this.globalConfigService.saveTurno(false);
       this.globalConfigService.loadDepartamento().subscribe(departamento => {
         this.globalConfigService.saveDepartamento(departamento);
-        if (departamento[0].docencia_iniciada && !this.admin) {
+        if (this.admin) {
+          this.usuario.usuario.first_name = "Administrador";
+          this.tuTurno = true;
+          this.globalConfigService.saveTurno(true);
+          setTimeout(() => {
+            this.loading = false;
+          }, 4000);
+        }
+        else if (departamento[0].docencia_iniciada) {
           this.profesoresService.getProfesor(userid).subscribe(usuario => {
             this.globalConfigService.saveProfeInfo(usuario);
             this.usuario = usuario;
@@ -56,13 +63,12 @@ export class MenuToolbarComponent implements OnInit {
           });
         }
         else {
-          this.usuario.usuario.first_name = "Administrador";
-          this.tuTurno = true;
-          this.globalConfigService.saveTurno(true);
-          // setTimeout(()=> { this.loading = false }, 5000);
+          this.globalConfigService.saveTurno(false);
           setTimeout(() => {
             this.loading = false;
-          }, 4000);
+            this.router.navigate(["/dashboard"]);
+          }, 2000);
+          
         }
       });
     })
