@@ -1,12 +1,15 @@
-<h2 *ngIf="admin">Como administrador puedes acceder a la <a routerLink="/config">configuración</a> para editar los
-  valores que se muestran a continuación</h2>
-<h2 *ngIf="!admin">
-  No eres administrador
-  <span *ngIf="tuTurno"> y es tu turno así que <a routerLink="/eleccion-docencia">empieza a elegir
-      asignaturas</a></span>
-  <span *ngIf="!tuTurno && departamento.docencia_iniciada"> pero no es tu turno, vuelve más tarde</span>
-  <span *ngIf="!departamento.docencia_iniciada">y la elección de docencia aún no ha empezado</span>
-</h2>
+<mat-card>
+  <mat-card-content>
+      <h3 *ngIf="admin">Como administrador puedes acceder a la <a routerLink="/config"><mat-icon>settings</mat-icon> configuración</a> para editar los
+        valores que se muestran a continuación</h3>
+      <h3 *ngIf="!admin">
+        <span *ngIf="tuTurno"> Es tu turno así que puedes <a routerLink="/eleccion-docencia">empiezar a elegir
+            asignaturas</a></span>
+        <span *ngIf="!tuTurno && departamento.docencia_iniciada"> Todavía no es tu turno, si es un error, por favor, ponte en contacto con un administrador</span>
+      </h3>
+  </mat-card-content>
+</mat-card>
+
 
 <div class="grafics-container">
   <mat-card class="grafica">
@@ -21,6 +24,17 @@
     </mat-card-content>
   </mat-card>
   <mat-card class="grafica">
+      <mat-card-header>
+        <mat-card-title>Profesores</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: block">
+          <canvas baseChart [datasets]="graficaProfesores.datas" [labels]="graficaProfesores.labels"
+            [chartType]="graficaProfesores.type" [options]="options"  [colors]="graficaProfesores.colour"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="grafica">
     <mat-card-header>
       <mat-card-title>Número de créditos</mat-card-title>
     </mat-card-header>

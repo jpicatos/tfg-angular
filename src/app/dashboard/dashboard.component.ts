@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalConfigService } from '../services/global-config.service';
 import { Departamento } from '../models/departamento';
+import { ProfesoresService } from '../services/profesores.service';
+import { EleccionService } from '../services/eleccion.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +30,12 @@ export class DashboardComponent implements OnInit {
     type: 'horizontalBar',
     colour: ['#ff6384', '#36a2eb', '#ABB2B9']
   }
+  graficaProfesores = {
+    labels: ['Profesores Pendientes', 'Profesores Confirmados', "Profesores sin Confirmar"],
+    datas: [],
+    type: 'doughnut',
+    colour: ['#ff6384', '#36a2eb', '#ABB2B9']
+  }
   options = {
     tooltipEvents: [],
     tooltipCaretSize: 0,
@@ -50,10 +58,11 @@ export class DashboardComponent implements OnInit {
       }]
     }
   }
-  constructor(private configService: GlobalConfigService) {
+  constructor(private configService: GlobalConfigService, private profesoresService: ProfesoresService, private docenciaService: EleccionService) {
     this.admin = this.configService.isAdmin();
     this.tuTurno = this.configService.getTurno();
     this.departamento = this.configService.getDepartamento()[0];
+    this.getProfesoresDataset();
   }
 
   ngOnInit() {
@@ -69,6 +78,40 @@ export class DashboardComponent implements OnInit {
       { data: [this.departamento.deudas, this.departamento.deudas_corregidas, this.departamento.pda], backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'] },
     ];
     this.graficaDeudaPDA.labels = ['Deudas: ' + this.departamento.deudas, 'Deudas Corregidas: ' + this.departamento.deudas_corregidas, "PDA: " + this.departamento.pda]
+  }
+
+  getProfesoresDataset(){
+    this.profesoresService.getProfesores().subscribe(profesores => {
+      var profesoresPendientes = profesores.filter(profe => profe.docencia === null).length
+      var profesoresDocencia = profesores.filter(profe => profe.docencia)
+      // debugger
+      var profesoresConfirmada  = 0 ;
+      profesoresDocencia.filter(profe =>{
+        this.docenciaService.getEleccion(profe.docencia).subscribe(doc => {
+          if(doc.confirmada){
+            profesoresConfirmada++;
+          }
+          var profesoresSinConfirmar = profesoresDocencia.length - profesoresConfirmada;
+          this.graficaProfesores.datas = [
+            {
+              data: [profesoresPendientes, profesoresConfirmada, profesoresSinConfirmar],
+              backgroundColor: this.graficaProfesores.colour
+            }
+          ]
+          this.graficaProfesores.labels = ['Profesores Pendientes: ' + profesoresPendientes, 'Profesores Confirmados: ' + profesoresConfirmada, "Profesores sin Confirmar: " + profesoresSinConfirmar]
+        })
+      })
+
+      var profesoresSinConfirmar = profesoresDocencia.length - profesoresConfirmada;
+
+      this.graficaProfesores.datas = [
+        {
+          data: [profesoresPendientes, profesoresConfirmada, profesoresSinConfirmar],
+          backgroundColor: this.graficaProfesores.colour
+        }
+      ]
+      this.graficaProfesores.labels = ['Profesores Pendientes: ' + profesoresPendientes, 'Profesores Confirmados: ' + profesoresConfirmada, "Profesores sin Confirmar: " + profesoresSinConfirmar]
+    })
   }
 
 }
