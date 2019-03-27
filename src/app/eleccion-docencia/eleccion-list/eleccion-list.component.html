@@ -19,7 +19,8 @@
                                     Buscar por nombre
                                 </mat-placeholder>
                             </mat-form-field>
-                            <mat-slide-toggle #available (change)="mostrarOnlyAvailable(available)" class="profesores">Mostrar solo asignaturas disponibles</mat-slide-toggle>
+                            <mat-slide-toggle #available (change)="mostrarOnlyAvailable(available)" class="profesores">
+                                Mostrar solo asignaturas disponibles</mat-slide-toggle>
                             <button mat-button type="submit" (click)="search()">
                                 <mat-icon>search</mat-icon>
                             </button>
@@ -80,14 +81,14 @@
 
             </mat-card>
 
-<button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            <button class="mat-fab-bottom-right1" mat-fab (click)="clearEleccion()">
+            <button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <button class="mat-fab-bottom-right1" *ngIf="puedesElegir()" mat-fab (click)="clearEleccion()">
                 <mat-icon>clear</mat-icon>
             </button>
-            
-            <button class="mat-fab-bottom-right2" mat-fab (click)="openDialog()">
+
+            <button class="mat-fab-bottom-right2" mat-fab *ngIf="puedesElegir()" (click)="openDialog()">
                 <mat-icon *ngIf="!admin">send</mat-icon>
                 <mat-icon *ngIf="admin">done</mat-icon>
             </button>
@@ -104,8 +105,7 @@
                             <!-- Asignatura no divisible -->
                             <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)"
                                 [selected]="asignatura.selected" *ngIf="!asignatura.divisible"
-                                [disabled]="!asignatura.disponible"
-                                [ngClass]="{'disabled': !asignatura.disponible}">
+                                [disabled]="!asignatura.disponible" [ngClass]="{'disabled': !asignatura.disponible}">
                                 <h3 mat-line class="wrapedText">
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
                                         [{{asignatura.siglas}}]
@@ -128,7 +128,8 @@
                             </mat-list-option>
 
                             <!-- Asignatura divisible -->
-                            <mat-list-item #opt *ngIf="asignatura.divisible" [ngClass]="{'disabled': !asignatura.disponible}">
+                            <mat-list-item #opt *ngIf="asignatura.divisible"
+                                [ngClass]="{'disabled': !asignatura.disponible && !admin}">
                                 <h3 mat-line class="wrapedText">
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
                                         [{{asignatura.siglas}}]
@@ -151,7 +152,7 @@
                                 </p>
                                 <input #cred id="divisible{{asignatura.id}}" type="number"
                                     (change)="changeCreditVal(cred, asignatura)" min={{asignatura.minCreditos}}
-                                    max={{asignatura.maxCreditos}} [disabled]="asignatura.maxCreditos <= 0">
+                                    max={{asignatura.maxCreditos}} [disabled]="asignatura.maxCreditos <= 0 && !admin">
                             </mat-list-item>
 
                             <!-- Desdoble común para asignaturas divisibles y no divisibles -->

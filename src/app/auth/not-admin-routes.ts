@@ -4,5 +4,6 @@ export default [
     "importar-asignaturas",
     'add-profesor/:id',
     'edit-profesor/:id',
-    'importar-profesores'
+    'importar-profesores',
+    'config'
 ]

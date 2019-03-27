@@ -5,7 +5,7 @@
       <h3 *ngIf="!admin">
         <span *ngIf="tuTurno"> Es tu turno así que puedes <a routerLink="/eleccion-docencia">empiezar a elegir
             asignaturas</a></span>
-        <span *ngIf="!tuTurno && departamento.docencia_iniciada"> Todavía no es tu turno, si es un error, por favor, ponte en contacto con un administrador</span>
+        <span *ngIf="!tuTurno && departamento.docencia_iniciada"> No es tu turno, si crees que es un error, por favor, ponte en contacto con un administrador</span>
       </h3>
   </mat-card-content>
 </mat-card>

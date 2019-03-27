@@ -28,6 +28,9 @@ import { ConfirmEleccionComponent } from '../confirm-eleccion/confirm-eleccion.c
 })
 export class EleccionListComponent implements OnInit {
   admin: boolean;
+  tuTurno: boolean;
+  docenciaIniciada: boolean;
+
   asignaturas: Asignatura[];
   todasAsignaturas: Asignatura[];
   loading: boolean;
@@ -53,7 +56,10 @@ export class EleccionListComponent implements OnInit {
   fetchDay;
 
   constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog) {
-    this.admin = this.globalConfigService.isAdmin()
+    this.admin = this.globalConfigService.isAdmin();
+    this.tuTurno = this.globalConfigService.getTurno();
+    // this.docenciaIniciada = this.globalConfigService.getDepartamento()[0].docencia_iniciada;
+
     if (this.globalConfigService.getUserinfo().telefono) {
       this.profesor = this.globalConfigService.getUserinfo()
     } else {
@@ -417,6 +423,10 @@ export class EleccionListComponent implements OnInit {
     this.loading = true;
     this.eleccion.confirmada = false;
     this.creditos = 0;
+  }
+
+  puedesElegir(): boolean{
+    return this.admin || this.tuTurno
   }
 
 }

@@ -4,12 +4,7 @@
             <div class="icon-container">
                 <div class="user-icon"></div>
             </div>
-            <div class="username-container">
-                <span>{{usuario.usuario.first_name}} {{usuario.usuario.last_name}} </span>
-                <div class="spacer"></div><button mat-icon-button>
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-            </div>
+                <span class="username-container">{{usuario.usuario.first_name}} {{usuario.usuario.last_name}} </span>
         </div>
         <mat-divider></mat-divider>
         <mat-divider></mat-divider>
@@ -37,13 +32,12 @@
             </button>
             <mat-divider></mat-divider>
             <p class="menu-title">Docencia</p>
-            <button mat-button routerLink="/eleccion-docencia" (click)="sidenav.toggle()" *ngIf="tuTurno">
+            <button mat-button routerLink="/eleccion-docencia" (click)="sidenav.toggle()">
                 <span class="menu-button-content">
                     <mat-icon>view_list</mat-icon>
                     DOCENCIA
                 </span>
             </button>
-            <h5 *ngIf="!tuTurno">Todavía no es el turno de tu elección</h5>
             <mat-divider></mat-divider>
             <p class="menu-title" *ngIf="admin">Configuración</p>
             <button mat-button *ngIf="admin" routerLink="/config">

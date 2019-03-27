@@ -22,19 +22,18 @@
 }
 
 .user-icon {
-    background-image: url("../../assets/user-male-icon.png");
+    background-image: url("../../assets/logo-eleccion.png");
     height: 100px;
     background-repeat: no-repeat;
     width: 100px;
     background-size: contain;
-    border-radius: 100%;
-    background-color: darkgray;
 }
 
 .username-container {
-    display: flex;
-    /* padding-right: 16px; */
-    align-items: center;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
 }
 
 .dash-button {
