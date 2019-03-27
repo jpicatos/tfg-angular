@@ -46,7 +46,7 @@
             <h5 *ngIf="!tuTurno">Todavía no es el turno de tu elección</h5>
             <mat-divider></mat-divider>
             <p class="menu-title" *ngIf="admin">Configuración</p>
-            <button mat-button *ngIf="admin">
+            <button mat-button *ngIf="admin" routerLink="/config">
                 <span class="menu-button-content">
                     <mat-icon>settings</mat-icon>
                     CONFIGURACIÓN

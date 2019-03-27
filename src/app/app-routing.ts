@@ -2,6 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuardService } from './auth/auth-guard.service';
+import { ConfigurationComponent } from './configuration/configuration.component';
 
 
 const routes: Routes = [
@@ -10,7 +11,8 @@ const routes: Routes = [
     children: [
       //{ path: '', loadChildren: './asignaturas/asignaturas.module#AsignaturasModule' },
       { path: '', loadChildren: './auth/auth.module#AuthModule'},
-      { path:'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]}
+      { path:'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
+      { path:'config', component: ConfigurationComponent, canActivate: [AuthGuardService]}
     ]
   }
 ];

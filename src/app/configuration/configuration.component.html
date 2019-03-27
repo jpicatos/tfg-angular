@@ -1,0 +1,71 @@
+<div class="decorator"></div>
+<div class="form-container">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Departamento</mat-card-title>
+      <mat-card-subtitle color="accent"><b>*Ojo! Algún cambio puede desconfigurar el sistema, utilizar con precaución</b></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="formulario">
+      <form class="formulario">
+        <mat-form-field>
+          <input matInput placeholder="Siglas" [(ngModel)]=departamento.siglas [ngModelOptions]="{standalone: true}"
+            required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Nombre del departamento" [(ngModel)]=departamento.nombre
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Total de créditos" [(ngModel)]=departamento.total_creditos
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Deudas" [(ngModel)]=departamento.deudas [ngModelOptions]="{standalone: true}"
+            required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Deudas Corregidas" [(ngModel)]=departamento.deudas
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="PDA" [(ngModel)]=departamento.pda [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Total créditos carga" [(ngModel)]=departamento.total_creditos_carga
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Créditos fijos" [(ngModel)]=departamento.creditos_fijos
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Resto de créditos" [(ngModel)]=departamento.resto_creditos
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Créditos asignados" [(ngModel)]=departamento.creditos_asignados
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Créditos sin asignar" [(ngModel)]=departamento.creditos_sin_asignar
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Capacidad restante" [(ngModel)]=departamento.capacidad_restante
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Carga dinámica" [(ngModel)]=departamento.carga_dinamica
+            [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+        <mat-slide-toggle [checked]="departamento.docencia_iniciada"
+        (change)="departamento.docencia_iniciada = $event.source.checked">
+          Elección de docencia iniciada
+        </mat-slide-toggle>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="accent" (click)="save()">Guardar</button>
+      </mat-card-actions>
+  </mat-card>
+</div>

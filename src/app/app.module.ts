@@ -20,6 +20,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ChartsModule } from 'ng2-charts';
 import { MaterialModule } from './material/material.module';
+import { ConfigurationComponent } from './configuration/configuration.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -27,6 +29,7 @@ import { MaterialModule } from './material/material.module';
   declarations: [
     AppComponent,
     DashboardComponent,
+    ConfigurationComponent,
   ],
   imports: [
     AsignaturasModule,
@@ -38,7 +41,9 @@ import { MaterialModule } from './material/material.module';
     routing,
     UtilComponentsModule,
     ChartsModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     HttpClientModule,

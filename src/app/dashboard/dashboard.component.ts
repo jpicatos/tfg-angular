@@ -3,6 +3,8 @@ import { GlobalConfigService } from '../services/global-config.service';
 import { Departamento } from '../models/departamento';
 import { ProfesoresService } from '../services/profesores.service';
 import { EleccionService } from '../services/eleccion.service';
+import { Title } from '@angular/platform-browser';
+import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -59,6 +61,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   constructor(private configService: GlobalConfigService, private profesoresService: ProfesoresService, private docenciaService: EleccionService) {
+    MenuToolbarComponent.updateTitle("Dashboard");
     this.admin = this.configService.isAdmin();
     this.tuTurno = this.configService.getTurno();
     this.departamento = this.configService.getDepartamento()[0];

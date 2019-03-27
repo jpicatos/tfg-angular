@@ -4,11 +4,12 @@ import { Observable, observable, Subject } from 'rxjs';
 import { Departamento } from '../models/departamento';
 import { Profesor } from '../models/profesor';
 import { ProfesoresService } from './profesores.service';
+import { AvisosService } from './avisos.service';
 
 @Injectable()
 export class GlobalConfigService {
 
-  private departamentoUrl = '/api/departamentos';
+  private departamentoUrl = '/api/departamentos/';
   private globalConfig = {
     departamento: new Departamento,
     usuario: new Profesor,
@@ -18,7 +19,7 @@ export class GlobalConfigService {
   }
   private loading = new Subject<any>();
 
-  constructor(private http: HttpClient, private profesoresService: ProfesoresService) {
+  constructor(private http: HttpClient, private profesoresService: ProfesoresService, private avisosService: AvisosService) {
 
   }
   getStartLoading() {
@@ -39,6 +40,13 @@ export class GlobalConfigService {
 
   saveDepartamento(departamento: Departamento): void {
     this.globalConfig.departamento = departamento;
+  }
+
+  setDepartamento(departamento:Departamento): void {
+    this.http.patch<Departamento>(this.departamentoUrl + departamento.siglas + '/', departamento)
+        .subscribe(data => {
+          this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
+        });
   }
 
   getUserinfo(): Profesor {
