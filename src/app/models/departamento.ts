@@ -13,4 +13,6 @@ export class Departamento{
     capacidad_restante: number;
     carga_dinamica: number;
     docencia_iniciada: number;
+    creditos_desdoble: number;
+    creditos_desdobles_sin_asignar: number;
 };

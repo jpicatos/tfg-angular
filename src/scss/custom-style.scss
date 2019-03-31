@@ -2781,8 +2781,10 @@ th.mat-header-cell {
 
 .mat-toolbar.mat-primary {
     background: $primary;
-    ;
-    color: #fff
+    color: #fff;
+    position: sticky;
+    z-index: 200;
+    top: 0;
 }
 
 .mat-toolbar.mat-accent {

@@ -57,8 +57,8 @@ export class AsignaturaDetailsComponent implements OnInit {
   }
 
   getProfesorName() {
-    if (this.asignatura.docencia != null) {
-      this.profesoresService.getProfesor(this.asignatura.docencia.profesor).subscribe(
+    if (this.asignatura.docencia[0] != null) {
+      this.profesoresService.getProfesor(this.asignatura.docencia[0].profesor).subscribe(
         profesor => {
           this.profesorTeoria = profesor.usuario.first_name + ' ' + profesor.usuario.last_name;
           this.profesorTeoriaUrl = '/profesores/' + profesor.usuario.id;
@@ -70,8 +70,8 @@ export class AsignaturaDetailsComponent implements OnInit {
       this.profesorTeoriaUrl = '/eleccion-docencia/';
     }
 
-    if (this.asignatura.desdobles.length && this.asignatura.desdobles[0].docencia != null) {
-      this.profesoresService.getProfesor(this.asignatura.desdobles[0].docencia.profesor).subscribe(
+    if (this.asignatura.desdobles.length && this.asignatura.desdobles[0].docencia[0] != null) {
+      this.profesoresService.getProfesor(this.asignatura.desdobles[0].docencia[0].profesor).subscribe(
         profesor => {
           this.profesorDesdoble = profesor.usuario.first_name + ' ' + profesor.usuario.last_name;
           this.profesorDesdobleUrl = '/profesores/' + profesor.usuario.id;
