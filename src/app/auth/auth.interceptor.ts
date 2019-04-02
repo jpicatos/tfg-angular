@@ -24,13 +24,14 @@ export class AuthInterceptor implements HttpInterceptor {
           if (err instanceof HttpErrorResponse) {
 
             if (err.url) {
-              if (err.url.includes('/token/') || err.url.includes('/token/refresh/')) {
+              if (err.url.includes('/token/refresh/')) {
                 for (var key in err.error) {
                   if (err.error.hasOwnProperty(key)) {
                     errMsg = JSON.stringify(err.error[key]).replace(/[^\w\s]/gi, " ");
                   }
                 }
-                this.avisosService.enviarMensaje(errMsg);
+                return <any>this.authService.logout();
+                // this.avisosService.enviarMensaje(errMsg);
               }
             }
 
@@ -71,7 +72,6 @@ export class AuthInterceptor implements HttpInterceptor {
       return this.authService.refresh()
         .pipe(
           switchMap((user: Token) => {
-            
             if(user) {
               this.tokenSubject.next(user.access);
               localStorage.setItem('currentUser', JSON.stringify(user.access));

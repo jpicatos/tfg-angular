@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router, ChildActivationStart } from '@angular/router';
 import { empty, Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { AvisosService } from '../services/avisos.service';
 import * as jwt_decode from 'jwt-decode';
 import { GlobalConfigService } from '../services/global-config.service';
@@ -58,7 +58,6 @@ export class AuthenticationService {
 
   refresh() {
     let token = JSON.parse(localStorage.getItem('currentUserRefresh'));
-
     return this.http.post<Token>("/api/token/refresh/", {"refresh": token})
       .pipe(
         map(res => {

@@ -83,4 +83,9 @@ export class ProfesoresService {
     return this.http.post<ProfesorImportar>(this.profesoresUrl + '/importar/', uploadData);
   }
 
+  exportar(): Observable<Blob> {
+    // this.http refers to HttpClient. Note here that you cannot use the generic get<Blob> as it does not compile: instead you "choose" the appropriate API in this way.
+    return this.http.get(this.profesoresUrl + "exportar/", { responseType: 'blob' });
+  }
+
 }

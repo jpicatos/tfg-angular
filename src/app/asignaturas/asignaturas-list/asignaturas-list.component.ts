@@ -50,7 +50,7 @@ export class AsignaturasListComponent implements OnInit {
   constructor(private asignaturasService: AsignaturasService, private router: Router, private titleService: Title, private globalConfigservice: GlobalConfigService) {
     this.titleService.setTitle("Asignaturas");
     this.admin = this.globalConfigservice.isAdmin();
-    
+
     this.selected = 1;
     this.opts = {
       codigo: true,
@@ -108,17 +108,17 @@ export class AsignaturasListComponent implements OnInit {
     }
   }
   search(): void {
-    this.loading=true;
+    this.loading = true;
     var diasAux = []
     if (this.searchVals.dias.length < 5) {
       diasAux = this.searchVals.dias;
     }
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
       .subscribe(asignaturas => {
-         this.asignaturas = asignaturas;
-         this.loading = false;
-         this.highlightResults();
-        });
+        this.asignaturas = asignaturas;
+        this.loading = false;
+        this.highlightResults();
+      });
   }
 
   highlightResults(): void {
@@ -145,5 +145,39 @@ export class AsignaturasListComponent implements OnInit {
   horaFin($event): void {
     this.searchVals.fin = $event;
   }
+
+  exportarAsignaturas(): void {
+    this.asignaturasService.exportar()
+      .subscribe(x => {
+        // It is necessary to create a new blob object with mime-type explicitly set
+        // otherwise only Chrome works like it should
+        var newBlob = new Blob([x], { type: "application/xlsx" });
+
+        // IE doesn't allow using a blob object directly as link href
+        // instead it is necessary to use msSaveOrOpenBlob
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(newBlob);
+          return;
+        }
+
+        // For other browsers: 
+        // Create a link pointing to the ObjectURL containing the blob.
+        const data = window.URL.createObjectURL(newBlob);
+
+        var link = document.createElement('a');
+        link.href = data;
+        link.download = "horarios.xlsx";
+        // this is necessary as link.click() does not work on the latest firefox
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+        setTimeout(function () {
+          // For Firefox it is necessary to delay revoking the ObjectURL
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      });
+  }
+
+
 
 }

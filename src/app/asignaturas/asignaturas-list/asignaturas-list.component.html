@@ -110,12 +110,16 @@
         </div>
     </mat-card>
     <div class="opts">
-        <button mat-raised-button color="accent" routerLink="/add-asignatura" class="addButton"  *ngIf="admin">
+        <button mat-raised-button color="accent" routerLink="/add-asignatura" class="addButton" *ngIf="admin">
             <mat-icon>add</mat-icon>Añadir nueva asignatura
         </button>
 
-        <button mat-raised-button color="accent" routerLink="/importar-asignaturas" class="addButton"  *ngIf="admin">
+        <button mat-raised-button color="accent" routerLink="/importar-asignaturas" class="addButton" *ngIf="admin">
             <mat-icon>cloud_upload</mat-icon> Importar asignaturas
+        </button>
+
+        <button mat-raised-button (click)="exportarAsignaturas()" color="accent" class="addButton">
+            <mat-icon>cloud_download</mat-icon> Exportar asignaturas
         </button>
         <mat-expansion-panel class="mostrar card" [expanded]="true">
             <mat-expansion-panel-header>
@@ -161,7 +165,7 @@
                     </mat-select>
                 </mat-form-field>
 
-                 <mat-form-field>
+                <mat-form-field>
                     <mat-select (selectionChange)="search()" placeholder="Cuatrimestre" [(ngModel)]="searchVals.cuatrimestre" [ngModelOptions]="{standalone: true}">
                         <mat-option value="">--</mat-option>
                         <mat-option value="1">1º cuatrimestre</mat-option>

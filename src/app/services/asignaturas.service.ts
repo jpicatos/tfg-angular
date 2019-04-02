@@ -28,7 +28,7 @@ export class AsignaturasService {
   getAsignaturaDesdoble(idDesdoble: number): Observable<Asignatura[]> {
     return this.http.get<Asignatura[]>(`${this.asignaturasUrl}?desdoble=${idDesdoble}`);
   }
-  
+
   @Cacheable()
   getCalendarios(id: number): Observable<Calendario> {
     return this.http.get<Calendario>(this.calendariosUrl + id);
@@ -103,6 +103,11 @@ export class AsignaturasService {
     uploadData.append('anyo', anyo);
 
     return this.http.post<AsignaturaImportar>(this.asignaturasUrl + '/importar/', uploadData);
+  }
+
+  exportar(): Observable<Blob> {
+    // this.http refers to HttpClient. Note here that you cannot use the generic get<Blob> as it does not compile: instead you "choose" the appropriate API in this way.
+    return this.http.get(this.asignaturasUrl + "exportar/", { responseType: 'blob' });
   }
 
 }

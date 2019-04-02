@@ -127,6 +127,10 @@
         <button mat-raised-button color="accent" routerLink="/importar-profesores" class="addButton" *ngIf="admin">
             <mat-icon>cloud_upload</mat-icon> Importar profesores
         </button>
+
+        <button mat-raised-button (click)="exportarProfesores()" color="accent"class="addButton">
+            <mat-icon>cloud_download</mat-icon> Exportar profesores
+        </button>
         <mat-expansion-panel class="mostrar card" [expanded]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
