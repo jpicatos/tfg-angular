@@ -69,8 +69,8 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.graficaCreditos.datas = [{ data: [this.departamento.creditos_asignados, this.departamento.creditos_sin_asignar, this.departamento.creditos_desdoble, this.departamento.creditos_desdobles_sin_asignar], label: "Créditos" }];
-    this.graficaCreditos.labels = ['Créditos asignados: ' + this.departamento.creditos_asignados, 'Créditos no asignados: ' + this.departamento.creditos_sin_asignar, "Creditos desdoble asignados: " + this.departamento.creditos_desdoble, "Creditos desdoble no asignados: " + this.departamento.creditos_desdobles_sin_asignar]
+    this.graficaCreditos.datas = [{ data: [this.departamento.creditos_asignados, this.departamento.creditos_sin_asignar, this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar, this.departamento.creditos_desdobles_sin_asignar], label: "Créditos" }];
+    this.graficaCreditos.labels = ['Créditos asignados: ' + this.departamento.creditos_asignados, 'Créditos no asignados: ' + this.departamento.creditos_sin_asignar, "Creditos desdoble asignados: " + (this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar), "Creditos desdoble no asignados: " + this.departamento.creditos_desdobles_sin_asignar]
 
     this.graficaNumCreditos.datas = [
       { data: [this.departamento.total_creditos_carga, this.departamento.creditos_fijos, this.departamento.resto_creditos], backgroundColor: this.graficaNumCreditos.colour }

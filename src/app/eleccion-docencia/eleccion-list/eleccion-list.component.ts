@@ -66,6 +66,13 @@ export class EleccionListComponent implements OnInit {
       this.profesor = new Profesor;
       this.profesor.usuario = new Usuario;
     }
+    if (this.admin) {
+      this.profesoresService.getProfesores()
+        .subscribe((profesores) => {
+          this.profesores = profesores;
+          this.profesor = profesores[0];
+        })
+    }
     this.isMinimiceLeft = isMinimiceLeft;
     this.minimiceLeft = minimiceLeft;
     this.isMinimiceRight = isMinimiceRight;
@@ -131,7 +138,7 @@ export class EleccionListComponent implements OnInit {
     this.loading = true;
     this.asignaturasService.searchAsignatura("", this.searchVals.nombre, "", "", 0, "", "", [])
       .subscribe(asignaturas => {
-        this.updateAsignaturas(asignaturas, false);
+        this.updateAsignaturas(asignaturas, true);
         this.loading = false;
       });
   }
@@ -141,12 +148,36 @@ export class EleccionListComponent implements OnInit {
   }
 
   updateAsignaturas(asignaturas: Asignatura[], refreshSelected: boolean) {
-    asignaturas.map(asignatura => {
-      if(!asignatura.divisible){
-        this.checkDisponibilidad(asignatura);
+    asignaturas.map(asignatura => {      
+      if (asignatura.divisible) {
+        asignatura.minCreditos = asignatura.creditos / 3;
+        var creditosUsados = 0;
+        asignatura.docencia_divisible.map(docencia => {
+          creditosUsados = creditosUsados + docencia.creditos;
+        })
+        var creditosDisponibles = asignatura.creditos - creditosUsados;
+        if (creditosDisponibles > 0) {
+          asignatura.maxCreditos = creditosDisponibles;
+        }
+        else {
+          creditosDisponibles = 0;
+          asignatura.maxCreditos = 0;
+          asignatura.minCreditos = 0;
+        }
+        if (this.asignaturaDisponible(asignatura)) {
+          asignatura.disponible = true
+        }
+        else if (asignatura.maxCreditos > 0) {
+          asignatura.disponible = true
+        }
+        else {
+          asignatura.disponible = false
+        }
+
       }
-      else{
-        asignatura.maxCreditos > 0 ? asignatura.disponible = true : asignatura.disponible = false;
+      else {
+        this.checkDisponibilidad(asignatura)
+
       }
     })
     this.asignaturas = asignaturas;
@@ -157,55 +188,14 @@ export class EleccionListComponent implements OnInit {
   getAsignaturas(): void {
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
-        asignaturas.map(asignatura => {
-          if (asignatura.divisible) {
-            asignatura.minCreditos = asignatura.creditos / 3;
-            var creditosUsados = 0;
-            asignatura.docencia_divisible.map(docencia => {
-              creditosUsados = creditosUsados + docencia.creditos;
-            })
-            var creditosDisponibles = asignatura.creditos - creditosUsados;
-            if (creditosDisponibles > 0) {
-              asignatura.maxCreditos = creditosDisponibles;
-            }
-            else {
-              creditosDisponibles = 0;
-              asignatura.maxCreditos = 0;
-              asignatura.minCreditos = 0;
-            }
-            asignatura.maxCreditos > 0 ? asignatura.disponible = true : asignatura.disponible = false;
-          }
-          else {
-            this.checkDisponibilidad(asignatura)
-
-          }
-        })
-        if (this.admin) {
-          this.profesoresService.getProfesores()
-            .subscribe((profesores) => {
-              this.profesores = profesores;
-              this.profesor = profesores[0];
-              this.updateAsignaturas(asignaturas, true);
-            })
-        }
-        else {
-          this.updateAsignaturas(asignaturas, true);
-        }
+        this.updateAsignaturas(asignaturas, true);
       })
   }
   checkDisponibilidad(asignatura) {
-    if (!this.admin) {
-      asignatura.disponible = this.asignaturaDisponible(asignatura)
-      asignatura.desdobles.map(desdoble => {
-        desdoble.disponible = this.asignaturaDisponible(desdoble);
-      })
-    }
-    else {
-      asignatura.disponible = true;
-      asignatura.desdobles.map(desdoble => {
-        desdoble.disponible = true;
-      })
-    }
+    asignatura.disponible = this.asignaturaDisponible(asignatura)
+    asignatura.desdobles.map(desdoble => {
+      desdoble.disponible = this.asignaturaDisponible(desdoble);
+    })
   }
   asignaturaDisponible(asignatura): boolean {
     if (asignatura.docencia.length > 0) {
@@ -213,8 +203,18 @@ export class EleccionListComponent implements OnInit {
         return false;
       }
     }
+    if (asignatura.docencia_divisible && asignatura.docencia_divisible.length > 0) {
+      var userInDocencia = false
+      asignatura.docencia_divisible.map(docencia => {
+        if (docencia.profesor === this.profesor.usuario.id) {
+          userInDocencia = true
+        }
+      });
+      return userInDocencia
+    }
     return true;
   }
+
   fillSelected() {
     this.reset();
     this.eleccion.profesor = this.profesor.usuario.id;
@@ -294,6 +294,7 @@ export class EleccionListComponent implements OnInit {
           this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
           console.log(data)
           this.eleccion = data;
+          window.location.reload()
         });;
       }
     }
@@ -305,19 +306,21 @@ export class EleccionListComponent implements OnInit {
   clearEleccion() {
     this.desdoblesSelected = [];
     this.asignaturasSelected = [];
+    this.asignaturasDivisiblesSelected = []
     this.asignaturas.map(asignatura => {
       asignatura.selected = false;
 
       asignatura.desdobles.map(desdoble => {
         desdoble.selected = false;
       })
+
     });
 
     this.valida = true;
     this.updateEleccion();
   }
 
-  deleteEleccion(){
+  deleteEleccion() {
     this.clearEleccion();
     this.eleccionService.deleteEleccion(this.eleccion.id);
   }
@@ -425,7 +428,7 @@ export class EleccionListComponent implements OnInit {
     this.creditos = 0;
   }
 
-  puedesElegir(): boolean{
+  puedesElegir(): boolean {
     return this.admin || this.tuTurno
   }
 

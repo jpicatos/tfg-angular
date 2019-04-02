@@ -28,7 +28,7 @@
                         <form class="profesores" *ngIf="admin">
                             Elección de docencia de:
                             <mat-form-field>
-                                <mat-select (selectionChange)="fillSelected()" [(ngModel)]="profesor"
+                                <mat-select (selectionChange)="getAsignaturas()" [(ngModel)]="profesor"
                                     [ngModelOptions]="{standalone: true}">
                                     <mat-option *ngFor="let profe of profesores" [value]=profe>
                                         {{profe.usuario.first_name}} {{profe.usuario.last_name}}</mat-option>
@@ -129,7 +129,7 @@
 
                             <!-- Asignatura divisible -->
                             <mat-list-item #opt *ngIf="asignatura.divisible"
-                                [ngClass]="{'disabled': !asignatura.disponible && !admin}">
+                                [ngClass]="{'disabled': !asignatura.disponible}">
                                 <h3 mat-line class="wrapedText">
                                     <a routerLink="/asignaturas/{{asignatura.id}}">
                                         [{{asignatura.siglas}}]
@@ -152,7 +152,7 @@
                                 </p>
                                 <input #cred id="divisible{{asignatura.id}}" type="number"
                                     (change)="changeCreditVal(cred, asignatura)" min={{asignatura.minCreditos}}
-                                    max={{asignatura.maxCreditos}} [disabled]="asignatura.maxCreditos <= 0 && !admin">
+                                    max={{asignatura.maxCreditos}} [disabled]="!asignatura.disponible">
                             </mat-list-item>
 
                             <!-- Desdoble común para asignaturas divisibles y no divisibles -->

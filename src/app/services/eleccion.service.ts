@@ -24,6 +24,7 @@ export class EleccionService {
     this.http.patch<Eleccion>(this.docenciaUrl + eleccion.id + '/', eleccion)
       .subscribe(data => {   // data is already a JSON object
         this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
+        window.location.reload()
       });
   }
   createEleccion(eleccion: Eleccion): Observable<Eleccion> {
