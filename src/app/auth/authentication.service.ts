@@ -81,8 +81,9 @@ export class AuthenticationService {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     localStorage.removeItem('currentUserRefresh');
-    window.location.reload();
-    this.router.navigate(['/dashboard']);
+    // Provoca bucle infinito
+    // window.location.reload();
+    // this.router.navigate(['/dashboard']);
     this.name.next("Iniciar sesión");
     return empty();
   }
