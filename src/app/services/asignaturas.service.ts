@@ -93,7 +93,7 @@ export class AsignaturasService {
       .subscribe(res => { });
   }
 
-  importar(archivo: File, departamento_siglas: string, departamento_nombre: string, anyo: string): Observable<AsignaturaImportar> {
+  importar(archivo: File, departamento_siglas: string, departamento_nombre: string, anyo: string, sobrescribir: boolean): Observable<AsignaturaImportar> {
 
     // this.http is the injected HttpClient
     const uploadData = new FormData();
@@ -101,6 +101,7 @@ export class AsignaturasService {
     uploadData.append('departamento_siglas', departamento_siglas);
     uploadData.append('departamento_nombre', departamento_nombre);
     uploadData.append('anyo', anyo);
+    uploadData.append('sobrescribir', sobrescribir ? "true" : "false");
 
     return this.http.post<AsignaturaImportar>(this.asignaturasUrl + '/importar/', uploadData);
   }

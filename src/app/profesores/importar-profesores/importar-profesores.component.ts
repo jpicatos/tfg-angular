@@ -17,6 +17,7 @@ export class ImportarProfesoresComponent implements OnInit {
   private selectedFile: File;
   private departamento_siglas: string;
   private progreso: boolean;
+  private sobrescribir: boolean;
 
   constructor(private profesoresService: ProfesoresService,
     private http: HttpClient, private avisosService: AvisosService) {
@@ -33,7 +34,7 @@ export class ImportarProfesoresComponent implements OnInit {
 
   importar() {
     if (this.selectedFile && this.departamento_siglas) {
-      this.profesoresService.importar(this.selectedFile, this.departamento_siglas)
+      this.profesoresService.importar(this.selectedFile, this.departamento_siglas, this.sobrescribir)
         .subscribe(event => this.ficheroSubido(event),
           error => this.mostrarError());
 

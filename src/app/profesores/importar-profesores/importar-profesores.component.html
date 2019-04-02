@@ -17,6 +17,9 @@
                     <input matInput [(ngModel)]="departamento_siglas" placeholder="Siglas del departamento">
                     <mat-hint>Ejemplo: <strong>SIC</strong></mat-hint>
                 </mat-form-field>
+
+                <br>
+                <mat-checkbox [(ngModel)]="sobrescribir">Sobrescribir profesores existentes</mat-checkbox>
             </div>
 
             <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>

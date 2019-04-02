@@ -23,4 +23,5 @@ export class Profesor{
 export class ProfesorImportar {
     excel_file: string;
     departamento_siglas: string;
+    sobrescribir: boolean;
 }

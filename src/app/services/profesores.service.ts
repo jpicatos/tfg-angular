@@ -73,14 +73,15 @@ export class ProfesoresService {
     return this.http.get<Profesor[]>(this.profesoresUrl + '?' + params);
   }
 
-  importar(archivo: File, departamento_siglas: string): Observable<ProfesorImportar> {
+  importar(archivo: File, departamento_siglas: string, sobrescribir: boolean): Observable<ProfesorImportar> {
 
     // this.http is the injected HttpClient
     const uploadData = new FormData();
     uploadData.append('excel_file', archivo, archivo.name);
     uploadData.append('departamento_siglas', departamento_siglas);
+    uploadData.append('sobrescribir', sobrescribir ? "true" : "false");
 
-    return this.http.post<ProfesorImportar>(this.profesoresUrl + '/importar/', uploadData);
+    return this.http.post<ProfesorImportar>(this.profesoresUrl + 'importar/', uploadData);
   }
 
   exportar(): Observable<Blob> {

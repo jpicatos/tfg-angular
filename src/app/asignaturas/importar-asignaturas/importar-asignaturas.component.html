@@ -27,6 +27,8 @@
                     <input matInput [(ngModel)]="anyo" placeholder="Año acádemico">
                     <mat-hint>Ejemplo: <strong>2018 (para el año académico 2018-2019)</strong></mat-hint>
                 </mat-form-field>
+                <br>
+                <mat-checkbox [(ngModel)]="sobrescribir">Sobrescribir asignaturas existentes</mat-checkbox>
             </div>
 
             <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
