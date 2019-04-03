@@ -55,20 +55,12 @@ export class MenuToolbarComponent implements OnInit {
             this.loading = false;
           }, 4000);
         }
-        else if (departamento[0].docencia_iniciada) {
+        else {
           this.profesoresService.getProfesor(userid).subscribe(usuario => {
             this.globalConfigService.saveProfeInfo(usuario);
             this.usuario = usuario;
             this.turno();
           });
-        }
-        else {
-          this.globalConfigService.saveTurno(false);
-          setTimeout(() => {
-            this.loading = false;
-            this.router.navigate(["/dashboard"]);
-          }, 2000);
-          
         }
       });
     })

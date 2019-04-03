@@ -87,7 +87,6 @@ export class DashboardComponent implements OnInit {
     this.profesoresService.getProfesores().subscribe(profesores => {
       var profesoresPendientes = profesores.filter(profe => profe.docencia === null).length
       var profesoresDocencia = profesores.filter(profe => profe.docencia)
-      // debugger
       var profesoresConfirmada  = 0 ;
       profesoresDocencia.filter(profe =>{
         this.docenciaService.getEleccion(profe.docencia).subscribe(doc => {

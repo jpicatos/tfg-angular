@@ -59,7 +59,7 @@ export class EleccionListComponent implements OnInit {
     this.admin = this.globalConfigService.isAdmin();
     this.tuTurno = this.globalConfigService.getTurno();
     // this.docenciaIniciada = this.globalConfigService.getDepartamento()[0].docencia_iniciada;
-
+    
     if (this.globalConfigService.getUserinfo().telefono) {
       this.profesor = this.globalConfigService.getUserinfo()
     } else {
