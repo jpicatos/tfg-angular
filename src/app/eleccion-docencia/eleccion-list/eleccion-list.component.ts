@@ -349,7 +349,6 @@ export class EleccionListComponent implements OnInit {
 
     this.eleccion.asignaturas_divisibles = [];
     this.eleccion.asignaturas_divisibles = this.asignaturasDivisiblesSelected;
-    debugger
 
     this.eleccion.desdobles = [];
     this.eleccion.desdobles = this.desdoblesSelected;
@@ -413,7 +412,7 @@ export class EleccionListComponent implements OnInit {
         }
       });
       if (!asignaturaD) {
-        this.asignaturasDivisiblesSelected = [...[{ id: 0, creditos: credits.valueAsNumber, asignatura: asignatura, profesor: this.profesor.usuario.id}]]
+        this.asignaturasDivisiblesSelected = [...this.asignaturasDivisiblesSelected, { id: 0, creditos: credits.valueAsNumber, asignatura: asignatura, profesor: this.profesor.usuario.id}]
       }
       this.creditos += credits.valueAsNumber;
     }
