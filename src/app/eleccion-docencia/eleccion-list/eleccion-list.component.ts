@@ -43,6 +43,7 @@ export class EleccionListComponent implements OnInit {
   profesor: Profesor;
   profesores: Profesor[];
   creditos: number;
+  creditosDeuda: number;
   @ViewChild(SearchSidenavComponent) child: SearchSidenavComponent;
   searchVals: {
     nombre: string
@@ -59,7 +60,7 @@ export class EleccionListComponent implements OnInit {
     this.admin = this.globalConfigService.isAdmin();
     this.tuTurno = this.globalConfigService.getTurno();
     // this.docenciaIniciada = this.globalConfigService.getDepartamento()[0].docencia_iniciada;
-    
+
     if (this.globalConfigService.getUserinfo().telefono) {
       this.profesor = this.globalConfigService.getUserinfo()
     } else {
@@ -92,8 +93,12 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasDivisiblesSelected = [];
     this.desdoblesSelected = [];
     this.getAsignaturas();
+
   }
 
+  onPreventKey(event){
+    event.preventDefault();
+  }
   openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmEleccionComponent, {
       data: {
@@ -148,12 +153,15 @@ export class EleccionListComponent implements OnInit {
   }
 
   updateAsignaturas(asignaturas: Asignatura[], refreshSelected: boolean) {
-    asignaturas.map(asignatura => {      
+    asignaturas.map(asignatura => {
       if (asignatura.divisible) {
         asignatura.minCreditos = asignatura.creditos / 3;
         var creditosUsados = 0;
         asignatura.docencia_divisible.map(docencia => {
-          creditosUsados = creditosUsados + docencia.creditos;
+          if(docencia.profesor !== this.profesor.usuario.id){
+            creditosUsados = creditosUsados + docencia.creditos;
+          }
+          
         })
         var creditosDisponibles = asignatura.creditos - creditosUsados;
         if (creditosDisponibles > 0) {
@@ -219,10 +227,14 @@ export class EleccionListComponent implements OnInit {
     this.reset();
     this.eleccion.profesor = this.profesor.usuario.id;
     this.clearEleccion();
+
     if (this.profesor.docencia !== null) {
       this.eleccionService.getEleccion(this.profesor.docencia)
         .subscribe(eleccion => {
-          const { asignaturas, desdobles, asignaturas_divisibles } = eleccion;
+          const { asignaturas, desdobles, asignaturas_divisibles, deuda } = eleccion;
+          console.log(eleccion)
+          this.creditosDeuda = deuda;
+          this.creditos += this.creditosDeuda;
           this.fillAsignaturasWithEleccion(asignaturas);
 
           if (desdobles.length) { // If there are desdobles
@@ -307,6 +319,12 @@ export class EleccionListComponent implements OnInit {
     this.desdoblesSelected = [];
     this.asignaturasSelected = [];
     this.asignaturasDivisiblesSelected = []
+
+    var asignaturasDivisibles = document.getElementsByClassName("divisible");
+    for (let index = 0; index < asignaturasDivisibles.length; index++) {
+      asignaturasDivisibles[index].setAttribute("value", '')
+    }
+
     this.asignaturas.map(asignatura => {
       asignatura.selected = false;
 
@@ -331,6 +349,7 @@ export class EleccionListComponent implements OnInit {
 
     this.eleccion.asignaturas_divisibles = [];
     this.eleccion.asignaturas_divisibles = this.asignaturasDivisiblesSelected;
+    debugger
 
     this.eleccion.desdobles = [];
     this.eleccion.desdobles = this.desdoblesSelected;
@@ -376,6 +395,12 @@ export class EleccionListComponent implements OnInit {
     }
   }
 
+  updateConDeuda(deudaInput) {
+    this.creditos -= this.creditosDeuda;
+    this.creditosDeuda = deudaInput.valueAsNumber;
+    this.creditos += this.creditosDeuda;
+  }
+
   changeCreditVal(credits, asignatura) {
     if (credits.valueAsNumber) {
       let asignaturaD;
@@ -388,7 +413,7 @@ export class EleccionListComponent implements OnInit {
         }
       });
       if (!asignaturaD) {
-        this.asignaturasDivisiblesSelected = [...[{ id: 0, creditos: credits.valueAsNumber, asignatura: asignatura }]]
+        this.asignaturasDivisiblesSelected = [...[{ id: 0, creditos: credits.valueAsNumber, asignatura: asignatura, profesor: this.profesor.usuario.id}]]
       }
       this.creditos += credits.valueAsNumber;
     }

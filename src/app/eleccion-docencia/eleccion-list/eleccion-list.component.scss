@@ -1,5 +1,6 @@
 @import "../../../scss/variables.scss";
 @import "../../../scss/styles.scss";
+
 .mwlResizable {
     box-sizing: border-box; // required for the enableGhostResize option to work
     min-width: min-content;
@@ -12,6 +13,7 @@ mat-list-option {
     &.disabled {
         opacity: 0.4;
         background: none;
+
         &:hover {
             background: none;
         }
@@ -60,9 +62,11 @@ mat-list-option {
     padding: 1px 1px 1px 10px;
     z-index: 1;
     cursor: pointer;
+
     mat-icon {
         margin-right: 20px;
     }
+
     &.black {
         color: white;
     }
@@ -71,14 +75,17 @@ mat-list-option {
 .left-minimiced {
     .list-column {
         width: 50px;
+
         .left-minimice {
             transform: rotate(90deg);
             padding: 0;
         }
+
         .asignaturas {
             display: none;
         }
     }
+
     .state-column {
         width: -webkit-fill-available;
     }
@@ -87,20 +94,24 @@ mat-list-option {
 .right-minimiced {
     .state-column {
         width: 50px;
+
         .left-minimice {
             transform: rotate(90deg);
             padding: 0;
         }
+
         h2 {
             width: 300px;
             position: absolute;
             margin: auto;
             left: 40px;
         }
+
         #stateContent {
             display: none;
         }
     }
+
     .list-column {
         width: -webkit-fill-available;
     }
@@ -149,6 +160,7 @@ mat-list-option {
     align-items: center;
     padding: 1px;
     width: fit-content;
+
     mat-icon {
         margin-right: 5px;
         font-size: inherit;
@@ -181,6 +193,7 @@ mat-list-option {
     align-items: center;
     justify-items: center;
     margin: auto;
+
     mat-form-field {
         margin-left: 10px;
     }
@@ -188,4 +201,71 @@ mat-list-option {
 
 .info {
     margin: 10px;
+}
+
+input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.number-input {
+
+    border: 2px solid #ddd;
+    display: inline-flex;
+
+    &.deuda {
+        width: 100%;
+    }
+}
+
+.number-input,
+.number-input * {
+    box-sizing: border-box;
+}
+
+.number-input button {
+    outline: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem;
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+    transition: background-color 1s;
+}
+
+.number-input button:hover {
+    background-color: lightgray !important;
+    opacity: 0.9;
+}
+
+.number-input button:before,
+.number-input button:after {
+    display: inline-block;
+    position: absolute;
+    content: '';
+    width: 1rem;
+    height: 2px;
+    background-color: #212121;
+    transform: translate(-50%, -50%);
+}
+
+.number-input button.plus:after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.number-input input[type=number] {
+    padding: .5rem;
+    border: solid #ddd;
+    border-width: 0 2px;
+    text-align: center;
 }
