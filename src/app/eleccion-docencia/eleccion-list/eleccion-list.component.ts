@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild, OnDestroy, Input } from '@angular/core';
 import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 import { Asignatura, AsignaturaDivisible } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
@@ -16,6 +16,8 @@ import { GlobalConfigService } from 'src/app/services/global-config.service';
 import { Usuario } from 'src/app/models/usuario';
 import { MatDialog } from '@angular/material';
 import { ConfirmEleccionComponent } from '../confirm-eleccion/confirm-eleccion.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-eleccion-list',
@@ -30,7 +32,7 @@ export class EleccionListComponent implements OnInit {
   admin: boolean;
   tuTurno: boolean;
   docenciaIniciada: boolean;
-
+  
   asignaturas: Asignatura[];
   todasAsignaturas: Asignatura[];
   loading: boolean;
@@ -56,7 +58,7 @@ export class EleccionListComponent implements OnInit {
   minimiceRight;
   fetchDay;
 
-  constructor(private asignaturasService: AsignaturasService, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog) {
+  constructor(private router: Router, private asignaturasService: AsignaturasService, private location: Location, private route: ActivatedRoute, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog) {
     this.admin = this.globalConfigService.isAdmin();
     this.tuTurno = this.globalConfigService.getTurno();
     // this.docenciaIniciada = this.globalConfigService.getDepartamento()[0].docencia_iniciada;
@@ -68,10 +70,11 @@ export class EleccionListComponent implements OnInit {
       this.profesor.usuario = new Usuario;
     }
     if (this.admin) {
+      const id = + this.route.snapshot.paramMap.get('id');
       this.profesoresService.getProfesores()
         .subscribe((profesores) => {
           this.profesores = profesores;
-          this.profesor = profesores[0];
+          this.profesor = profesores.find(profe => profe.usuario.id === id) || profesores[0];
         })
     }
     this.isMinimiceLeft = isMinimiceLeft;
@@ -93,7 +96,6 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasDivisiblesSelected = [];
     this.desdoblesSelected = [];
     this.getAsignaturas();
-
   }
 
   onPreventKey(event){
@@ -194,6 +196,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   getAsignaturas(): void {
+    this.location.go('eleccion-docencia/' + this.profesor.usuario.id);
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
         this.updateAsignaturas(asignaturas, true);

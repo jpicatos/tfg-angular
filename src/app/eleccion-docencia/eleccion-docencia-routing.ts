@@ -8,7 +8,8 @@ const routes: Routes = [
     path: '',
     children: [
       // { path: 'profesores', component: ProfesoresListComponent, data: { title: 'Profesores' }, canActivate: [AuthGuard] }
-      { path: 'eleccion-docencia', component: EleccionListComponent, data: { title: 'Elección' }, canActivate: [AuthGuard] }
+      { path: 'eleccion-docencia', component: EleccionListComponent, data: { title: 'Elección' }, canActivate: [AuthGuard] },
+      { path: 'eleccion-docencia/:id', component: EleccionListComponent, data: { title: 'Elección' }, canActivate: [AuthGuard] }
     ]
   }
 ];
