@@ -5,4 +5,5 @@ export class Usuario{
     last_name: string;
     email: string;
     password: string;
+    is_staff: boolean;
 };

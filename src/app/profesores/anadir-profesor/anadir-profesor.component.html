@@ -16,55 +16,45 @@
         <mat-step [stepControl]="firstFormGroup">
           <form [formGroup]="firstFormGroup" class="formulario">
             <ng-template matStepLabel>Detalles generales</ng-template>
+
+            <mat-slide-toggle *ngIf="isAdmin" [(ngModel)]=profesor.usuario.is_staff
+              [ngModelOptions]="{standalone: true}" required>
+              Administrador</mat-slide-toggle>
+
             <mat-form-field>
-              <input matInput placeholder="Email" [(ngModel)]=profesor.usuario.username [ngModelOptions]="{standalone: true}"
-                required>
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput placeholder="Contraseña" type="password" [(ngModel)]=profesor.usuario.password
+              <input matInput placeholder="Nombre" [(ngModel)]=profesor.usuario.first_name
                 [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
-            <div>
-              <button mat-button matStepperNext type="submit">Siguiente</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="firstFormGroup">
-          <form [formGroup]="firstFormGroup" class="formulario">
-            <ng-template matStepLabel>Detalles generales</ng-template>
             <mat-form-field>
-              <input matInput placeholder="Nombre" [(ngModel)]=profesor.usuario.first_name [ngModelOptions]="{standalone: true}"
-                required>
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput placeholder="Apellidos" [(ngModel)]=profesor.usuario.last_name [ngModelOptions]="{standalone: true}"
-                required>
+              <input matInput placeholder="Apellidos" [(ngModel)]=profesor.usuario.last_name
+                [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Despacho" [(ngModel)]=profesor.despacho [ngModelOptions]="{standalone: true}"
                 required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Email" [(ngModel)]=profesor.usuario.email [ngModelOptions]="{standalone: true}"
-                required>
+              <input matInput type="email" placeholder="Email" [(ngModel)]=profesor.usuario.email
+                [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Teléfono" [(ngModel)]=profesor.telefono [ngModelOptions]="{standalone: true}"
                 required>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field *ngIf="isAdmin">
               <input matInput placeholder="Escalafón" type="number" min="0" [(ngModel)]=profesor.escalafon
                 [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>
               <mat-select [(value)]=profesor.categoria placeholder="Categoría">
-                <mat-option *ngFor="let categoria of categorias" value={{categoria.categoria_abreviatura}}>[{{categoria.categoria_abreviatura}}]
+                <mat-option *ngFor="let categoria of categorias" value={{categoria.categoria_abreviatura}}>
+                  [{{categoria.categoria_abreviatura}}]
                   {{categoria.categoria}}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Departamento" [(ngModel)]=profesor.departamento [ngModelOptions]="{standalone: true}"
-                required>
+              <input matInput placeholder="Departamento" [(ngModel)]=profesor.departamento
+                [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <div>
               <button mat-button matStepperNext type="submit">Siguiente</button>
@@ -77,24 +67,24 @@
             <h4 *ngIf="profesor.deuda">Deuda:</h4>
             <mat-form-field *ngIf="profesor.deuda">
               <input matInput type="number" placeholder="Hace cuatro años" [(ngModel)]=profesor.deuda.hace_cuatro
-                [ngModelOptions]="{standalone: true}" required>
+                [ngModelOptions]="{standalone: true}" min=0 value="0" required>
             </mat-form-field>
             <mat-form-field *ngIf="profesor.deuda">
               <input matInput type="number" placeholder="Hace tres años" [(ngModel)]=profesor.deuda.hace_tres
-                [ngModelOptions]="{standalone: true}" required>
+                [ngModelOptions]="{standalone: true}" min=0 value="0" required>
             </mat-form-field>
             <mat-form-field *ngIf="profesor.deuda">
               <input matInput type="number" placeholder="Hace dos años" [(ngModel)]=profesor.deuda.hace_dos
-                [ngModelOptions]="{standalone: true}" required>
+                [ngModelOptions]="{standalone: true}" min=0 value="0" required>
             </mat-form-field>
             <mat-form-field *ngIf="profesor.deuda">
               <input matInput type="number" placeholder="Hace un año" [(ngModel)]=profesor.deuda.hace_uno
-                [ngModelOptions]="{standalone: true}" required>
+                [ngModelOptions]="{standalone: true}" min=0 value="0" required>
             </mat-form-field>
             <h4>PDA</h4>
             <mat-form-field>
-              <input matInput type="number" placeholder="PDA" [(ngModel)]=profesor.pda [ngModelOptions]="{standalone: true}"
-                required>
+              <input matInput type="number" placeholder="PDA" [(ngModel)]=profesor.pda
+                [ngModelOptions]="{standalone: true}" min=0 value="0" required>
             </mat-form-field>
             <div>
               <button mat-button matStepperPrevious>Atrás</button>
@@ -104,11 +94,13 @@
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Guardar</ng-template>
+
+          <h4 *ngIf="error">Hay errores en los formularios, compruébalos de nuevo</h4>
           Ya puedes salvar los cambios
           <div>
             <button mat-button matStepperPrevious>Atrás</button>
             <button mat-button (click)="stepper.reset()">Volver a empezar</button>
-            <button mat-raised-button (click)="save()">Guardar</button>
+            <button mat-raised-button (click)="save(); error=true">Guardar</button>
           </div>
         </mat-step>
       </mat-horizontal-stepper>

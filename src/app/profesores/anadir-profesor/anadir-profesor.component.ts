@@ -7,6 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { AvisosService } from 'src/app/services/avisos.service';
 import { MenuToolbarComponent } from 'src/app/menu-toolbar/menu-toolbar.component';
 import { Categoria } from '../../models/categoria';
+import { GlobalConfigService } from 'src/app/services/global-config.service';
 
 @Component({
   selector: 'app-anadir-profesor',
@@ -23,13 +24,16 @@ export class AnadirProfesorComponent implements OnInit {
   secondFormGroup: FormGroup;
   categorias: Categoria[];
   actionTitle: string;
-
+  error: boolean;
+  isAdmin: boolean;
 
   constructor(private angularService: ProfesoresService, private route: ActivatedRoute, private _formBuilder: FormBuilder,
-    private titleService: Title, private avisosService: AvisosService) {
+    private titleService: Title, private avisosService: AvisosService, private globalService: GlobalConfigService) {
+    this.isAdmin = globalService.isAdmin();
     this.titleService.setTitle("Añadir un profesor");
     MenuToolbarComponent.updateTitle("Profesores");
     this.profesor = new Profesor();
+    this.profesor.usuario.is_staff = false;
   }
 
   ngOnInit() {
@@ -43,7 +47,7 @@ export class AnadirProfesorComponent implements OnInit {
     this.actionTitle = "Añadir profesor";
 
     let id = this.route.snapshot.paramMap.get('id');
-    if (id != null) {
+    if (id !== null) {
       this.angularService.getProfesor(Number(id)).subscribe(
         profesor => {
           this.profesor = profesor;
@@ -54,9 +58,7 @@ export class AnadirProfesorComponent implements OnInit {
       );
       this.actionTitle = "Editar profesor";
     }
-
     this.getCategorias();
-
   }
 
   getCategorias() {
@@ -69,11 +71,13 @@ export class AnadirProfesorComponent implements OnInit {
 
 
   save(): void {
-
-    /*
-    La petición a la API no debe llevar el username ni el password si no han sido modificados
-    */
-
+    let id = this.route.snapshot.paramMap.get('id');
+    
+    if(id===null){
+      this.profesor.usuario.username = this.profesor.usuario.email;
+      this.profesor.usuario.password = this.passwordGenerator();
+    }
+    
     if (this.username == this.profesor.usuario.username) {
       delete this.profesor.usuario.username;
     }
@@ -81,9 +85,19 @@ export class AnadirProfesorComponent implements OnInit {
     if (this.password == this.profesor.usuario.password) {
       delete this.profesor.usuario.password;
     }
-
     this.angularService.saveProfesor(this.profesor);
 
+  }
+
+  passwordGenerator() {
+    var length = Math.floor((Math.random() * 18) + 10);
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-?¿/#@!¡/*-+.";
+  
+    for (var i = 0; i < length; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+    return text;
   }
 
 }
