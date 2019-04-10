@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { AvisosService } from './services/avisos.service';
 import { GlobalConfigService } from './services/global-config.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import { GlobalConfigService } from './services/global-config.service';
 export class AppComponent implements OnInit {
   title = 'tfg-angular';
 
-  constructor(private avisosService: AvisosService, private snackBar: MatSnackBar, private globalConfigService: GlobalConfigService) {
+  constructor(private avisosService: AvisosService, private snackBar: MatSnackBar, private globalConfigService: GlobalConfigService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -22,5 +23,8 @@ export class AppComponent implements OnInit {
         duration: 3000
       });
     })
+    if(window.location.pathname === '/'){
+      this.router.navigate(["/dashboard"])
+    }
   }
 }

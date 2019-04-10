@@ -5,6 +5,7 @@ import { ProfesoresListComponent } from './profesores-list/profesores-list.compo
 import { ProfesoresDetailsComponent } from './profesores-details/profesores-details.component';
 import { AnadirProfesorComponent } from './anadir-profesor/anadir-profesor.component';
 import { ImportarProfesoresComponent } from './importar-profesores/importar-profesores.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'add-profesor', component: AnadirProfesorComponent, canActivate: [AuthGuard] },
       { path: 'edit-profesor/:id', component: AnadirProfesorComponent, canActivate: [AuthGuard] },
       { path: 'importar-profesores', component: ImportarProfesoresComponent, canActivate: [AuthGuard] },
+      { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

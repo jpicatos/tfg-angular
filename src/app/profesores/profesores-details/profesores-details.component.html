@@ -11,12 +11,16 @@
                     {{profesor.usuario.last_name}}, {{profesor.usuario.first_name}}
                 </mat-card-title>
 
-                <div class="actionButtonContainer" *ngIf="admin">
-                    <button mat-raised-button color="accent" class="actionButton"
+                <div class="actionButtonContainer" >
+                    <button *ngIf="admin || profesor.usuario.id === actualProfesor.usuario.id" mat-raised-button color="accent" class="actionButton"
+                        routerLink="/edit-profesor/{{profesor.usuario.id}}">
+                        <mat-icon>create</mat-icon> Cambiar contraseña
+                    </button>
+                    <button *ngIf="admin" mat-raised-button color="accent" class="actionButton"
                         routerLink="/edit-profesor/{{profesor.usuario.id}}">
                         <mat-icon>create</mat-icon> Editar
                     </button>
-                    <button mat-raised-button color="accent" class="actionButton" (click)="eliminarDialog()">
+                    <button *ngIf="admin && profesor.usuario.id !== actualProfesor.usuario.id" mat-raised-button color="accent" class="actionButton" (click)="eliminarDialog()">
                         <mat-icon>delete</mat-icon> Eliminar
                     </button>
                 </div>

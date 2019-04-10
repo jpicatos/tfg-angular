@@ -47,6 +47,16 @@ export class MenuToolbarComponent implements OnInit {
       this.globalConfigService.saveTurno(false);
       this.globalConfigService.loadDepartamento().subscribe(departamento => {
         this.globalConfigService.saveDepartamento(departamento);
+        if(userid !== null){
+          this.profesoresService.getProfesor(userid).subscribe(usuario => {
+            this.globalConfigService.saveProfeInfo(usuario);
+            this.usuario = usuario;
+            if(!this.admin){
+              this.turno();
+            }
+            
+          });
+        }
         if (this.admin) {
           this.usuario.usuario.first_name = "Administrador";
           this.tuTurno = true;
@@ -54,13 +64,6 @@ export class MenuToolbarComponent implements OnInit {
           setTimeout(() => {
             this.loading = false;
           }, 4000);
-        }
-        else {
-          this.profesoresService.getProfesor(userid).subscribe(usuario => {
-            this.globalConfigService.saveProfeInfo(usuario);
-            this.usuario = usuario;
-            this.turno();
-          });
         }
       });
     })

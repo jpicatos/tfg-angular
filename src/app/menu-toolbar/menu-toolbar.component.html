@@ -39,7 +39,13 @@
                 </span>
             </button>
             <mat-divider></mat-divider>
-            <p class="menu-title" *ngIf="admin">Configuración</p>
+            <p class="menu-title">Configuración</p>
+            <button mat-button routerLink="/profesores/{{usuario.usuario.id}}">
+                <span class="menu-button-content">
+                    <mat-icon>account_box</mat-icon>
+                    MI CUENTA
+                </span>
+            </button>
             <button mat-button *ngIf="admin" routerLink="/config">
                 <span class="menu-button-content">
                     <mat-icon>settings</mat-icon>

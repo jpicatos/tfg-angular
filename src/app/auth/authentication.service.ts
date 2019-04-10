@@ -51,7 +51,7 @@ export class AuthenticationService {
       res => {
         localStorage.setItem('currentUser', JSON.stringify(res.access));
         localStorage.setItem('currentUserRefresh', JSON.stringify(res.refresh));
-        this.router.navigate(['/dashboard/']);
+        this.router.navigate(['/dashboard/']).then((e)=> window.location.reload());
         this.avisosService.enviarMensaje("Ha iniciado sesión correctamente");
       });
   }
@@ -84,6 +84,7 @@ export class AuthenticationService {
     // Provoca bucle infinito
     // window.location.reload();
     // this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard/']) 
     this.name.next("Iniciar sesión");
     return empty();
   }

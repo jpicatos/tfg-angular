@@ -11,6 +11,7 @@ import { ProfesoresService } from '../services/profesores.service';
 import { ProfesoresDetailsComponent } from './profesores-details/profesores-details.component';
 import { AnadirProfesorComponent } from './anadir-profesor/anadir-profesor.component';
 import { ImportarProfesoresComponent } from './importar-profesores/importar-profesores.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { ImportarProfesoresComponent } from './importar-profesores/importar-prof
     ProfesoresListComponent,
     ProfesoresDetailsComponent,
     AnadirProfesorComponent,
-    ImportarProfesoresComponent
+    ImportarProfesoresComponent,
+    ChangePasswordComponent
   ],
   providers: [ProfesoresService],
 })

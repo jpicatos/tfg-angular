@@ -28,6 +28,8 @@ export class ProfesoresDetailsComponent implements OnInit {
   docencia: Eleccion;
   docenciaDesdobles: Asignatura[];
   categorias: Categoria[];
+  actualProfesor: Profesor;
+
 
   constructor(private angularService: ProfesoresService,
     private asignaturasService: AsignaturasService,
@@ -36,6 +38,7 @@ export class ProfesoresDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private titleService: Title,
     private globalConfigService: GlobalConfigService) {
+      this.actualProfesor = this.globalConfigService.getUserinfo();
       this.admin = this.globalConfigService.isAdmin();
       this.loaded = false;
       this.profesor = new Profesor;
