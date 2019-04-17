@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { notEqual } from 'assert';
 import { HttpClient } from '@angular/common/http';
 import { AvisosService } from 'src/app/services/avisos.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
@@ -19,7 +20,7 @@ export class ChangePasswordComponent implements OnInit {
   equal: boolean;
   requiredData: boolean;
   sortPass: boolean;
-  constructor(private globalService: GlobalConfigService, private http: HttpClient, private avisosService: AvisosService) {
+  constructor(private globalService: GlobalConfigService, private http: HttpClient, private avisosService: AvisosService, private router: Router) {
     this.profesor = this.globalService.getUserinfo();
     this.equal = false;
     console.log(this.profesor)
@@ -46,7 +47,8 @@ export class ChangePasswordComponent implements OnInit {
         old_password: this.actualPass,
         new_password: this.newPass
       }).subscribe(data => {
-        this.avisosService.enviarMensaje("Se ha creado la asignatura correctamente");
+        this.avisosService.enviarMensaje("Se ha cambiado la asignatura correctamente");
+        this.router.navigate(['/dashboard/']);
       },
         error => {
           console.log(error)

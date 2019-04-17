@@ -13,6 +13,7 @@ import { Eleccion } from '../../models/eleccion';
 import { Desdoble } from '../../models/desdoble';
 import { Asignatura } from 'src/app/models/asignatura';
 import { GlobalConfigService } from 'src/app/services/global-config.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-profesores-details',
@@ -37,17 +38,27 @@ export class ProfesoresDetailsComponent implements OnInit {
     private dialog: MatDialog,
     private route: ActivatedRoute,
     private titleService: Title,
-    private globalConfigService: GlobalConfigService) {
-      this.actualProfesor = this.globalConfigService.getUserinfo();
-      this.admin = this.globalConfigService.isAdmin();
-      this.loaded = false;
-      this.profesor = new Profesor;
-      this.docenciaDesdobles = [];  
+    private globalConfigService: GlobalConfigService,
+    private location: Location
+  ) {
+    this.actualProfesor = this.globalConfigService.getUserinfo();
+    this.admin = this.globalConfigService.isAdmin();
+    this.loaded = false;
+    this.profesor = new Profesor;
+    this.docenciaDesdobles = [];
   }
 
   ngOnInit() {
     this.displayedColumns = ['titles', 'data'];
-    const id = + this.route.snapshot.paramMap.get('id');
+    var id = + this.route.snapshot.paramMap.get('id');
+
+    if (window.location.pathname === '/mi-cuenta') {
+      id = this.actualProfesor.usuario.id;
+    }
+    else if (id === this.actualProfesor.usuario.id) {
+      this.location.go('mi-cuenta');
+    }
+
     MenuToolbarComponent.updateTitle("Profesores");
     this.angularService.getProfesor(id).subscribe(profesor => {
       this.getCategoria(profesor.categoria);
@@ -67,8 +78,9 @@ export class ProfesoresDetailsComponent implements OnInit {
           this.loaded = true;
         });
       }
-      else this.loaded = true;
-
+      else {
+        this.loaded = true;
+      }
     });
   }
 

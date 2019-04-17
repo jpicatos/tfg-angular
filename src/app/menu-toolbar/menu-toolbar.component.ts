@@ -111,5 +111,8 @@ export class MenuToolbarComponent implements OnInit {
 
     }
   }
+  miCuenta(){
+    this.router.navigate(['/profesores/'+this.usuario.usuario.id]);
+  }
 
 }
