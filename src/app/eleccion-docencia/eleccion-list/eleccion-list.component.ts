@@ -104,7 +104,7 @@ export class EleccionListComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmEleccionComponent, {
       data: {
-        message: "",
+        message: " ",
         confirm: false,
         admin: this.admin
       }
@@ -248,6 +248,7 @@ export class EleccionListComponent implements OnInit {
           }
           this.loading = false;
           this.updateEleccion();
+          this.comprobarEleccion();
           this.eleccion = eleccion;
         });
     }
@@ -296,7 +297,7 @@ export class EleccionListComponent implements OnInit {
 
   saveEleccion() {
     this.updateEleccion();
-    if (this.valida && !this.loading) {
+    if (!this.loading) {
       if (this.admin) {
         this.eleccion.confirmada = true;
       }
@@ -312,9 +313,6 @@ export class EleccionListComponent implements OnInit {
           window.location.reload()
         });;
       }
-    }
-    else {
-      this.avisosService.enviarMensaje("La elección de docencia contiene errores que debe revisar");
     }
   }
 
