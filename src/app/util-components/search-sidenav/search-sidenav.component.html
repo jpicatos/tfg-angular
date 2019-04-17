@@ -3,23 +3,30 @@
     <div class="title-buscar">
         <h2 class="title">Buscar</h2>
         <button mat-icon-button class="close" (click)="sidenav.toggle()">
-                <mat-icon aria-label="Cerrar">close</mat-icon>
-            </button>
+            <mat-icon aria-label="Cerrar">close</mat-icon>
+        </button>
     </div>
 
     <form class="columnizar">
-        <button mat-raised-button type="submit" (click)="search(); sidenav.toggle()">
-          Filtrar
-          <mat-icon>search</mat-icon>
-      </button>
+        <mat-slide-toggle #available (change)="mostrarOnlyAvailable(available)" class="profesores" matTooltip="Mostrar solo asignaturas disponibles">
+            Mostrar solo asignaturas disponibles</mat-slide-toggle>
         <mat-form-field>
-            <input (keyup)="search()" matInput placeholder="Siglas" style="text-transform: uppercase" [(ngModel)]="searchVals.siglas" [ngModelOptions]="{standalone: true}">
+            <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
+            <mat-placeholder>
+                Buscar por nombre
+            </mat-placeholder>
         </mat-form-field>
         <mat-form-field>
-            <input (keyup)="search()" matInput placeholder="Código" [(ngModel)]="searchVals.codigo" [ngModelOptions]="{standalone: true}">
+            <input (keyup)="search()" matInput placeholder="Siglas" style="text-transform: uppercase"
+                [(ngModel)]="searchVals.siglas" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
         <mat-form-field>
-            <mat-select (selectionChange)="search()" placeholder="Curso" [(ngModel)]="searchVals.curso" [ngModelOptions]="{standalone: true}">
+            <input (keyup)="search()" matInput placeholder="Código" [(ngModel)]="searchVals.codigo"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select (selectionChange)="search()" placeholder="Curso" [(ngModel)]="searchVals.curso"
+                [ngModelOptions]="{standalone: true}">
                 <mat-option value="">--</mat-option>
                 <mat-option value="1º">1º</mat-option>
                 <mat-option value="2º">2º</mat-option>
@@ -30,7 +37,8 @@
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select (selectionChange)="search()" placeholder="Cuatrimestre" [(ngModel)]="searchVals.cuatrimestre" [ngModelOptions]="{standalone: true}">
+            <mat-select (selectionChange)="search()" placeholder="Cuatrimestre" [(ngModel)]="searchVals.cuatrimestre"
+                [ngModelOptions]="{standalone: true}">
                 <mat-option value="">--</mat-option>
                 <mat-option value="1">1º cuatrimestre</mat-option>
                 <mat-option value="2">2º cuatrimestre</mat-option>
@@ -48,9 +56,9 @@
 
       <app-filtro-hora [ayuda]="ayudaHoraFin" (horaChange)="horaFin($event)"></app-filtro-hora> -->
 
-        <button mat-raised-button type="submit" (click)="search()">
-          Filtrar
-          <mat-icon>search</mat-icon>
-      </button>
+        <button mat-raised-button color="accent" type="submit" (click)="search()" class="filtrar">
+            Filtrar
+            <mat-icon>search</mat-icon>
+        </button>
     </form>
 </div>

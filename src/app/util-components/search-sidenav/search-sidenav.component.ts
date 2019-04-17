@@ -33,7 +33,7 @@ export class SearchSidenavComponent implements OnInit {
   constructor(private asignaturasService: AsignaturasService) {
     this.asignaturas = [];
     this.selected = 1;
-    
+
     this.searchVals = {
       nombre: '',
       siglas: '',
@@ -49,10 +49,10 @@ export class SearchSidenavComponent implements OnInit {
   ngOnInit() {
   }
   @Output()
-  updateLoading =  new EventEmitter<boolean>();
+  updateLoading = new EventEmitter<boolean>();
 
   @Output()
-  updateAsignaturas =  new EventEmitter<Asignatura[]>();
+  updateAsignaturas = new EventEmitter<Asignatura[]>();
 
   search(): void {
     this.updateLoading.emit(true);
@@ -62,9 +62,9 @@ export class SearchSidenavComponent implements OnInit {
     }
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
       .subscribe(asignaturas => {
-         this.updateAsignaturas.emit(asignaturas);
-         this.updateLoading.emit(false);
-        });
+        this.updateAsignaturas.emit(asignaturas);
+        this.updateLoading.emit(false);
+      });
   }
   updateDias(dia: string) {
     var index = this.searchVals.dias.indexOf(dia);
@@ -73,6 +73,30 @@ export class SearchSidenavComponent implements OnInit {
     }
     else {
       this.searchVals.dias.splice(index, 1);
+    }
+  }
+
+  mostrarOnlyAvailable(event) {
+    if (event.checked) {
+      this.asignaturasService.getAsignaturas()
+        .subscribe(asignaturas => {
+          this.asignaturas = asignaturas;
+          this.asignaturas = this.asignaturas.filter(asignatura => {
+            if (asignatura.desdobles.length && asignatura.desdobles[0].disponible) {
+              return true
+            }
+            if (asignatura.disponible && asignatura.desdobles.length && !asignatura.desdobles[0].disponible) {
+              asignatura.desdobles.pop();
+              return true
+            }
+            if (asignatura.disponible && !asignatura.desdobles.length) {
+              return true;
+            }
+          })
+        })
+    }
+    else {
+      this.search();
     }
   }
 }

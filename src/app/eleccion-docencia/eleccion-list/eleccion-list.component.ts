@@ -123,26 +123,6 @@ export class EleccionListComponent implements OnInit {
     });
   }
 
-  mostrarOnlyAvailable(event) {
-    if (event.checked) {
-      this.asignaturas = this.asignaturas.filter(asignatura => {
-        if (asignatura.desdobles.length && asignatura.desdobles[0].disponible) {
-          return true
-        }
-        if (asignatura.disponible && asignatura.desdobles.length && !asignatura.desdobles[0].disponible) {
-          asignatura.desdobles.pop();
-          return true
-        }
-        if (asignatura.disponible && !asignatura.desdobles.length) {
-          return true;
-        }
-      })
-    }
-    else {
-      this.search();
-    }
-  }
-
   search(): void {
     this.loading = true;
     this.asignaturasService.searchAsignatura("", this.searchVals.nombre, "", "", 0, "", "", [])

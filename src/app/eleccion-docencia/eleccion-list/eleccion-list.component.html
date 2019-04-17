@@ -1,6 +1,11 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
 <div *ngIf="loading" class="loading"></div>
 
+<button mat-button (click)="sidenav.toggle()" matTooltip="Filtrar" class="filterIcon">
+    Filtrar asignaturas
+    <div></div>
+</button>
+
 <div class="total-container">
     <mat-sidenav-container>
         <mat-sidenav #sidenav [autoFocus]="false" [mode]="over" position="end" class="sidenav">
@@ -8,24 +13,10 @@
                 (updateAsignaturas)="updateAsignaturas($event)"></app-search-sidenav>
         </mat-sidenav>
         <mat-sidenav-content>
-            <mat-toolbar>
+            <mat-toolbar *ngIf="admin">
                 <mat-toolbar-row>
                     <div class="topMenu">
-                        <form class="buscar">
-                            <mat-form-field>
-                                <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre"
-                                    [ngModelOptions]="{standalone: true}">
-                                <mat-placeholder>
-                                    Buscar por nombre
-                                </mat-placeholder>
-                            </mat-form-field>
-                            <mat-slide-toggle #available (change)="mostrarOnlyAvailable(available)" class="profesores">
-                                Mostrar solo asignaturas disponibles</mat-slide-toggle>
-                            <button mat-button type="submit" (click)="search()">
-                                <mat-icon>search</mat-icon>
-                            </button>
-                        </form>
-                        <form class="profesores" *ngIf="admin">
+                        <form class="profesores">
                             Elección de docencia de:
                             <mat-form-field>
                                 <mat-select (selectionChange)="getAsignaturas()" [(ngModel)]="profesor"
@@ -35,10 +26,6 @@
                                 </mat-select>
                             </mat-form-field>
                         </form>
-
-                        <button mat-icon-button (click)="sidenav.toggle()">
-                            <mat-icon aria-label="Filtrar">local_bar</mat-icon>
-                        </button>
                     </div>
                 </mat-toolbar-row>
             </mat-toolbar>
@@ -71,8 +58,7 @@
                                 <mat-label>Deuda utilizada</mat-label>
                                 <div class="number-input deuda">
                                     <button (click)="deudaInput.stepDown(); updateConDeuda(deudaInput)"></button>
-                                    <input #deudaInput type="number"
-                                        value="0"
+                                    <input #deudaInput type="number" value="0"
                                         max="{{profesor.deuda.hace_uno +profesor.deuda.hace_dos +profesor.deuda.hace_tres +profesor.deuda.hace_cuatro}}"
                                         min=0 matInput [(ngModel)]="creditosDeuda" [ngModelOptions]="{standalone: true}"
                                         (keydown)="onPreventKey($event)">
@@ -90,8 +76,8 @@
                                 <mat-label>PDA utilizada</mat-label>
                                 <div class="number-input deuda">
                                     <button disabled></button>
-                                    <input type="number" value="{{profesor.pda}}" matInput (keydown)="onPreventKey($event)"
-                                        disabled>
+                                    <input type="number" value="{{profesor.pda}}" matInput
+                                        (keydown)="onPreventKey($event)" disabled>
                                     <button class="plus" disabled></button>
                                 </div>
                                 <mat-hint>PDA disponible:
@@ -106,14 +92,17 @@
 
             </mat-card>
 
-            <button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()">
+            <button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()"
+                matTooltip="Borrar la docencia y guardar">
                 <mat-icon>delete</mat-icon>
             </button>
-            <button class="mat-fab-bottom-right1" *ngIf="puedesElegir()" mat-fab (click)="clearEleccion()">
+            <button class="mat-fab-bottom-right1" *ngIf="puedesElegir()" mat-fab (click)="clearEleccion()"
+                matTooltip="Limpiar los selecionados">
                 <mat-icon>clear</mat-icon>
             </button>
 
-            <button class="mat-fab-bottom-right2" mat-fab *ngIf="puedesElegir()" (click)="openDialog()">
+            <button class="mat-fab-bottom-right2" mat-fab *ngIf="puedesElegir()" (click)="openDialog()"
+                matTooltip="Guardar y enviar">
                 <mat-icon *ngIf="!admin">send</mat-icon>
                 <mat-icon *ngIf="admin">done</mat-icon>
             </button>
@@ -132,7 +121,8 @@
                                 [selected]="asignatura.selected" *ngIf="!asignatura.divisible"
                                 [disabled]="!asignatura.disponible" [ngClass]="{'disabled': !asignatura.disponible}">
                                 <h3 mat-line class="wrapedText">
-                                    <a routerLink="/asignaturas/{{asignatura.id}}">
+                                    <a routerLink="/asignaturas/{{asignatura.id}}"
+                                        matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
                                         [{{asignatura.siglas}}]
                                         {{asignatura.nombre}}
                                     </a>
@@ -156,7 +146,8 @@
                             <mat-list-item #opt *ngIf="asignatura.divisible"
                                 [ngClass]="{'disabled': !asignatura.disponible}">
                                 <h3 mat-line class="wrapedText">
-                                    <a routerLink="/asignaturas/{{asignatura.id}}">
+                                    <a routerLink="/asignaturas/{{asignatura.id}}"
+                                        matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
                                         [{{asignatura.siglas}}]
                                         {{asignatura.nombre}}
                                     </a>
@@ -195,7 +186,8 @@
                                 <!-- <div class="asignatura-no-disponible" *ngIf="!admin && !asignaturaDisponible(asignatura.desdobles[0])">vdvdfvdfsvsdvsdvsdvs</div>    -->
                                 <h3 class="wrapedText">
                                     <mat-chip color="accent" selected>Desdoble</mat-chip>
-                                    <a routerLink="/asignaturas/{{asignatura.id}}">
+                                    <a routerLink="/asignaturas/{{asignatura.id}}"
+                                        matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
                                         [{{asignatura.siglas}}]
                                         {{asignatura.nombre}}
                                     </a>
