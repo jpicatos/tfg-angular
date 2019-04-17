@@ -48,7 +48,7 @@
                     Información
                 </mat-card-title>
                 <mat-card-content>
-                    <mat-grid-list cols="2" rowHeight="fit" style="height: 150px">
+                    <mat-grid-list cols="3" rowHeight="fit" style="height: 120px">
                         <mat-grid-tile>
                             <mat-list>
                                 <mat-list-item
@@ -72,15 +72,30 @@
                                 <div class="number-input deuda">
                                     <button (click)="deudaInput.stepDown(); updateConDeuda(deudaInput)"></button>
                                     <input #deudaInput type="number"
+                                        value="0"
                                         max="{{profesor.deuda.hace_uno +profesor.deuda.hace_dos +profesor.deuda.hace_tres +profesor.deuda.hace_cuatro}}"
-                                        min=0 matInput placeholder="Deuda" [(ngModel)]="creditosDeuda"
-                                        [ngModelOptions]="{standalone: true}" (keydown)="onPreventKey($event)">
+                                        min=0 matInput [(ngModel)]="creditosDeuda" [ngModelOptions]="{standalone: true}"
+                                        (keydown)="onPreventKey($event)">
 
                                     <button (click)="deudaInput.stepUp(); updateConDeuda(deudaInput)"
                                         class="plus"></button>
                                 </div>
                                 <mat-hint>Deuda disponible:
                                     {{profesor.deuda.hace_uno +profesor.deuda.hace_dos +profesor.deuda.hace_tres +profesor.deuda.hace_cuatro}}
+                                </mat-hint>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-form-field appearance="outline">
+                                <mat-label>PDA utilizada</mat-label>
+                                <div class="number-input deuda">
+                                    <button disabled></button>
+                                    <input type="number" value="{{profesor.pda}}" matInput (keydown)="onPreventKey($event)"
+                                        disabled>
+                                    <button class="plus" disabled></button>
+                                </div>
+                                <mat-hint>PDA disponible:
+                                    {{profesor.pda}}
                                 </mat-hint>
                             </mat-form-field>
                         </mat-grid-tile>
@@ -163,8 +178,7 @@
                                 <div class="number-input">
                                     <button (click)="cred.stepDown(); changeCreditVal(cred, asignatura)"></button>
                                     <input #cred id="divisible{{asignatura.id}}" class="divisible" type="number"
-                                        (change)="changeCreditVal(cred, asignatura)" min=0
-                                        step="0.5"
+                                        (change)="changeCreditVal(cred, asignatura)" min=0 step="0.5"
                                         max={{asignatura.maxCreditos}} [disabled]="!asignatura.disponible"
                                         (keydown)="onPreventKey($event)">
                                     <button (click)="cred.stepUp(); changeCreditVal(cred, asignatura)"

@@ -85,7 +85,9 @@ export class EleccionListComponent implements OnInit {
     this.searchVals = {
       nombre: ''
     }
+
     this.creditos = 0;
+    this.creditosDeuda = 0;
   }
 
   ngOnInit() {
@@ -236,7 +238,7 @@ export class EleccionListComponent implements OnInit {
         .subscribe(eleccion => {
           const { asignaturas, desdobles, asignaturas_divisibles, deuda } = eleccion;
           console.log(eleccion)
-          this.creditosDeuda = deuda;
+          this.creditosDeuda = deuda + this.profesor.pda;
           this.creditos += this.creditosDeuda;
           this.fillAsignaturasWithEleccion(asignaturas);
 
@@ -450,7 +452,7 @@ export class EleccionListComponent implements OnInit {
     this.errores = new ErroresEleccion;
     this.loading = true;
     this.eleccion.confirmada = false;
-    this.creditos = 0;
+    this.creditos = 0 + this.profesor.pda;
   }
 
   puedesElegir(): boolean {

@@ -7,7 +7,7 @@ export class Profesor{
     escalafon: number;
     telefono: string;
     despacho: string;
-    pda: Number;
+    pda: number;
     categoria: string;
     departamento: String;
     docencia: number;
