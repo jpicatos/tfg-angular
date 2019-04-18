@@ -72,6 +72,15 @@ mat-list-option {
     }
 }
 
+.asignaturas{
+    overflow: auto;
+    max-height: 1000px;
+}
+#stateContent{
+    overflow: auto;
+    max-height: 1000px;
+}
+
 .left-minimiced {
     .list-column {
         width: 50px;
