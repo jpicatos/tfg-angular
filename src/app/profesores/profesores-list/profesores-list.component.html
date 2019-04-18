@@ -4,16 +4,19 @@
         <div>
             <form class="buscar">
                 <mat-form-field>
-                    <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
+                    <input (keyup)="search()" matInput [(ngModel)]="searchVals.nombre"
+                        [ngModelOptions]="{standalone: true}">
                     <mat-placeholder>
                         <mat-icon>search</mat-icon> Buscar por nombre
                     </mat-placeholder>
                 </mat-form-field>
                 <mat-form-field class="apellidos">
-                <input (keyup)="search()" matInput [(ngModel)]="searchVals.apellidos" [ngModelOptions]="{standalone: true}">
+                    <input (keyup)="search()" matInput [(ngModel)]="searchVals.apellidos"
+                        [ngModelOptions]="{standalone: true}">
                     <mat-placeholder>
                         <mat-icon>search</mat-icon> Buscar por apellidos
-                    </mat-placeholder></mat-form-field>
+                    </mat-placeholder>
+                </mat-form-field>
                 <button mat-button type="submit" (click)="search()">
                     <mat-icon>search</mat-icon>
                 </button>
@@ -23,6 +26,12 @@
             <div class="lista">
                 <div class="content">
                     <mat-grid-list cols={{numCols}} rowHeight="30px">
+                        <mat-grid-tile *ngIf="opts.docencia">
+                            <button mat-button color="accent" class="content-row">
+                                Docencia
+
+                            </button>
+                        </mat-grid-tile>
                         <mat-grid-tile *ngIf="opts.escalafon">
                             <button mat-button color="accent" class="content-row">
                                 Escalafon
@@ -74,8 +83,16 @@
                     </mat-grid-list>
                     <div class="todo-content">
                         <div *ngFor="let profesor of profesores">
-                            <mat-grid-list cols={{numCols}} rowHeight="50px" routerLink="/profesores/{{profesor.usuario.id}}"
-                                class="row">
+                            <mat-grid-list cols={{numCols}} rowHeight="50px"
+                                routerLink="/profesores/{{profesor.usuario.id}}" class="row">
+                                <mat-grid-tile *ngIf="opts.docencia">
+                                    <div class="docencia-confirmada" *ngIf="profesor.docencia_confirmada"></div>
+                                    <div class="docencia-no-confirmada"
+                                        *ngIf="profesor.docencia && !profesor.docencia_confirmada"></div>
+                                    <div class="sin-docencia"
+                                        *ngIf="!profesor.docencia && !profesor.docencia_confirmada">
+                                    </div>
+                                </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.escalafon">
                                     <div class="content-row" [innerHTML]=profesor.escalafon>
                                     </div>
@@ -128,7 +145,7 @@
             <mat-icon>cloud_upload</mat-icon> Importar profesores
         </button>
 
-        <button mat-raised-button (click)="exportarProfesores()" color="accent"class="addButton">
+        <button mat-raised-button (click)="exportarProfesores()" color="accent" class="addButton">
             <mat-icon>cloud_download</mat-icon> Exportar profesores
         </button>
         <mat-expansion-panel class="mostrar card" [expanded]="true">
@@ -138,13 +155,22 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="columnizar">
-                <mat-checkbox color='primary' [(ngModel)]="opts.escalafon" (click)="updateNumCols(opts.escalafon,1)">Escalafon</mat-checkbox>
-                <mat-checkbox color='primary' [(ngModel)]="opts.nombre" (click)="updateNumCols(opts.nombre,1)">Nombre</mat-checkbox>
-                <mat-checkbox color='primary' [(ngModel)]="opts.email" (click)="updateNumCols(opts.email,1)">Email</mat-checkbox>
-                <mat-checkbox color='primary' [(ngModel)]="opts.telefono" (click)="updateNumCols(opts.telefono,1)">Teléfono</mat-checkbox>
-                <mat-checkbox color='primary' [(ngModel)]="opts.despacho" (click)="updateNumCols(opts.despacho,1)">Despacho</mat-checkbox>
-                <mat-checkbox color='primary' [(ngModel)]="opts.departamento" (click)="updateNumCols(opts.departamento,1)">Departamento</mat-checkbox>
-                <mat-checkbox color='primary' [(ngModel)]="opts.categoria" (click)="updateNumCols(opts.categoria,1)">Categoría</mat-checkbox>
+                    <mat-checkbox color='primary' [(ngModel)]="opts.docencia" (click)="updateNumCols(opts.docencia,1)">
+                            Docencia</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.escalafon" (click)="updateNumCols(opts.escalafon,1)">
+                    Escalafon</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.nombre" (click)="updateNumCols(opts.nombre,1)">Nombre
+                </mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.email" (click)="updateNumCols(opts.email,1)">Email
+                </mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.telefono" (click)="updateNumCols(opts.telefono,1)">
+                    Teléfono</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.despacho" (click)="updateNumCols(opts.despacho,1)">
+                    Despacho</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.departamento"
+                    (click)="updateNumCols(opts.departamento,1)">Departamento</mat-checkbox>
+                <mat-checkbox color='primary' [(ngModel)]="opts.categoria" (click)="updateNumCols(opts.categoria,1)">
+                    Categoría</mat-checkbox>
             </div>
         </mat-expansion-panel>
         <mat-expansion-panel class="mostrar card">
@@ -166,17 +192,19 @@
                         [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
-                    <input (keyup)="search()" matInput type='number' placeholder="Despacho" min=0 [(ngModel)]="searchVals.despacho"
-                        [ngModelOptions]="{standalone: true}">
+                    <input (keyup)="search()" matInput type='number' placeholder="Despacho" min=0
+                        [(ngModel)]="searchVals.despacho" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
                 <mat-form-field>
-                    <input type="number" min="0" (keyup)="search()" matInput placeholder="Escalafón" [(ngModel)]="searchVals.escalafon"
-                        [ngModelOptions]="{standalone: true}">
+                    <input type="number" min="0" (keyup)="search()" matInput placeholder="Escalafón"
+                        [(ngModel)]="searchVals.escalafon" [ngModelOptions]="{standalone: true}">
                 </mat-form-field>
-                 <mat-form-field>
-                    <mat-select (selectionChange)="search()" placeholder="Categoría" [(ngModel)]="searchVals.categoria" [ngModelOptions]="{standalone: true}">
+                <mat-form-field>
+                    <mat-select (selectionChange)="search()" placeholder="Categoría" [(ngModel)]="searchVals.categoria"
+                        [ngModelOptions]="{standalone: true}">
                         <mat-option value="">--</mat-option>
-                        <mat-option *ngFor="let categoria of categorias" value={{categoria.categoria_abreviatura}}>{{categoria.categoria}}</mat-option>
+                        <mat-option *ngFor="let categoria of categorias" value={{categoria.categoria_abreviatura}}>
+                            {{categoria.categoria}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <button mat-raised-button type="submit" (click)="search()">

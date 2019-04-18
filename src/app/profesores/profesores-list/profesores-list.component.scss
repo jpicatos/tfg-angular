@@ -96,3 +96,30 @@ button.content-row {
 .opts button {
     display: block;
 }
+
+.docencia-confirmada {
+    background-image: url('./../../../assets/check-icon.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 20px;
+    width: 100%;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.docencia-no-confirmada {
+    background-image: url('./../../../assets/check-icon-black.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 20px;
+    width: 100%;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.sin-docencia {
+    height: 20px;
+    width: 100%;
+    margin-left: 10px;
+    display: inline-block;
+}

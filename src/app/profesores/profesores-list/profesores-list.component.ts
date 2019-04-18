@@ -25,6 +25,7 @@ export class ProfesoresListComponent implements OnInit {
   selectedProfesor: Profesor;
   selected: number;
   opts: {
+    docencia: boolean;
     escalafon: boolean;
     apellidos: boolean;
     nombre: boolean,
@@ -53,6 +54,7 @@ export class ProfesoresListComponent implements OnInit {
     this.admin = this.globalConfigService.isAdmin();
     this.selected = 1;
     this.opts = {
+      docencia: true,
       escalafon: true,
       nombre: true,
       apellidos: true,
@@ -76,7 +78,7 @@ export class ProfesoresListComponent implements OnInit {
   ngOnInit() {
     MenuToolbarComponent.updateTitle("Profesores");
     this.loading = true;
-    this.numCols = 5;
+    this.numCols = 6;
     this.getProfesores();
 
     this.profesoresService.getCategorias()
