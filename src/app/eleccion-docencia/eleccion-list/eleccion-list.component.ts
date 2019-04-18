@@ -106,7 +106,7 @@ export class EleccionListComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(ConfirmEleccionComponent, {
       data: {
-        message: " ",
+        message: this.eleccion.mensaje,
         confirm: false,
         admin: this.admin
       }
@@ -174,7 +174,8 @@ export class EleccionListComponent implements OnInit {
     })
     this.asignaturas = asignaturas;
     this.todasAsignaturas = asignaturas;
-    if (refreshSelected) this.fillSelected();
+    this.fillSelected();
+    this.comprobarEleccion(this.updateEleccion());
   }
 
   getAsignaturas(): void {
@@ -216,6 +217,7 @@ export class EleccionListComponent implements OnInit {
     if (this.profesor.docencia !== null) {
       this.eleccionService.getEleccion(this.profesor.docencia)
         .subscribe(eleccion => {
+          eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = " ";
           const { asignaturas, desdobles, asignaturas_divisibles, deuda } = eleccion;
           console.log(eleccion)
           this.creditosDeuda = deuda + this.profesor.pda;
@@ -228,10 +230,10 @@ export class EleccionListComponent implements OnInit {
           if (asignaturas_divisibles.length) {
             this.fillAsignaturasDivisiblesWithEleccion(asignaturas_divisibles);
           }
-          this.loading = false;
-          this.updateEleccion();
-          this.comprobarEleccion();
+          
           this.eleccion = eleccion;
+          this.comprobarEleccion(eleccion);
+          this.loading = false;
         });
     }
     else {
@@ -351,7 +353,7 @@ export class EleccionListComponent implements OnInit {
         this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
         this.creditos -= asignatura.creditos;
       }
-      this.comprobarEleccion();
+      this.comprobarEleccion(this.updateEleccion());
     }
 
   }
@@ -373,7 +375,7 @@ export class EleccionListComponent implements OnInit {
         this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
         this.creditos -= asignatura.desdobles[0].creditos;
       }
-      this.comprobarEleccion();
+      this.comprobarEleccion(this.updateEleccion());
     }
   }
 
@@ -405,11 +407,11 @@ export class EleccionListComponent implements OnInit {
       this.creditos -= asignaturaD[0].creditos;
       this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id !== asignatura.id)
     }
-    this.comprobarEleccion();
+    this.comprobarEleccion(this.updateEleccion());
   }
 
-  comprobarEleccion() {
-    this.eleccionService.comprobarEleccion(this.updateEleccion())
+  comprobarEleccion(eleccion) {
+    this.eleccionService.comprobarEleccion(eleccion)
       .subscribe(errores => {
         this.errores = errores;
         const { L, M, X, J, V } = errores;

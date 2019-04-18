@@ -48,9 +48,12 @@ export class EleccionService {
     });
     eleccion.asignaturas_divisibles = asignaturasDivisiblesAux;
 
-
-
-    var desdoblesAux = eleccion.desdobles.map(desdoble => desdoble.desdobles[0].id)
+    var desdoblesAux = eleccion.desdobles.map(desdoble => {
+      if(desdoble.desdobles){
+        return desdoble.desdobles[0].id;
+      }
+      return desdoble.id;
+    })
     eleccion.desdobles = desdoblesAux;
 
     return eleccion;
