@@ -43,6 +43,7 @@
 .slidenav-buttons {
     display: flex;
     flex-direction: column;
+    padding-bottom: 80px;
 }
 
 .slidenav-buttons>.mat-button {
@@ -66,9 +67,10 @@
 }
 
 .sticky-image-wrapper {
-    position: fixed;
-    margin-left: 30px;
-    bottom: 10px;
+    position: absolute;
+    bottom: 0;
+    background-image: linear-gradient(transparent, white);
+    width: 100%;
 }
 
 .sticky-image-wrapper img {
