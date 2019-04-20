@@ -9,7 +9,7 @@ import { Eleccion } from 'src/app/models/eleccion';
 import { ErroresEleccion } from 'src/app/models/erroresEleccion';
 import { ProfesoresService } from 'src/app/services/profesores.service';
 
-import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay } from "./utils";
+import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay, addCreditListener } from "./utils";
 import { SearchSidenavComponent } from 'src/app/util-components/search-sidenav/search-sidenav.component';
 import { Profesor } from 'src/app/models/profesor';
 import { GlobalConfigService } from 'src/app/services/global-config.service';
@@ -32,7 +32,7 @@ export class EleccionListComponent implements OnInit {
   admin: boolean;
   tuTurno: boolean;
   docenciaIniciada: boolean;
-  
+
   asignaturas: Asignatura[];
   todasAsignaturas: Asignatura[];
   loading: boolean;
@@ -88,6 +88,7 @@ export class EleccionListComponent implements OnInit {
 
     this.creditos = 0;
     this.creditosDeuda = 0;
+    addCreditListener()
   }
 
   ngOnInit() {
@@ -99,8 +100,7 @@ export class EleccionListComponent implements OnInit {
     this.desdoblesSelected = [];
     this.getAsignaturas();
   }
-
-  onPreventKey(event){
+  onPreventKey(event) {
     event.preventDefault();
   }
   openDialog(): void {
@@ -142,10 +142,10 @@ export class EleccionListComponent implements OnInit {
         asignatura.minCreditos = asignatura.creditos / 3;
         var creditosUsados = 0;
         asignatura.docencia_divisible.map(docencia => {
-          if(docencia.profesor !== this.profesor.usuario.id){
+          if (docencia.profesor !== this.profesor.usuario.id) {
             creditosUsados = creditosUsados + docencia.creditos;
           }
-          
+
         })
         var creditosDisponibles = asignatura.creditos - creditosUsados;
         if (creditosDisponibles > 0) {
@@ -230,7 +230,7 @@ export class EleccionListComponent implements OnInit {
           if (asignaturas_divisibles.length) {
             this.fillAsignaturasDivisiblesWithEleccion(asignaturas_divisibles);
           }
-          
+
           this.eleccion = eleccion;
           this.comprobarEleccion(eleccion);
           this.loading = false;
@@ -397,7 +397,7 @@ export class EleccionListComponent implements OnInit {
         }
       });
       if (!asignaturaD) {
-        this.asignaturasDivisiblesSelected = [...this.asignaturasDivisiblesSelected, { id: 0, creditos: credits.valueAsNumber, asignatura: asignatura, profesor: this.profesor.usuario.id}]
+        this.asignaturasDivisiblesSelected = [...this.asignaturasDivisiblesSelected, { id: 0, creditos: credits.valueAsNumber, asignatura: asignatura, profesor: this.profesor.usuario.id }]
       }
       this.creditos += credits.valueAsNumber;
     }
@@ -440,5 +440,4 @@ export class EleccionListComponent implements OnInit {
   puedesElegir(): boolean {
     return this.admin || this.tuTurno
   }
-
 }

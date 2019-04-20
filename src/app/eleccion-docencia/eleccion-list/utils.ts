@@ -53,3 +53,26 @@ export const isMinimiceRight = () => {
 export const isMinimiceLeft = () => {
   return document.getElementById('minimizable-container').classList.contains("left-minimiced")
 }
+
+export const addCreditListener = () => {
+  var container = document.querySelector('.mat-sidenav-content')
+  var infoContainer = document.querySelector('.info')
+  var toolBar = document.querySelector('.mat-toolbar')
+  var changeHeight = 0;
+  if(infoContainer && toolBar){
+    changeHeight = infoContainer.getBoundingClientRect().height + toolBar.getBoundingClientRect().height
+  }
+  
+  function checkPosition(event) {
+    var cred = document.querySelector('.cred-select')
+    if(cred.getBoundingClientRect().top < changeHeight){
+      var credTop = document.querySelector('.cred-select-top')
+      credTop.classList.add('is-visible');
+    }
+    else{
+      var credTop = document.querySelector('.cred-select-top')
+      credTop.classList.remove('is-visible');
+    }
+  }
+  container.addEventListener('scroll', checkPosition)
+}

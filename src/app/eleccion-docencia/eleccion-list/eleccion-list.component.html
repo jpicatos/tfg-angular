@@ -4,8 +4,11 @@
 <button mat-button (click)="sidenav.toggle()" matTooltip="Filtrar" class="filterIcon">
     Filtrar asignaturas
     <div></div>
-</button>
 
+</button>
+<div class="cred-select-top">
+    <span>{{creditos}}</span> de {{profesor.creditos_escoger | number:'1.3-3'}} créditos
+</div>
 <div class="total-container">
     <mat-sidenav-container>
         <mat-sidenav #sidenav [autoFocus]="false" [mode]="over" position="end" class="sidenav">
