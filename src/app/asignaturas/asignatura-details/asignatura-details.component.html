@@ -4,17 +4,23 @@
         <mat-card class="card">
             <mat-card-header>
                 <div mat-card-avatar class="header-image"></div>
-                <mat-card-subtitle><a routerLink="/asignaturas">asignaturas</a> / <a routerLink="/asignaturas/{{asignatura.id}}">{{asignatura.siglas}}</a></mat-card-subtitle>
-                <mat-card-title routerLink="/asignaturas/{{asignatura.id}}" class="nombre-asig">[{{asignatura.siglas}}] {{asignatura.nombre}}
+                <mat-card-subtitle><a routerLink="/asignaturas">asignaturas</a> / <a
+                        routerLink="/asignaturas/{{asignatura.id}}">{{asignatura.siglas}}</a></mat-card-subtitle>
+                <mat-card-title routerLink="/asignaturas/{{asignatura.id}}" class="nombre-asig">[{{asignatura.siglas}}]
+                    {{asignatura.nombre}}
                 </mat-card-title>
                 <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
 
                 <div class="actionButtonContainer" *ngIf="admin">
-                    <button mat-raised-button color="accent" class="actionButton" routerLink="/edit-asignatura/{{asignatura.id}}"><mat-icon>create</mat-icon> Editar</button>
-                    <button mat-raised-button color="accent" class="actionButton" (click)="eliminarDialog()"><mat-icon>delete</mat-icon> Eliminar</button>
+                    <button mat-raised-button color="accent" class="actionButton"
+                        routerLink="/edit-asignatura/{{asignatura.id}}">
+                        <mat-icon>create</mat-icon> Editar
+                    </button>
+                    <button mat-raised-button color="accent" class="actionButton" (click)="eliminarDialog()">
+                        <mat-icon>delete</mat-icon> Eliminar
+                    </button>
                 </div>
             </mat-card-header>
-            <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
             <mat-card-content *ngIf='loaded'>
                 <mat-tab-group>
                     <mat-tab label="Detalles generales">
@@ -26,7 +32,8 @@
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
-                                    <h4>Cuatrimestre</h4> <span class="spacer"></span>{{asignatura.cuatrimestre}} cuatrimestre
+                                    <h4>Cuatrimestre</h4> <span class="spacer"></span>{{asignatura.cuatrimestre}}
+                                    cuatrimestre
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
@@ -34,7 +41,8 @@
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
-                                    <h4>Calendario</h4> <span class="spacer"></span> {{asignatura.calendario.nombre}} ({{asignatura.calendario.fecha_ini}} - {{asignatura.calendario.fecha_fin}})
+                                    <h4>Calendario</h4> <span class="spacer"></span> {{asignatura.calendario.nombre}}
+                                    ({{asignatura.calendario.fecha_ini}} - {{asignatura.calendario.fecha_fin}})
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
@@ -46,8 +54,21 @@
                                 </mat-list-item>
                                 <span class="manualDivider"></span>
                                 <mat-list-item role="listitem">
+                                    <h4>Créditos</h4> <span class="spacer"></span>{{asignatura.creditos}}
+                                </mat-list-item>
+                                <span class="manualDivider"></span>
+                                <mat-list-item role="listitem" *ngIf="!asignatura.divisible">
                                     <h4>Docencia teoría</h4> <span class="spacer"></span>
                                     <a [routerLink]="profesorTeoriaUrl">{{profesorTeoria}}</a>
+                                </mat-list-item>
+                                <mat-list-item role="listitem"
+                                    *ngFor="let docencia of asignatura.docencia_divisible; index as i">
+                                    <h4 *ngIf="i === 0">Docencia divisible</h4> <span class="spacer"></span>
+                                    <div *ngIf="docencia.profesor.usuario">
+                                        <a routerLink="/profesores/{{docencia.profesor.usuario.id}}">{{docencia.profesor.usuario.first_name}}
+                                            {{docencia.profesor.usuario.last_name}}
+                                            [{{docencia.creditos}}/{{asignatura.creditos}} crédito(s)]</a><br>
+                                    </div>
                                 </mat-list-item>
                                 <span *ngIf="asignatura.desdobles.length" class="manualDivider"></span>
                                 <mat-list-item *ngIf="asignatura.desdobles.length" role="listitem">

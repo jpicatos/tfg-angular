@@ -30,6 +30,7 @@ export class AsignaturaDetailsComponent implements OnInit {
     private profesoresService: ProfesoresService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
+    private router: Router,
     private titleService: Title,
     private globalConfigService: GlobalConfigService
   ) {
@@ -54,6 +55,9 @@ export class AsignaturaDetailsComponent implements OnInit {
   update(asignatura) {
     this.asignatura = asignatura;
     this.titleService.setTitle(this.asignatura.nombre)
+    if(asignatura.docencia_divisible){
+      this.docenciaDivisible()
+    }
   }
 
   getProfesorName() {
@@ -122,6 +126,15 @@ export class AsignaturaDetailsComponent implements OnInit {
       data: this.asignatura.desdobles[i]
     };
     const dialogRef = this.dialog.open(DialogDesdobleComponent, dialogConfig);
+  }
+
+  docenciaDivisible(): void{
+    this.asignatura.docencia_divisible.map(docencia =>{
+      this.profesoresService.getProfesor(docencia.profesor)
+        .subscribe(profesor => {
+          docencia.profesor = profesor;
+        })
+    })
   }
 
 }
