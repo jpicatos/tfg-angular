@@ -39,7 +39,17 @@
                 </mat-toolbar-row>
             </mat-toolbar>
 
-            <mat-card class=" info">
+            <mat-card class="info" *ngIf="eleccion && eleccion.mensaje && eleccion.mensaje !== ' ' && admin">
+                    <mat-card-title>
+                        Mensaje del profesor
+                    </mat-card-title>
+                    <mat-card-content>
+                            {{eleccion.mensaje}}
+                    </mat-card-content>
+    
+                </mat-card>
+
+            <mat-card class="info">
                 <mat-card-title>
                     Información
                 </mat-card-title>
