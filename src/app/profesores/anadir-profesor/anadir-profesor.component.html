@@ -53,8 +53,9 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Departamento" [(ngModel)]=profesor.departamento
-                [ngModelOptions]="{standalone: true}" required>
+                <mat-select placeholder="Departamento" [(ngModel)]=profesor.departamento [ngModelOptions]="{standalone: true}" required>
+                    <mat-option value="SIC">SIC</mat-option>
+                </mat-select>
             </mat-form-field>
             <div>
               <button mat-button matStepperNext type="submit">Siguiente</button>
