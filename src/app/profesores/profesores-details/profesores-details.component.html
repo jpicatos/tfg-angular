@@ -11,16 +11,17 @@
                     {{profesor.usuario.last_name}}, {{profesor.usuario.first_name}}
                 </mat-card-title>
 
-                <div class="actionButtonContainer" >
-                    <button *ngIf="admin || profesor.usuario.id === actualProfesor.usuario.id" mat-raised-button color="accent" class="actionButton"
-                        routerLink="/change-password">
+                <div class="actionButtonContainer">
+                    <button *ngIf="admin || profesor.usuario.id === actualProfesor.usuario.id" mat-raised-button
+                        color="accent" class="actionButton" routerLink="/change-password">
                         <mat-icon>create</mat-icon> Cambiar contraseña
                     </button>
                     <button *ngIf="admin" mat-raised-button color="accent" class="actionButton"
                         routerLink="/edit-profesor/{{profesor.usuario.id}}">
                         <mat-icon>create</mat-icon> Editar
                     </button>
-                    <button *ngIf="admin && profesor.usuario.id !== actualProfesor.usuario.id" mat-raised-button color="accent" class="actionButton" (click)="eliminarDialog()">
+                    <button *ngIf="admin && profesor.usuario.id !== actualProfesor.usuario.id" mat-raised-button
+                        color="accent" class="actionButton" (click)="eliminarDialog()">
                         <mat-icon>delete</mat-icon> Eliminar
                     </button>
                 </div>
@@ -111,6 +112,33 @@
                                         </mat-card-content>
                                         <mat-card-actions>
                                             <button mat-button [routerLink]="'/asignaturas/' + e.id">DETALLES</button>
+                                        </mat-card-actions>
+                                    </mat-card>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile *ngFor="let e of docencia.asignaturas_divisibles">
+                                    <mat-card>
+                                        <mat-card-title>[{{e.asignatura.siglas}}] {{e.asignatura.nombre}}
+                                        </mat-card-title>
+                                        <mat-card-subtitle>
+                                            <strong>Horario: </strong>
+                                            <p *ngFor="let h of e.asignatura.horario">{{h.dia}}:
+                                                {{h.hora_inicio}}-{{h.hora_fin}}
+                                                ({{h.aula}})</p>
+                                        </mat-card-subtitle>
+                                        <p>{{e.asignatura.cuatrimestre}} cuatrimestre -
+                                            {{e.asignatura.curso}}{{e.asignatura.grupo}}</p>
+                                        <mat-card-content class="moreTabs">
+                                            <mat-chip-list>
+                                                <mat-chip>Divisible</mat-chip>
+                                            </mat-chip-list>
+                                            <mat-chip-list>
+                                                <mat-chip color="accent" selected>{{e.creditos}} crédito(s)</mat-chip>
+                                            </mat-chip-list>
+                                        </mat-card-content>
+                                        <mat-card-actions>
+                                            <button mat-button
+                                                [routerLink]="'/asignaturas/' + e.asignatura.id">DETALLES</button>
                                         </mat-card-actions>
                                     </mat-card>
                                 </mat-grid-tile>
