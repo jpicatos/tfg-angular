@@ -39,7 +39,6 @@ export class MenuToolbarComponent implements OnInit {
 
   initData(): void {
     this.globalConfigService.getStartLoading().subscribe(loading => {
-      console.log("initData");
       this.loading = true;
       this.admin = this.globalConfigService.isAdmin();
       var userid = this.globalConfigService.userId();
@@ -51,19 +50,21 @@ export class MenuToolbarComponent implements OnInit {
           this.profesoresService.getProfesor(userid).subscribe(usuario => {
             this.globalConfigService.saveProfeInfo(usuario);
             this.usuario = usuario;
-            if(!this.admin){
+            if (!this.admin) {
               this.turno();
             }
-            
+            else{
+              this.endLoading();
+            }
           });
         }
         if (this.admin) {
-          this.usuario.usuario.first_name = "Administrador";
+          this.usuario.usuario.first_name = "Administrador" || this.usuario.usuario.first_name;
           this.tuTurno = true;
           this.globalConfigService.saveTurno(true);
-          setTimeout(() => {
-            this.loading = false;
-          }, 4000);
+          if(userid === null){
+            this.endLoading();
+          }
         }
       });
     })
@@ -72,9 +73,7 @@ export class MenuToolbarComponent implements OnInit {
   turno(): void {
     if (!this.usuario.docencia) {
       if (this.usuario.escalafon - 1 < 1) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 4000);
+        this.endLoading();
         this.tuTurno = true;
         this.globalConfigService.saveTurno(true);
       }
@@ -82,9 +81,7 @@ export class MenuToolbarComponent implements OnInit {
         this.profesoresService.searchProfesor("", "", "", "", null, this.usuario.escalafon - 1, null).subscribe(profesores => {
           if (profesores[0].docencia) {
             this.eleccionService.getEleccion(profesores[0].docencia).subscribe(docencia => {
-              setTimeout(() => {
-                this.loading = false;
-              }, 4000);
+              this.endLoading();
               if (docencia.confirmada) {
                 this.tuTurno = true;
                 this.globalConfigService.saveTurno(true);
@@ -92,9 +89,7 @@ export class MenuToolbarComponent implements OnInit {
             });
           }
           else {
-            setTimeout(() => {
-              this.loading = false;
-            }, 4000);
+            this.endLoading();
           }
         })
       }
@@ -103,16 +98,17 @@ export class MenuToolbarComponent implements OnInit {
       this.eleccionService.getEleccion(this.usuario.docencia).subscribe(docencia => {
         docencia.confirmada ? this.tuTurno = false : this.tuTurno = true;
         this.globalConfigService.saveTurno(this.tuTurno);
-        setTimeout(() => {
-          this.loading = false;
-        }, 4000);
+        this.endLoading();
         // this.loading = false;
       })
 
     }
   }
-  miCuenta(){
-    this.router.navigate(['/profesores/'+this.usuario.usuario.id]);
+
+  endLoading(){
+    setTimeout(() => {
+      this.loading = false;
+    }, 4000);
   }
 
 }
