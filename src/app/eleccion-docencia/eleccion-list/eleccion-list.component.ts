@@ -115,9 +115,7 @@ export class EleccionListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result.message, result.confirm);
       if (result.confirm) {
-        if (!this.admin) {
-          this.eleccion.mensaje = result.message || this.eleccion.mensaje || ".";
-        }
+        this.eleccion.mensaje = result.message || this.eleccion.mensaje || ".";
         this.saveEleccion();
       }
     });
@@ -217,7 +215,7 @@ export class EleccionListComponent implements OnInit {
     if (this.profesor.docencia !== null) {
       this.eleccionService.getEleccion(this.profesor.docencia)
         .subscribe(eleccion => {
-          eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = " ";
+          eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = ".";
           const { asignaturas, desdobles, asignaturas_divisibles, deuda } = eleccion;
           console.log(eleccion)
           this.creditosDeuda = deuda + this.profesor.pda;

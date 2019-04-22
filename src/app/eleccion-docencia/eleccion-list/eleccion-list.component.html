@@ -39,7 +39,7 @@
                 </mat-toolbar-row>
             </mat-toolbar>
 
-            <mat-card class="info" *ngIf="eleccion && eleccion.mensaje && eleccion.mensaje !== ' ' && admin">
+            <mat-card class="info" *ngIf="eleccion && eleccion.mensaje && eleccion.mensaje !== '.' && admin">
                     <mat-card-title>
                         Mensaje del profesor
                     </mat-card-title>
@@ -150,7 +150,7 @@
                                 [selected]="asignatura.selected" *ngIf="!asignatura.divisible"
                                 [disabled]="!asignatura.disponible" [ngClass]="{'disabled': !asignatura.disponible}">
                                 <h3 mat-line class="wrapedText">
-                                    <a routerLink="/asignaturas/{{asignatura.id}}"
+                                    <a target="_blank" routerLink="/asignaturas/{{asignatura.id}}"
                                         matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
                                         [{{asignatura.siglas}}]
                                         {{asignatura.nombre}}
@@ -176,7 +176,7 @@
                             <mat-list-item #opt *ngIf="asignatura.divisible"
                                 [ngClass]="{'disabled': !asignatura.disponible}">
                                 <h3 mat-line class="wrapedText">
-                                    <a routerLink="/asignaturas/{{asignatura.id}}"
+                                    <a target="_blank" routerLink="/asignaturas/{{asignatura.id}}"
                                         matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
                                         [{{asignatura.siglas}}]
                                         {{asignatura.nombre}}
@@ -218,7 +218,7 @@
                                 <h3 class="wrapedText">
                                     <mat-chip color="accent" selected>Desdoble
                                     </mat-chip>
-                                    <a routerLink="/asignaturas/{{asignatura.id}}"
+                                    <a target="_blank" routerLink="/asignaturas/{{asignatura.id}}"
                                         matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
                                         [{{asignatura.siglas}}]
                                         {{asignatura.nombre}}
