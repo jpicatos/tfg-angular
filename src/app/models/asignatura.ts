@@ -37,7 +37,7 @@ export class AsignaturaDivisible{
     id: number;
     creditos: number;
     asignatura: Asignatura;
-    profesor: number;
+    profesor: any;
 
     constructor(){
         this.asignatura = new Asignatura();
