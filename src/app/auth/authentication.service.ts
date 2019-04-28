@@ -20,7 +20,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService, private configService: GlobalConfigService) {
     this.name = new BehaviorSubject("Iniciar sesión");
-   }
+  }
 
   isAuthenticated(): boolean {
     let token = JSON.parse(localStorage.getItem('currentUser'));
@@ -29,10 +29,12 @@ export class AuthenticationService {
       var decoded = jwt_decode(token);
       this.name.next(decoded.name);
     }
-    catch (error) { console.log("Invalid token") }
-    
+    catch (error) {
+      console.log("Invalid token");
+    }
+
     if (token) {
-      if(!this.configService.dataLoaded()){
+      if (!this.configService.dataLoaded()) {
         this.configService.saveUserInfo(decoded.user_id, decoded.staff);
         this.configService.startLoading();
       }
@@ -51,29 +53,28 @@ export class AuthenticationService {
       res => {
         localStorage.setItem('currentUser', JSON.stringify(res.access));
         localStorage.setItem('currentUserRefresh', JSON.stringify(res.refresh));
-        this.router.navigate(['/dashboard/']).then((e)=> window.location.reload());
+        this.router.navigate(['/dashboard/']).then((e) => window.location.reload());
         this.avisosService.enviarMensaje("Ha iniciado sesión correctamente");
       });
   }
 
   refresh() {
     let token = JSON.parse(localStorage.getItem('currentUserRefresh'));
-    return this.http.post<Token>("/api/token/refresh/", {"refresh": token})
+    return this.http.post<Token>("/api/token/refresh/", { "refresh": token })
       .pipe(
         map(res => {
           localStorage.setItem('currentUser', JSON.stringify(res.access));
           return <Token>res;
-        }
-        )
-    );
+        })
+      );
   }
 
   getAuthToken() {
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(currentUser != null) {
+    if (currentUser != null) {
       return currentUser;
     }
- 
+
     return '';
   }
 
@@ -84,7 +85,7 @@ export class AuthenticationService {
     // Provoca bucle infinito
     // window.location.reload();
     // this.router.navigate(['/dashboard']);
-    this.router.navigate(['/dashboard/']) 
+    this.router.navigate(['/dashboard/'])
     this.name.next("Iniciar sesión");
     return empty();
   }

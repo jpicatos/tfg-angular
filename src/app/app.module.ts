@@ -20,7 +20,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ChartsModule } from 'ng2-charts';
 import { MaterialModule } from './material/material.module';
-import { ConfigurationComponent } from './configuration/configuration.component';
+import { ConfigurationComponent, ResetConfirm } from './configuration/configuration.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -30,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     DashboardComponent,
     ConfigurationComponent,
+    ResetConfirm
   ],
   imports: [
     AsignaturasModule,
@@ -61,6 +62,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     GlobalConfigService
   ],
   bootstrap: [AppComponent],
-  entryComponents: []
+  entryComponents: [ResetConfirm]
 })
 export class AppModule { }

@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>¿Estás segur@?</h1>
+<div mat-dialog-content>
+  <p>Reiniciar la docencia no tiene vuelta atrás</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button color="accent" [mat-dialog-close]="true" cdkFocusInitial>Reiniciar</button>
+</div>

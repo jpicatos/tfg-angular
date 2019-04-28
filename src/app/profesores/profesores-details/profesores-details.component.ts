@@ -14,6 +14,7 @@ import { Desdoble } from '../../models/desdoble';
 import { Asignatura } from 'src/app/models/asignatura';
 import { GlobalConfigService } from 'src/app/services/global-config.service';
 import { Location } from '@angular/common';
+import { AvisosService } from 'src/app/services/avisos.service';
 
 @Component({
   selector: 'app-profesores-details',
@@ -39,7 +40,8 @@ export class ProfesoresDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private titleService: Title,
     private globalConfigService: GlobalConfigService,
-    private location: Location
+    private location: Location,
+    private avisosService: AvisosService
   ) {
     this.actualProfesor = this.globalConfigService.getUserinfo();
     this.admin = this.globalConfigService.isAdmin();
@@ -127,6 +129,25 @@ export class ProfesoresDetailsComponent implements OnInit {
     }
     else {
       console.log('Cancelada eliminación profesor');
+    }
+  }
+
+  saveEleccion() {
+    if (!this.loaded) {
+      if (this.admin) {
+        this.docencia.confirmada = true;
+      }
+      if (this.docencia.id !== undefined) {
+        console.log(this.docencia)
+        this.eleccionService.saveEleccion(this.docencia);
+      }
+      else {
+        this.eleccionService.createEleccion(this.docencia).subscribe(data => {   // data is already a JSON object
+          this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
+          this.docencia = data;
+          window.location.reload()
+        });
+      }
     }
   }
 }

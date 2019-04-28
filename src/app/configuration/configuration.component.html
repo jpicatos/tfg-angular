@@ -6,6 +6,7 @@
       <mat-card-subtitle color="accent"><b>*Ojo! Algún cambio puede desconfigurar el sistema, utilizar con precaución</b></mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="formulario">
+      <button mat-raised-button class="reiniciar-docencia" color="accent" (click)="openDialog()">Reiniciar docencia</button>
       <form class="formulario">
         <mat-form-field>
           <input matInput placeholder="Siglas" [(ngModel)]=departamento.siglas [ngModelOptions]="{standalone: true}"

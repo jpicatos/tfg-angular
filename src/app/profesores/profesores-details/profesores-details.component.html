@@ -76,6 +76,9 @@
 
                     <mat-tab *ngIf="docencia" label="Docencia">
                         <div class="tab docenciaProfesor">
+                            <a routerLink="/eleccion-docencia/{{profesor.usuario.id}}">
+                                <button mat-raised-button color="accent">Ver en el gestor</button>
+                            </a>
                             <mat-grid-list cols="2" rowHeight="350px">
                                 <mat-grid-tile *ngFor="let e of docencia.asignaturas">
                                     <mat-card>

@@ -66,6 +66,9 @@ export class EleccionService {
         window.location.reload()
       });;
   }
+  reiniciar(){
+    return this.http.get(this.docenciaUrl + 'reiniciar')
+  }
 
 }
 

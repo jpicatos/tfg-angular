@@ -82,6 +82,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return <any>this.authService.logout();
           }),
           catchError(err => {
+            window.location.reload();
             return <any>this.authService.logout();
           }),
           finalize(() => {
