@@ -62,20 +62,19 @@ export class EleccionListComponent implements OnInit {
     this.admin = this.globalConfigService.isAdmin();
     this.tuTurno = this.globalConfigService.getTurno();
     // this.docenciaIniciada = this.globalConfigService.getDepartamento()[0].docencia_iniciada;
-
-    if (this.globalConfigService.getUserinfo().telefono) {
-      this.profesor = this.globalConfigService.getUserinfo()
-    } else {
-      this.profesor = new Profesor;
-      this.profesor.usuario = new Usuario;
-    }
     if (this.admin) {
       const id = + this.route.snapshot.paramMap.get('id');
       this.profesoresService.getProfesores()
         .subscribe((profesores) => {
-          this.profesores = profesores;
+          this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
           this.profesor = profesores.find(profe => profe.usuario.id === id) || profesores[0];
         })
+    }
+    else if (this.globalConfigService.getUserinfo().telefono) {
+      this.profesor = this.globalConfigService.getUserinfo()
+    } else {
+      this.profesor = new Profesor;
+      this.profesor.usuario = new Usuario;
     }
     this.isMinimiceLeft = isMinimiceLeft;
     this.minimiceLeft = minimiceLeft;
