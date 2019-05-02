@@ -40,6 +40,11 @@ export class MenuToolbarComponent implements OnInit {
 
   initData(): void {
     this.globalConfigService.getStartLoading().subscribe(loading => {
+      setTimeout(() => {
+        if(this.loading){
+          window.location.reload();
+        }
+      }, 10000);
       this.loading = true;
       this.admin = this.globalConfigService.isAdmin();
       var userid = this.globalConfigService.userId();
