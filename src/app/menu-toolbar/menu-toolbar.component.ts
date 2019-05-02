@@ -6,6 +6,7 @@ import { Profesor } from '../models/profesor';
 import { Usuario } from '../models/usuario';
 import { ProfesoresService } from '../services/profesores.service';
 import { EleccionService } from '../services/eleccion.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu-toolbar',
@@ -46,26 +47,42 @@ export class MenuToolbarComponent implements OnInit {
       this.globalConfigService.saveTurno(false);
       this.globalConfigService.loadDepartamento().subscribe(departamento => {
         this.globalConfigService.saveDepartamento(departamento);
-        if(userid !== null){
-          this.profesoresService.getProfesor(userid).subscribe(usuario => {
-            this.globalConfigService.saveProfeInfo(usuario);
-            this.usuario = usuario;
-            if (!this.admin) {
-              this.turno();
-            }
-            else{
-              this.endLoading();
-            }
-          });
+        if (userid !== null) {
+          this.profesoresService.getProfesor(userid)
+            .pipe(finalize(() => {
+              if (this.admin) {
+                this.usuario.usuario.first_name = "Administrador";
+                this.usuario.usuario.last_name = "";
+                this.tuTurno = true;
+                this.globalConfigService.saveTurno(true);
+                this.endLoading();
+              }
+            }))
+            .subscribe(
+              usuario => {
+                this.globalConfigService.saveProfeInfo(usuario);
+                this.usuario = usuario;
+                if (!this.admin) {
+                  this.turno();
+                }
+              },
+              error => {
+                if (error.status === 404) {
+                  var profesor = new Profesor;
+                  profesor.usuario = new Usuario;
+                  profesor.usuario.email = "no-email@no-email.com";
+                  profesor.usuario.first_name = "Undefined";
+                  profesor.usuario.id = userid;
+                  profesor.usuario.is_staff = this.admin;
+                  profesor.usuario.last_name = "undefined";
+                  this.globalConfigService.saveProfeInfo(profesor);
+                  this.usuario = profesor;
+                  this.endLoading();
+                }
+              }
+            );
         }
-        if (this.admin) {
-          this.usuario.usuario.first_name = "Administrador" || this.usuario.usuario.first_name;
-          this.tuTurno = true;
-          this.globalConfigService.saveTurno(true);
-          if(userid === null){
-            this.endLoading();
-          }
-        }
+
       });
     })
   }
@@ -105,7 +122,7 @@ export class MenuToolbarComponent implements OnInit {
     }
   }
 
-  endLoading(){
+  endLoading() {
     setTimeout(() => {
       this.loading = false;
     }, 4000);

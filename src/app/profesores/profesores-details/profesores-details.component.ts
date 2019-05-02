@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Profesor } from '../../models/profesor';
 import { ProfesoresService } from '../../services/profesores.service';
 import { AsignaturasService } from '../../services/asignaturas.service';
@@ -44,9 +44,9 @@ export class ProfesoresDetailsComponent implements OnInit {
     private avisosService: AvisosService
   ) {
     this.actualProfesor = this.globalConfigService.getUserinfo();
+    this.actualProfesor.usuario.id = this.globalConfigService.userId();
     this.admin = this.globalConfigService.isAdmin();
     this.loaded = false;
-    this.profesor = new Profesor;
     this.docenciaDesdobles = [];
   }
 
@@ -62,7 +62,8 @@ export class ProfesoresDetailsComponent implements OnInit {
     }
 
     MenuToolbarComponent.updateTitle("Profesores");
-    this.angularService.getProfesor(id).subscribe(profesor => {
+    this.angularService.getProfesor(id).subscribe(
+      profesor => {
       this.getCategoria(profesor.categoria);
       this.update(profesor);
 
@@ -83,6 +84,10 @@ export class ProfesoresDetailsComponent implements OnInit {
       else {
         this.loaded = true;
       }
+    },
+    err =>{
+      this.profesor = this.globalConfigService.getUserinfo();
+      this.loaded = true;
     });
   }
 

@@ -5,6 +5,7 @@ import { Departamento } from '../models/departamento';
 import { Profesor } from '../models/profesor';
 import { ProfesoresService } from './profesores.service';
 import { AvisosService } from './avisos.service';
+import { Usuario } from '../models/usuario';
 
 @Injectable()
 export class GlobalConfigService {

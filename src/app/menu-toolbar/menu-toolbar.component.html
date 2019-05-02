@@ -4,7 +4,7 @@
             <div class="icon-container">
                 <div class="user-icon"></div>
             </div>
-                <span class="username-container">{{usuario.usuario.first_name}} {{usuario.usuario.last_name}} </span>
+            <span class="username-container">{{usuario.usuario.first_name}} {{usuario.usuario.last_name}} </span>
         </div>
         <mat-divider></mat-divider>
         <mat-divider></mat-divider>
@@ -74,16 +74,13 @@
                 </button>
                 <span>{{title}}</span>
             </mat-toolbar-row>
-
         </mat-toolbar>
 
         <router-outlet *ngIf="!loading"></router-outlet>
-
-
-
-
+        
     </mat-sidenav-content>
 </mat-sidenav-container>
+
 <div *ngIf="loading" class="loading">
     <div class="logo">
         <img src="../../assets/logo-eleccion.png">

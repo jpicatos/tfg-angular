@@ -9,7 +9,7 @@ import { Eleccion } from 'src/app/models/eleccion';
 import { ErroresEleccion } from 'src/app/models/erroresEleccion';
 import { ProfesoresService } from 'src/app/services/profesores.service';
 
-import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay, addCreditListener } from "./utils";
+import { isMinimiceLeft, minimiceLeft, isMinimiceRight, minimiceRight, fetchDay, addCreditListener} from "./utils";
 import { SearchSidenavComponent } from 'src/app/util-components/search-sidenav/search-sidenav.component';
 import { Profesor } from 'src/app/models/profesor';
 import { GlobalConfigService } from 'src/app/services/global-config.service';
@@ -62,15 +62,7 @@ export class EleccionListComponent implements OnInit {
     this.admin = this.globalConfigService.isAdmin();
     this.tuTurno = this.globalConfigService.getTurno();
     // this.docenciaIniciada = this.globalConfigService.getDepartamento()[0].docencia_iniciada;
-    if (this.admin) {
-      const id = + this.route.snapshot.paramMap.get('id');
-      this.profesoresService.getProfesores()
-        .subscribe((profesores) => {
-          this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
-          this.profesor = profesores.find(profe => profe.usuario.id === id) || profesores[0];
-        })
-    }
-    else if (this.globalConfigService.getUserinfo().telefono) {
+     if (this.globalConfigService.getUserinfo().telefono) {
       this.profesor = this.globalConfigService.getUserinfo()
     } else {
       this.profesor = new Profesor;
@@ -97,7 +89,19 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasSelected = [];
     this.asignaturasDivisiblesSelected = [];
     this.desdoblesSelected = [];
-    this.getAsignaturas();
+    if (this.admin) {
+      const id = + this.route.snapshot.paramMap.get('id');
+      this.profesoresService.getProfesores()
+        .subscribe((profesores) => {
+          this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
+          this.profesor = profesores.find(profe => profe.usuario.id === id) || profesores[0];
+          this.getAsignaturas();
+        })
+    }
+    else{
+      this.getAsignaturas();
+    }
+    
   }
   onPreventKey(event) {
     event.preventDefault();

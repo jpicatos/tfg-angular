@@ -48,7 +48,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 this.avisosService.enviarMensaje("Hay problemas de conexión con el servidor");
                 return empty();
               default:
-                return empty();
+                return throwError(err);
             }
           } else {
             return throwError(err);
