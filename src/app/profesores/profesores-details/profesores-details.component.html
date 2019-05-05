@@ -12,7 +12,7 @@
                 </mat-card-title>
 
                 <div class="actionButtonContainer">
-                    <button *ngIf="admin || profesor.usuario.id === actualProfesor.usuario.id" mat-raised-button
+                    <button *ngIf="profesor.usuario.id === actualProfesor.usuario.id" mat-raised-button
                         color="accent" class="actionButton" routerLink="/change-password">
                         <mat-icon>create</mat-icon> Cambiar contraseña
                     </button>
