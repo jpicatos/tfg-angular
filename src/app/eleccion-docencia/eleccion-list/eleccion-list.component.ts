@@ -276,7 +276,9 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasDivisiblesSelected = [...asignaturasDivisibles];
     this.asignaturasDivisiblesSelected.map(asignaturaDivisible => {
       this.creditos += asignaturaDivisible.creditos;
-      document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`).setAttribute("value", asignaturaDivisible.creditos.toString());
+      if(document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`)){
+        document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`).setAttribute("value", asignaturaDivisible.creditos.toString());
+      }
     });
   }
 
