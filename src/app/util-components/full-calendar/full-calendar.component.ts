@@ -48,6 +48,7 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 	showDate = null;
 
 	constructor(private angularService: AsignaturasService) { }
+	
 	ngOnChanges(changes: SimpleChanges) {
 		const asign: SimpleChange = changes.asignaturasEntrada;
 		if (asign) {
@@ -55,9 +56,7 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 			if (this.asignaturas.length > 0) {
 				this.updateCalendarDateView(this.asignaturas[this.asignaturas.length - 1].calendario.fecha_ini)
 			}
-
 		}
-
 		const desd: SimpleChange = changes.desdoblesEntrada;
 		if (desd) {
 			this.desdobles = desd.currentValue;
@@ -65,18 +64,16 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 				this.updateCalendarDateView(this.desdobles[this.desdobles.length - 1].calendario.fecha_ini)
 			}
 		}
-
 		const asignD: SimpleChange = changes.asignaturasDivisiblesEntrada;
 		if (asignD) {
 			this.asignaturasDivisibles = asignD.currentValue;
 			if (this.asignaturasDivisibles.length > 0) {
 				this.updateCalendarDateView(this.asignaturasDivisibles[this.asignaturasDivisibles.length - 1].asignatura.calendario.fecha_ini)
 			}
-
 		}
-
 		this.recurEvents(this.asignaturas, this.desdobles, this.asignaturasDivisibles);
 	}
+
 	ngOnInit() {
 		this.calendarOptions = {
 			timeFormat: 'H(:mm)',

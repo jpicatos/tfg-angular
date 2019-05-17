@@ -25,19 +25,18 @@ export class ProfesoresService {
   saveProfesor(profesor: Profesor): void {
     if (profesor.usuario.id != undefined) {
       this.http.patch<Profesor>(this.profesoresUrl + profesor.usuario.id + '/', profesor)
-        .subscribe(data => {   // data is already a JSON object
+        .subscribe(data => {
           this.router.navigate(['/profesores/' + profesor.usuario.id]);
           this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
         });
     }
     else {
       this.http.post<Profesor>(this.profesoresUrl, profesor)
-        .subscribe(data => {   // data is already a JSON object
+        .subscribe(data => {
           this.router.navigate(['/profesores/' + data.usuario.id]);
           this.avisosService.enviarMensaje("Se ha creado la profesor correctamente");
         });
     }
-
   }
 
   deleteProfesor(id: number): void {
@@ -48,7 +47,7 @@ export class ProfesoresService {
   getCategoria(cate: string): Observable<Categoria> {
     return this.http.get<Categoria>(this.profesoresUrl + "categorias/" + cate);
   }
-  
+
   @Cacheable()
   getCategorias(): Observable<Categoria[]> {
     return this.http.get<Categoria[]>(this.profesoresUrl + "categorias");
@@ -63,8 +62,8 @@ export class ProfesoresService {
     if (despacho) {
       params += '&despacho=' + despacho;
     }
-    if(categoria){
-      params+='&categoria=' + encodeURIComponent(categoria);
+    if (categoria) {
+      params += '&categoria=' + encodeURIComponent(categoria);
     }
     if (escalafon) {
       params += '&escalafon=' + escalafon;
@@ -74,8 +73,6 @@ export class ProfesoresService {
   }
 
   importar(archivo: File, departamento_siglas: string, sobrescribir: boolean): Observable<ProfesorImportar> {
-
-    // this.http is the injected HttpClient
     const uploadData = new FormData();
     uploadData.append('excel_file', archivo, archivo.name);
     uploadData.append('departamento_siglas', departamento_siglas);

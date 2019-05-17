@@ -10,7 +10,6 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      //{ path: '', loadChildren: './asignaturas/asignaturas.module#AsignaturasModule' },
       { path: '', loadChildren: './auth/auth.module#AuthModule'},
       { path:'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
       { path:'config', component: ConfigurationComponent, canActivate: [AuthGuardService]},
