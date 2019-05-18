@@ -19,13 +19,19 @@ export class EleccionService {
     return this.http.get<Eleccion>(this.docenciaUrl + id);
   }
   saveEleccion(eleccion: Eleccion): void {
-    eleccion = this.parseEleccion(eleccion)
+    // eleccion = this.parseEleccion(eleccion)
     console.log("eleccion: ", eleccion)
-    this.http.patch<Eleccion>(this.docenciaUrl + eleccion.id + '/', eleccion)
-      .subscribe(data => {   // data is already a JSON object
+    this.deleteEleccion(eleccion.id).subscribe(docencia => {
+      this.createEleccion(eleccion).subscribe(() => {
         this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
         window.location.reload()
-      });
+      })
+      // this.http.patch<Eleccion>(this.docenciaUrl + eleccion.id + '/', eleccion)
+      //   .subscribe(data => {   // data is already a JSON object
+      //     this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
+      //     window.location.reload()
+      //   });
+    });
   }
   createEleccion(eleccion: Eleccion): Observable<Eleccion> {
     eleccion = this.parseEleccion(eleccion)
@@ -49,7 +55,7 @@ export class EleccionService {
     eleccion.asignaturas_divisibles = asignaturasDivisiblesAux;
 
     var desdoblesAux = eleccion.desdobles.map(desdoble => {
-      if(desdoble.desdobles){
+      if (desdoble.desdobles) {
         return desdoble.desdobles[0].id;
       }
       return desdoble.id;
@@ -59,14 +65,10 @@ export class EleccionService {
     return eleccion;
   }
 
-  deleteEleccion(id: number): void {
-    this.http.delete<Eleccion>(this.docenciaUrl + id)
-      .subscribe(docencia => {
-        this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
-        window.location.reload()
-      });;
+  deleteEleccion(id: number): Observable<Eleccion> {
+    return this.http.delete<Eleccion>(this.docenciaUrl + id);
   }
-  reiniciar(){
+  reiniciar() {
     return this.http.get(this.docenciaUrl + 'reiniciar')
   }
 

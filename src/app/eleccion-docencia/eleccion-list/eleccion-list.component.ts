@@ -173,6 +173,8 @@ export class EleccionListComponent implements OnInit {
           });
       }
       else {
+        this.eleccion = new Eleccion;
+        this.eleccion.profesor = this.profesor.usuario.id;
         this.loading = false;
       }
     }
@@ -240,25 +242,30 @@ export class EleccionListComponent implements OnInit {
           this.creditos += selected.creditos;
           asignatura.selected = true;
           var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
-          this.asignaturas[index] = asignatura
+          if (index > -1) {
+            this.asignaturas[index] = asignatura
+          }
         }
       })
     });
   }
 
   fillDesdoblesWithEleccion(desdobles) {
+    this.desdoblesSelected = [];
     desdobles.map(_desdoble => {
-      var id = _desdoble.id ? _desdoble.id : _desdoble;
-      this.asignaturasService.getAsignaturaDesdoble(id)
+      _desdoble.desdobles ? _desdoble = _desdoble.desdobles[0] : null
+      this.asignaturasService.getAsignaturaDesdoble(_desdoble.id)
         .subscribe(asignatura => {
-          this.desdoblesSelected = [...asignatura];
+          this.desdoblesSelected = [...this.desdoblesSelected, asignatura[0]];
           this.todasAsignaturas.map(asignatura => {
             asignatura.desdobles.map(desdoble => {
-              if (id == desdoble.id) {
+              if (_desdoble.id == desdoble.id) {
                 this.creditos += desdoble.creditos;
                 desdoble.selected = true;
                 var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
-                this.asignaturas[index] = asignatura
+                if (index > -1) {
+                  this.asignaturas[index].desdobles = asignatura.desdobles;
+                }
               }
 
             })
@@ -323,7 +330,11 @@ export class EleccionListComponent implements OnInit {
 
   deleteEleccion() {
     this.clearEleccion();
-    this.eleccionService.deleteEleccion(this.eleccion.id);
+    this.eleccionService.deleteEleccion(this.eleccion.id).subscribe(() => {
+      this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
+      window.location.reload();
+    });
+
   }
 
   updateEleccion() {
@@ -356,6 +367,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   onSelectDesdoble(asignatura, { selected }) {
+
     if (this.asignaturaDisponible(asignatura.desdobles[0])) {
       if (selected) {
         this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
