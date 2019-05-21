@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     //Add 'implements OnInit' to the class.
     this.avisosService.mensaje.subscribe(mensaje => {
       let snackBarRef = this.snackBar.open(mensaje, 'Cerrar', {
-        duration: 3000
+        duration: 5000
       });
     })
     if(window.location.pathname === '/'){
