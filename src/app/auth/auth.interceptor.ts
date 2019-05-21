@@ -31,7 +31,6 @@ export class AuthInterceptor implements HttpInterceptor {
                   }
                 }
                 return <any>this.authService.logout();
-                // this.avisosService.enviarMensaje(errMsg);
               }
             }
 
@@ -40,7 +39,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 return this.handle401Error(request, next);
               case 400:
                 this.avisosService.enviarMensaje(JSON.stringify(err.error));
-                return empty();                // return <any>this.authService.logout();
+                return empty();
               case 403:
                 this.avisosService.enviarMensaje("No tienes permisos para realizar la acción");
                 return empty();
@@ -50,6 +49,8 @@ export class AuthInterceptor implements HttpInterceptor {
               default:
                 return throwError(err);
             }
+
+            
           } else {
             return throwError(err);
           }

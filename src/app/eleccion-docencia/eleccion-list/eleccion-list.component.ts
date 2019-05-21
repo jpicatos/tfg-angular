@@ -334,7 +334,6 @@ export class EleccionListComponent implements OnInit {
       this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
       window.location.reload();
     });
-
   }
 
   updateEleccion() {
