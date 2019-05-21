@@ -18,6 +18,7 @@ import { MatDialog } from '@angular/material';
 import { ConfirmEleccionComponent } from '../confirm-eleccion/confirm-eleccion.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-eleccion-list',
@@ -58,10 +59,10 @@ export class EleccionListComponent implements OnInit {
   minimiceRight;
   fetchDay;
 
-  constructor(private router: Router, private asignaturasService: AsignaturasService, private location: Location, private route: ActivatedRoute, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog) {
+  constructor(private router: Router, private asignaturasService: AsignaturasService, private location: Location, private route: ActivatedRoute, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog, private titleService: Title) {
+    this.titleService.setTitle("Elección de docencia");
     this.admin = this.globalConfigService.isAdmin();
     this.tuTurno = this.globalConfigService.getTurno();
-    // this.docenciaIniciada = this.globalConfigService.getDepartamento()[0].docencia_iniciada;
     if (this.globalConfigService.getUserinfo().telefono) {
       this.profesor = this.globalConfigService.getUserinfo()
     } else {

@@ -60,8 +60,9 @@ export class DashboardComponent implements OnInit {
       }]
     }
   }
-  constructor(private configService: GlobalConfigService, private profesoresService: ProfesoresService, private docenciaService: EleccionService) {
+  constructor(private configService: GlobalConfigService, private profesoresService: ProfesoresService, private docenciaService: EleccionService, private titleService: Title) {
     MenuToolbarComponent.updateTitle("Dashboard");
+    this.titleService.setTitle("Dashboard");
     this.admin = this.configService.isAdmin();
     this.tuTurno = this.configService.getTurno();
     this.departamento = this.configService.getDepartamento()[0];
