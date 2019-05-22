@@ -56,7 +56,7 @@
 
       <app-filtro-hora [ayuda]="ayudaHoraFin" (horaChange)="horaFin($event)"></app-filtro-hora> -->
 
-        <button mat-raised-button color="accent" type="submit" (click)="search()" class="filtrar">
+        <button mat-raised-button color="accent" type="submit" (click)="search();sidenav.toggle()" class="filtrar">
             Filtrar
             <mat-icon>search</mat-icon>
         </button>
