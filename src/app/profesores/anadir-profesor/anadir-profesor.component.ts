@@ -16,7 +16,7 @@ import { GlobalConfigService } from 'src/app/services/global-config.service';
 })
 export class AnadirProfesorComponent implements OnInit {
   profesor: Profesor;
-  
+
   username: string; // Atributo para comparar si el nombre de usuario ha sido cambiado
   password: string; // Lo mismo que el anterior. La petición HTTP cambia si se cambian estos valores
 
@@ -48,6 +48,7 @@ export class AnadirProfesorComponent implements OnInit {
 
     let id = this.route.snapshot.paramMap.get('id');
     if (id !== null) {
+      this.actionTitle = "Editar profesor";
       this.angularService.getProfesor(Number(id)).subscribe(
         profesor => {
           this.profesor = profesor;
@@ -72,12 +73,11 @@ export class AnadirProfesorComponent implements OnInit {
 
   save(): void {
     let id = this.route.snapshot.paramMap.get('id');
-    
-    if(id===null){
+    if (id === null) {
       this.profesor.usuario.username = this.profesor.usuario.email;
       this.profesor.usuario.password = this.passwordGenerator();
     }
-    
+
     if (this.username == this.profesor.usuario.username) {
       delete this.profesor.usuario.username;
     }
@@ -85,18 +85,31 @@ export class AnadirProfesorComponent implements OnInit {
     if (this.password == this.profesor.usuario.password) {
       delete this.profesor.usuario.password;
     }
-    this.angularService.saveProfesor(this.profesor);
-
+    if (
+      !this.profesor.usuario.first_name ||
+      !this.profesor.usuario.last_name ||
+      !this.profesor.despacho ||
+      !this.profesor.usuario.email ||
+      !this.profesor.telefono ||
+      this.profesor.escalafon === undefined ||
+      !this.profesor.categoria ||
+      !this.profesor.departamento
+    ) {
+      this.avisosService.enviarMensaje("Completa todos los campos antes de continuar");
+    }
+    else {
+      this.angularService.saveProfesor(this.profesor);
+    }
   }
 
   passwordGenerator() {
     var length = Math.floor((Math.random() * 18) + 10);
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-?¿/#@!¡/*-+.";
-  
+
     for (var i = 0; i < length; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
-  
+
     return text;
   }
 

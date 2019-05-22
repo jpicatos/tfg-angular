@@ -25,17 +25,27 @@ export class ProfesoresService {
   saveProfesor(profesor: Profesor): void {
     if (profesor.usuario.id != undefined) {
       this.http.patch<Profesor>(this.profesoresUrl + profesor.usuario.id + '/', profesor)
-        .subscribe(data => {
-          this.router.navigate(['/profesores/' + profesor.usuario.id]);
-          this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
-        });
+        .subscribe(
+          data => {
+            this.router.navigate(['/profesores/' + profesor.usuario.id]);
+            this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
+          },
+          err => {
+            this.avisosService.enviarMensaje("Error al editar el profesor, por favor, revisa los campos");
+          }
+        );
     }
     else {
       this.http.post<Profesor>(this.profesoresUrl, profesor)
-        .subscribe(data => {
-          this.router.navigate(['/profesores/' + data.usuario.id]);
-          this.avisosService.enviarMensaje("Se ha creado la profesor correctamente");
-        });
+        .subscribe(
+          data => {
+            this.router.navigate(['/profesores/' + data.usuario.id]);
+            this.avisosService.enviarMensaje("Se ha creado la profesor correctamente");
+          },
+          err => {
+            this.avisosService.enviarMensaje("Error al crear el profesor, por favor, revisa los campos");
+          }
+        );
     }
   }
 
