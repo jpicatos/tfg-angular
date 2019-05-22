@@ -53,8 +53,8 @@ export class AsignaturasListComponent implements OnInit {
 
     this.selected = 1;
     this.opts = {
-      codigo: true,
-      cuatrimestre: false,
+      codigo: false,
+      cuatrimestre: true,
       curso: true,
       departamento: false,
       nombre: true,
