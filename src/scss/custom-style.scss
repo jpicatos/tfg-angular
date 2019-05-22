@@ -1610,8 +1610,9 @@ textarea.cdk-textarea-autosize-measuring {
 
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary {
     background-color: $primary;
-    ;
-    color: #fff
+    color: #fff;
+    height: fit-content;
+    width: fit-content;
 }
 
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary .mat-chip-remove {
@@ -1640,8 +1641,9 @@ textarea.cdk-textarea-autosize-measuring {
 
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-accent {
     background-color: $accent;
-    ;
-    color: #fff
+    color: #fff;
+    height: fit-content;
+    width: fit-content;
 }
 
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-accent .mat-chip-remove {
