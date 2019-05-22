@@ -122,7 +122,7 @@ export class AnadirAsignaturaComponent implements OnInit {
       && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
       && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
       && this.asignatura.hasOwnProperty('siglas') && this.asignatura.hasOwnProperty('titulacion'))
-      && this.asignatura.hasOwnProperty('calendario')) {
+      && this.asignatura.hasOwnProperty('calendario') && this.asignatura.hasOwnProperty('creditos')) {
       this.avisosService.enviarMensaje("Debe rellenar todos los campos obligatorios");
     }
     else {
