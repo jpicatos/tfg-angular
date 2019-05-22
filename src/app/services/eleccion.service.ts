@@ -18,20 +18,27 @@ export class EleccionService {
   getEleccion(id: number): Observable<Eleccion> {
     return this.http.get<Eleccion>(this.docenciaUrl + id);
   }
-  saveEleccion(eleccion: Eleccion): void {
-    // eleccion = this.parseEleccion(eleccion)
-    console.log("eleccion: ", eleccion)
-    this.deleteEleccion(eleccion.id).subscribe(docencia => {
-      this.createEleccion(eleccion).subscribe(() => {
-        this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
-        window.location.reload()
-      })
-      // this.http.patch<Eleccion>(this.docenciaUrl + eleccion.id + '/', eleccion)
-      //   .subscribe(data => {   // data is already a JSON object
-      //     this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
-      //     window.location.reload()
-      //   });
-    });
+  saveEleccion(eleccion: Eleccion): Observable<Eleccion> {
+    return new Observable((observer) => {
+      this.deleteEleccion(eleccion.id).subscribe(
+        docencia => {
+          this.createEleccion(eleccion).subscribe(
+            () => {
+              this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
+              observer.next(eleccion)
+              observer.complete()
+            },
+            err => {
+              this.avisosService.enviarMensaje("Error al guardar elección");
+              observer.error(err)
+            })
+        },
+        err => {
+          this.avisosService.enviarMensaje("Error al guardar elección");
+          observer.error(err)
+        }
+      );
+    })
   }
   createEleccion(eleccion: Eleccion): Observable<Eleccion> {
     eleccion = this.parseEleccion(eleccion)

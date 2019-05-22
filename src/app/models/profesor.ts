@@ -13,7 +13,7 @@ export class Profesor{
     docencia: number;
     creditos_escoger: number;
     creditos_escogidos: number;
-
+    docencia_confirmada: boolean;
     constructor() {
         this.usuario = new Usuario();
         this.deuda = new Deuda();
