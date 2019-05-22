@@ -13,9 +13,9 @@ export class ProfesoresService {
   private profesoresUrl = '/api/profesores/';
 
   constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) { }
-  @Cacheable()
+  // @Cacheable()
   getProfesores(): Observable<Profesor[]> {
-    return this.http.get<Profesor[]>(this.profesoresUrl);
+    return this.http.get<Profesor[]>(this.profesoresUrl + "?ordering=escalafon");
   }
 
   getProfesor(id: number): Observable<Profesor> {
