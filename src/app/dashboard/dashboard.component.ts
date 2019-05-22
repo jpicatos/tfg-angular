@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   admin: boolean;
   tuTurno: boolean;
   departamento: Departamento;
+  dataLoaded = false;
   graficaCreditos = {
     labels: ['Créditos asignados', 'Créditos no asignados', "Creditos desdoble asignados", "Creditos desdoble no asignados"],
     datas: [],
@@ -114,6 +115,7 @@ export class DashboardComponent implements OnInit {
         }
       ]
       this.graficaProfesores.labels = ['Profesores Pendientes: ' + profesoresPendientes, 'Profesores Confirmados: ' + profesoresConfirmada, "Profesores sin Confirmar: " + profesoresSinConfirmar]
+      this.dataLoaded = true;
     })
   }
 
