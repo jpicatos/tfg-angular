@@ -36,8 +36,11 @@
                             <input matInput placeholder="Grupo" [(ngModel)]=asignatura.grupo [ngModelOptions]="{standalone: true}" required>
                         </mat-form-field>
                         <mat-form-field>
-                            <mat-select placeholder="Calendario" [(ngModel)]=asignatura.calendario.id [ngModelOptions]="{standalone: true}" required>
-                                <mat-option *ngFor="let calendario of calendarios" [value]="calendario.id">
+                            <input matInput placeholder="Créditos" [(ngModel)]=asignatura.creditos [ngModelOptions]="{standalone: true}" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Calendario" [(ngModel)]=asignatura.calendario [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let calendario of calendarios" [value]="calendario">
                                     {{calendario.nombre}} ({{calendario.fecha_ini}} - {{calendario.fecha_fin}})
                                 </mat-option>
                             </mat-select>
@@ -92,6 +95,11 @@
 
                                 <app-filtro-hora [hora]="horario.hora_inicio" [isRequired]="true" [ayuda]="ayudaHoraIni" (horaChange)="horario.hora_inicio = $event"></app-filtro-hora>
                                 <app-filtro-hora [hora]="horario.hora_fin" [isRequired]="true" [ayuda]="ayudaHoraFin" (horaChange)="horario.hora_fin = $event"></app-filtro-hora>
+
+                                <mat-form-field>
+                                    <input matInput placeholder="Créditos" [(ngModel)]=desdoble.creditos [ngModelOptions]="{standalone: true}" required>
+                                    <mat-hint align="start"><strong>Créditos asociados al desdoble</strong></mat-hint>
+                                </mat-form-field>
                             </div>
                         </div>
 
