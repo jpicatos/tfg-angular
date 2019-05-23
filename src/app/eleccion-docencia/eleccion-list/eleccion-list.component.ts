@@ -139,6 +139,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   updateAsignaturas(asignaturas: Asignatura[], refreshSelected: boolean) {
+    this.loading = true;
     this.asignaturas = asignaturas;
     this.asignaturasDisponibles(asignaturas);
     if (!refreshSelected) {
@@ -338,6 +339,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   clearEleccion() {
+    this.loading = true;
     this.desdoblesSelected = [];
     this.asignaturasSelected = [];
     this.asignaturasDivisiblesSelected = []
@@ -357,6 +359,7 @@ export class EleccionListComponent implements OnInit {
 
     this.valida = true;
     this.creditos = 0 + this.profesor.pda;
+    this.creditosDeuda = 0;
     this.updateEleccion();
   }
 
@@ -393,6 +396,7 @@ export class EleccionListComponent implements OnInit {
 
     this.eleccion.desdobles = [];
     this.eleccion.desdobles = this.desdoblesSelected;
+    this.loading = false;
     return this.eleccion;
   }
 
@@ -511,7 +515,6 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasDivisiblesSelected = new Array;
     this.eleccion = new Eleccion;
     this.errores = new ErroresEleccion;
-    this.profesor
   }
 
   puedesElegir(): boolean {
