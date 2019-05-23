@@ -34,7 +34,7 @@ export class AuthenticationService {
     }
 
     if (token) {
-      if (!this.configService.dataLoaded()) {
+      if (!this.configService.getUserinfo() || this.configService.getUserinfo().usuario.id !== decoded.user_id) {
         this.configService.saveUserInfo(decoded.user_id, decoded.staff);
         this.configService.startLoading();
       }
@@ -49,13 +49,7 @@ export class AuthenticationService {
       password: password
     }
 
-    this.http.post<Token>("/api/token/", credentials).subscribe(
-      res => {
-        localStorage.setItem('currentUser', JSON.stringify(res.access));
-        localStorage.setItem('currentUserRefresh', JSON.stringify(res.refresh));
-        this.router.navigate(['/dashboard/']).then((e) => window.location.reload());
-        this.avisosService.enviarMensaje("Ha iniciado sesión correctamente");
-      });
+    return this.http.post<Token>("/api/token/", credentials);
   }
 
   refresh() {

@@ -31,6 +31,7 @@ export class ProfesoresDetailsComponent implements OnInit {
   docenciaDesdobles: Asignatura[];
   categorias: Categoria[];
   actualProfesor: Profesor;
+  mi_cuenta: boolean;
 
 
   constructor(private angularService: ProfesoresService,
@@ -48,6 +49,7 @@ export class ProfesoresDetailsComponent implements OnInit {
     this.admin = this.globalConfigService.isAdmin();
     this.loaded = false;
     this.docenciaDesdobles = [];
+    this.mi_cuenta = false;
   }
 
   ngOnInit() {
@@ -56,9 +58,11 @@ export class ProfesoresDetailsComponent implements OnInit {
 
     if (window.location.pathname === '/mi-cuenta') {
       id = this.actualProfesor.usuario.id;
+      this.mi_cuenta = true;
     }
     else if (id === this.actualProfesor.usuario.id) {
       this.location.go('mi-cuenta');
+      this.mi_cuenta = true;
     }
 
     MenuToolbarComponent.updateTitle("Profesores");

@@ -18,6 +18,7 @@ import { MatDialog } from '@angular/material';
 import { ConfirmEleccionComponent } from '../confirm-eleccion/confirm-eleccion.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-eleccion-list',
@@ -58,10 +59,10 @@ export class EleccionListComponent implements OnInit {
   minimiceRight;
   fetchDay;
 
-  constructor(private router: Router, private asignaturasService: AsignaturasService, private location: Location, private route: ActivatedRoute, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog) {
+  constructor(private router: Router, private asignaturasService: AsignaturasService, private location: Location, private route: ActivatedRoute, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog, private titleService: Title) {
+    this.titleService.setTitle("Elección de docencia");
     this.admin = this.globalConfigService.isAdmin();
     this.tuTurno = this.globalConfigService.getTurno();
-    // this.docenciaIniciada = this.globalConfigService.getDepartamento()[0].docencia_iniciada;
     if (this.globalConfigService.getUserinfo().telefono) {
       this.profesor = this.globalConfigService.getUserinfo()
     } else {
@@ -138,6 +139,27 @@ export class EleccionListComponent implements OnInit {
   }
 
   updateAsignaturas(asignaturas: Asignatura[], refreshSelected: boolean) {
+    this.asignaturas = asignaturas;
+    this.asignaturasDisponibles(asignaturas);
+    if (!refreshSelected) {
+      this.fillSelected(this.eleccion);
+    }
+    else {
+      if (this.profesor.docencia !== null) {
+        this.eleccionService.getEleccion(this.profesor.docencia)
+          .subscribe(eleccion => {
+            this.fillSelected(eleccion);
+          });
+      }
+      else {
+        this.eleccion = new Eleccion;
+        this.eleccion.profesor = this.profesor.usuario.id;
+        this.loading = false;
+      }
+    }
+  }
+
+  asignaturasDisponibles(asignaturas) {
     asignaturas.map(asignatura => {
       if (asignatura.divisible) {
         asignatura.minCreditos = asignatura.creditos / 3;
@@ -161,31 +183,14 @@ export class EleccionListComponent implements OnInit {
         this.checkDisponibilidad(asignatura)
       }
     })
-    this.asignaturas = asignaturas;
-    if (!refreshSelected) {
-      this.fillSelected(this.eleccion);
-    }
-    else {
-      if (this.profesor.docencia !== null) {
-        this.eleccionService.getEleccion(this.profesor.docencia)
-          .subscribe(eleccion => {
-            this.fillSelected(eleccion);
-          });
-      }
-      else {
-        this.eleccion = new Eleccion;
-        this.eleccion.profesor = this.profesor.usuario.id;
-        this.loading = false;
-      }
-    }
   }
 
   getAsignaturas(): void {
     this.location.go('eleccion-docencia/' + this.profesor.usuario.id);
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
-        this.updateAsignaturas(asignaturas, true);
         this.todasAsignaturas = asignaturas;
+        this.updateAsignaturas(asignaturas, true);
       })
   }
 
@@ -216,12 +221,13 @@ export class EleccionListComponent implements OnInit {
     this.eleccion.profesor = this.profesor.usuario.id;
 
     eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = ".";
-    const { asignaturas, desdobles, asignaturas_divisibles, deuda } = eleccion;
+    const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda = 0 } = eleccion;
     this.creditosDeuda = deuda + this.profesor.pda;
     this.creditos += this.creditosDeuda;
-    this.fillAsignaturasWithEleccion(asignaturas);
-
-    if (desdobles.length) { // If there are desdobles
+    if (asignaturas.length) {
+      this.fillAsignaturasWithEleccion(asignaturas);
+    }
+    if (desdobles.length) {
       this.fillDesdoblesWithEleccion(desdobles);
     }
     if (asignaturas_divisibles.length) {
@@ -229,8 +235,11 @@ export class EleccionListComponent implements OnInit {
     }
 
     this.eleccion = eleccion;
-    console.log(this.asignaturas)
-    this.comprobarEleccion(eleccion);
+    console.log(asignaturas.length || desdobles.length || asignaturas_divisibles.length)
+    if (asignaturas.length || desdobles.length || asignaturas_divisibles.length) {
+      this.comprobarEleccion(eleccion);
+    }
+
     this.loading = false;
   }
 
@@ -289,19 +298,42 @@ export class EleccionListComponent implements OnInit {
 
   saveEleccion() {
     this.updateEleccion();
-    if (!this.loading) {
+    var eleccionVacia = (!this.asignaturasSelected.length && !this.desdoblesSelected.length && !this.asignaturasDivisiblesSelected.length)
+    this.loading = true;
+    if (this.eleccion.id !== undefined && !eleccionVacia) {
       if (this.admin) {
         this.eleccion.confirmada = true;
+        this.profesor.docencia_confirmada = true;
       }
-      if (this.eleccion.id !== undefined) {
-        this.eleccionService.saveEleccion(this.eleccion);
+      this.eleccionService.saveEleccion(this.eleccion).subscribe(eleccion => {
+        this.eleccion = eleccion;
+        this.updateEleccion();
+        this.updateProfesores();
+      });
+    }
+    else if (this.eleccion.id !== undefined && eleccionVacia) {
+      this.deleteEleccion()
+    }
+    else if (eleccionVacia) {
+      this.avisosService.enviarMensaje("No hay asignaturas seleccionadas, elige alguna antes de enviar la docencia");
+      this.loading = false
+    }
+    else {
+      if (this.admin) {
+        this.eleccion.confirmada = true;
+        this.profesor.docencia_confirmada = true;
       }
-      else {
-        this.eleccionService.createEleccion(this.eleccion).subscribe(data => {
-          this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
-          window.location.reload()
-        });
-      }
+      this.eleccionService.createEleccion(this.eleccion).subscribe(
+        data => {
+          this.avisosService.enviarMensaje("Elección de docencia creada correctamente");
+          this.eleccion = data;
+          this.updateEleccion();
+          this.updateProfesores();
+        },
+        err => {
+          this.avisosService.enviarMensaje("Error al crear la docencia");
+        }
+      );
     }
   }
 
@@ -321,19 +353,35 @@ export class EleccionListComponent implements OnInit {
       asignatura.desdobles.map(desdoble => {
         desdoble.selected = false;
       })
-
     });
 
     this.valida = true;
+    this.creditos = 0 + this.profesor.pda;
     this.updateEleccion();
   }
 
+  updateProfesores() {
+    this.profesoresService.getProfesores().subscribe(profesores => {
+      this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
+      this.profesor = profesores.find(profe => profe.usuario.id === this.profesor.usuario.id) || profesores[0];
+      this.getAsignaturas();
+      this.loading = false;
+    })
+  }
+
   deleteEleccion() {
-    this.clearEleccion();
-    this.eleccionService.deleteEleccion(this.eleccion.id).subscribe(() => {
-      this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
-      window.location.reload();
-    });
+    this.loading = true;
+    this.eleccionService.deleteEleccion(this.eleccion.id).subscribe(
+      () => {
+        this.clearEleccion();
+        this.reset();
+        this.updateProfesores();
+        this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
+      },
+      err => {
+        this.avisosService.enviarMensaje("Error al eliminar la docencia");
+      }
+    );
   }
 
   updateEleccion() {
@@ -366,7 +414,6 @@ export class EleccionListComponent implements OnInit {
   }
 
   onSelectDesdoble(asignatura, { selected }) {
-
     if (this.asignaturaDisponible(asignatura.desdobles[0])) {
       if (selected) {
         this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
@@ -394,11 +441,34 @@ export class EleccionListComponent implements OnInit {
   }
 
   changeCreditVal(credits, asignatura) {
+    debugger
+    asignatura.minCreditos = asignatura.creditos / 3;
+    var creditosUsados = 0;
+    asignatura.docencia_divisible.map(docencia => {
+      if (docencia.profesor !== this.profesor.usuario.id) {
+        creditosUsados = creditosUsados + docencia.creditos;
+      }
+    })
+    var creditosDisponibles = asignatura.creditos - creditosUsados;
+    if (creditosDisponibles) {
+      asignatura.maxCreditos = creditosDisponibles;
+    }
+    else {
+      creditosDisponibles = asignatura.maxCreditos = asignatura.minCreditos = 0;
+    }
+    if (credits.valueAsNumber < 0) {
+      credits.valueAsNumber = asignatura.minCreditos
+      document.getElementById(`divisible${asignatura.id}`).setAttribute("value", '0');
+    }
+    if (credits.valueAsNumber > asignatura.maxCreditos){
+      credits.valueAsNumber = asignatura.maxCreditos
+      document.getElementById(`divisible${asignatura.id}`).setAttribute("value", asignatura.maxCreditos);
+    }
     if (credits.valueAsNumber) {
       let asignaturaD;
 
       this.asignaturasDivisiblesSelected.map(a => {
-        if (a.asignatura === asignatura) {
+        if (a.asignatura.id === asignatura.id) {
           this.creditos -= a.creditos;
           a.creditos = credits.valueAsNumber;
           asignaturaD = a;
@@ -410,7 +480,6 @@ export class EleccionListComponent implements OnInit {
       this.creditos += credits.valueAsNumber;
     }
     else {
-
       let asignaturaD = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id == asignatura.id)
       this.creditos -= asignaturaD[0].creditos;
       this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id !== asignatura.id)
@@ -442,11 +511,8 @@ export class EleccionListComponent implements OnInit {
     this.desdoblesSelected = new Array;
     this.asignaturasDivisiblesSelected = new Array;
     this.eleccion = new Eleccion;
-    this.valida = true;
     this.errores = new ErroresEleccion;
-    this.loading = true;
-    this.eleccion.confirmada = false;
-    this.creditos = 0 + this.profesor.pda;
+    this.profesor
   }
 
   puedesElegir(): boolean {

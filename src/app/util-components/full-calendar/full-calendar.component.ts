@@ -85,6 +85,7 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 			slotDuration: moment.duration(1, 'h'),
 			minTime: moment.duration(9, 'h'),
 			maxTime: moment.duration(21, 'h'),
+			defaultView: 'agendaWeek',
 			customButtons: {
 				primerCuatrimestre: {
 					text: '1er Cuatri.',
@@ -93,17 +94,21 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 				segundoCuatrimestre: {
 					text: '2º Cuatri.',
 					click: () => this.moveToCuatrimestreDate(3)
+				},
+				mes: {
+					text: 'Mes',
+					click: () => this.moveToCuatrimestreDate(3)
 				}
 			},
 			header: {
 				left: 'prev, next, primerCuatrimestre, segundoCuatrimestre',
 				center: 'title',
-				right: 'month,agendaWeek,agendaDay'
+				right: 'month, agendaWeek, agendaDay'
 			},
 			buttonText: {
-				month: 'mes',
-				week: 'semana',
-				day: 'día',
+				month: 'Mes',
+				week: 'Semana',
+				day: 'Día',
 				list: 'lista'
 			},
 			events: []
@@ -125,7 +130,7 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 	moveToCuatrimestreDate(id) {
 		this.angularService.getCalendarios(id)
 			.subscribe(result => {
-				this.updateCalendarDateView(moment(result.fecha_ini));
+				this.updateCalendarDateView(result.fecha_ini);
 			});
 	}
 
@@ -171,16 +176,28 @@ export class FullCalendarComponent implements OnChanges, OnInit {
 
 	updateCalendarDateView(fecha) {
 		if (this.ucCalendar.fullCalendar('getView').name === 'month') {
-			this.ucCalendar.fullCalendar('changeView', 'agenda');
-			this.ucCalendar.fullCalendar('gotoDate', moment(fecha));
+			this.ucCalendar.fullCalendar('changeView', 'agendaWeek');
+			this.ucCalendar.fullCalendar('gotoDate', moment(fecha).add('days', 7));
+			this.ucCalendar.fullCalendar('changeView', 'agendaDay');
+			this.ucCalendar.fullCalendar('gotoDate', moment(fecha).add('days', 7));
 			this.ucCalendar.fullCalendar('changeView', 'month');
 			this.ucCalendar.fullCalendar('gotoDate', moment(fecha));
 		}
-		else {
+		else if (this.ucCalendar.fullCalendar('getView').name === 'agendaWeek'){
 			this.ucCalendar.fullCalendar('changeView', 'month');
 			this.ucCalendar.fullCalendar('gotoDate', moment(fecha));
-			this.ucCalendar.fullCalendar('changeView', 'agenda');
+			this.ucCalendar.fullCalendar('changeView', 'agendaDay');
+			this.ucCalendar.fullCalendar('gotoDate', moment(fecha).add('days', 7));
+			this.ucCalendar.fullCalendar('changeView', 'agendaWeek');
+			this.ucCalendar.fullCalendar('gotoDate', moment(fecha).add('days', 7));
+		}
+		else{
+			this.ucCalendar.fullCalendar('changeView', 'month');
 			this.ucCalendar.fullCalendar('gotoDate', moment(fecha));
+			this.ucCalendar.fullCalendar('changeView', 'agendaWeek');
+			this.ucCalendar.fullCalendar('gotoDate', moment(fecha).add('days', 7));
+			this.ucCalendar.fullCalendar('changeView', 'agendaDay');
+			this.ucCalendar.fullCalendar('gotoDate', moment(fecha).add('days', 7));
 		}
 
 	}

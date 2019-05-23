@@ -3,7 +3,11 @@
     <div class="card-container">
         <mat-card class="card" *ngIf='loaded'>
             <mat-card-header>
-                <div mat-card-avatar class="header-image"></div>
+                <div mat-card-avatar>
+                    <a href="javascript:history.back()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </a>
+                </div>
                 <mat-card-subtitle><a routerLink="/profesores" color="accent">profesores</a> / <a
                         routerLink="/profesores/{{profesor.usuario.id}}"
                         color="accent">{{profesor.usuario.first_name}}</a></mat-card-subtitle>
@@ -76,7 +80,7 @@
 
                     <mat-tab *ngIf="docencia" label="Docencia">
                         <div class="tab docenciaProfesor">
-                            <div class="go-gestor">
+                            <div class="go-gestor" *ngIf="admin||mi_cuenta">
                                 <button mat-stroked-button color="accent" routerLink="/eleccion-docencia/{{profesor.usuario.id}}">
                                     <mat-icon>view_list</mat-icon>
                                     Ver en el gestor

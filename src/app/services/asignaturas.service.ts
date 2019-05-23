@@ -17,7 +17,7 @@ export class AsignaturasService {
   private calendariosUrl = '/api/asignaturas/calendarios/';
 
   constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) { }
-  @Cacheable()
+
   getAsignaturas(): Observable<Asignatura[]> {
     return this.http.get<Asignatura[]>(this.asignaturasUrl);
   }
@@ -58,17 +58,25 @@ export class AsignaturasService {
 
     if (asignatura.id != undefined) {
       this.http.put<Asignatura>(this.asignaturasUrl + asignatura.id + '/', asignatura)
-        .subscribe(data => {   // data is already a JSON object
-          this.router.navigate(['/asignaturas/' + asignatura.id]);
-          this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
-        });
+        .subscribe(
+          data => {   // data is already a JSON object
+            this.router.navigate(['/asignaturas/' + asignatura.id]);
+            this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
+          },
+          err => {
+            this.avisosService.enviarMensaje("Error al editar la asignatura, por favor, revisa el formulario");
+          }
+        );
     }
     else {
       this.http.post<Asignatura>(this.asignaturasUrl, asignatura)
         .subscribe(data => {   // data is already a JSON object
           this.router.navigate(['/asignaturas/' + data.id]);
           this.avisosService.enviarMensaje("Se ha creado la asignatura correctamente");
-        });
+        },
+          err => {
+            this.avisosService.enviarMensaje("Error al crear la asignatura, por favor, revisa el formulario");
+          });
     }
 
   }

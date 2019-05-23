@@ -5,6 +5,7 @@ import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
 import { EleccionService } from '../services/eleccion.service';
 import { AvisosService } from '../services/avisos.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Title } from '@angular/platform-browser';
 
 
 export interface DialogData {
@@ -21,8 +22,9 @@ export class ConfigurationComponent implements OnInit {
   departamento: Departamento;
   animal: string;
   name: string;
-  constructor(private configService: GlobalConfigService, private eleccionService: EleccionService, private avisosService: AvisosService, public dialog: MatDialog) {
-    MenuToolbarComponent.updateTitle("Configuration");
+  constructor(private configService: GlobalConfigService, private eleccionService: EleccionService, private avisosService: AvisosService, public dialog: MatDialog, private titleService: Title) {
+    this.titleService.setTitle("Configuración")
+    MenuToolbarComponent.updateTitle("Configuración");
     this.departamento = this.configService.getDepartamento()[0];
   }
 

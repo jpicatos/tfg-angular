@@ -1610,8 +1610,9 @@ textarea.cdk-textarea-autosize-measuring {
 
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary {
     background-color: $primary;
-    ;
-    color: #fff
+    color: #fff;
+    height: fit-content;
+    width: fit-content;
 }
 
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary .mat-chip-remove {
@@ -1640,8 +1641,9 @@ textarea.cdk-textarea-autosize-measuring {
 
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-accent {
     background-color: $accent;
-    ;
-    color: #fff
+    color: #fff;
+    height: fit-content;
+    width: fit-content;
 }
 
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-accent .mat-chip-remove {
@@ -2833,7 +2835,8 @@ th.mat-header-cell {
 .mat-snack-bar-container {
     color: #fff;
     background: $primary;
-    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12)
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+    max-width: 95% !important;
 }
 
 .mat-simple-snackbar-action {

@@ -9,8 +9,10 @@
         <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
         <mat-card-content class="formulario">
 
-            <p>Puedes importar el listado de profesores y categorías desde una hoja de cálculo de <strong>Excel 2010 (.xlsx)</strong>.</p>
-            <p>Tienes un ejemplo de la estructura que debe de tener el fichero para su correcta importación en <strong>este enlace.</strong></p>
+            <p>Puedes importar el listado de profesores y categorías desde una hoja de cálculo de <strong>Excel 2010
+                    (.xlsx)</strong>.</p>
+            <p>Tienes un ejemplo de la estructura que debe de tener el fichero para su correcta importación en
+                <strong><a href="../../../assets/profesores.xlsx" download>este enlace</a></strong>.</p>
 
             <div class="importar-formulario">
                 <mat-form-field>
@@ -25,11 +27,12 @@
             <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
 
             <button mat-raised-button color="primary" (click)="fileInput.click()">
-<mat-icon>attach_file</mat-icon> Selecciona un archivo
-</button>
+                <mat-icon>attach_file</mat-icon> Selecciona un archivo
+            </button>
 
             <button mat-raised-button color="accent" (click)="importar()">
-<mat-icon>cloud_upload</mat-icon> Importar</button>
+                <mat-icon>cloud_upload</mat-icon> Importar
+            </button>
 
             <div class="carga" *ngIf="progreso">
                 <mat-spinner [diameter]="30"></mat-spinner>

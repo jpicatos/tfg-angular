@@ -37,9 +37,6 @@ export class AuthInterceptor implements HttpInterceptor {
             switch ((<HttpErrorResponse>err).status) {
               case 401:
                 return this.handle401Error(request, next);
-              case 400:
-                this.avisosService.enviarMensaje(JSON.stringify(err.error));
-                return empty();
               case 403:
                 this.avisosService.enviarMensaje("No tienes permisos para realizar la acción");
                 return empty();

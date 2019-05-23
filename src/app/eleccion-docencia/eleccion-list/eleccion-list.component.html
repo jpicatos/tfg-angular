@@ -22,7 +22,7 @@
                         <form class="profesores">
                             Elección de docencia de:
                             <mat-form-field>
-                                <mat-select (selectionChange)="getAsignaturas()" [(ngModel)]="profesor"
+                                <mat-select (selectionChange)="clearEleccion();getAsignaturas()" [(ngModel)]="profesor"
                                     [ngModelOptions]="{standalone: true}">
                                     <mat-option *ngFor="let profe of profesores" [value]=profe>
                                         <div class="docencia-confirmada" *ngIf="profe.docencia_confirmada"></div>
@@ -122,16 +122,16 @@
             </mat-card>
 
             <button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()"
-                matTooltip="Borrar la docencia y guardar">
+                matTooltip="Borrar la docencia y guardar" [disabled]="loading">
                 <mat-icon>delete</mat-icon>
             </button>
             <button class="mat-fab-bottom-right1" *ngIf="puedesElegir()" mat-fab (click)="clearEleccion()"
-                matTooltip="Limpiar los selecionados">
+                matTooltip="Limpiar los selecionados" [disabled]="loading">
                 <mat-icon>clear</mat-icon>
             </button>
 
             <button class="mat-fab-bottom-right2" mat-fab *ngIf="puedesElegir()" (click)="openDialog()"
-                matTooltip="Guardar y enviar">
+                matTooltip="Guardar y enviar" [disabled]="loading">
                 <mat-icon *ngIf="!admin">send</mat-icon>
                 <mat-icon *ngIf="admin">done</mat-icon>
             </button>
@@ -200,9 +200,9 @@
                                 <div class="number-input">
                                     <button (click)="cred.stepDown(); changeCreditVal(cred, asignatura)"></button>
                                     <input #cred id="divisible{{asignatura.id}}" class="divisible" type="number"
-                                        (change)="changeCreditVal(cred, asignatura)" min=0 step="0.5"
-                                        max={{asignatura.maxCreditos}} [disabled]="!asignatura.disponible"
-                                        (keydown)="onPreventKey($event)">
+                                        (change)="changeCreditVal(cred, asignatura)" 
+                                        (keyup)="changeCreditVal(cred, asignatura)" min=0 step="0.01"
+                                        max={{asignatura.maxCreditos}} [disabled]="!asignatura.disponible">
                                     <button (click)="cred.stepUp(); changeCreditVal(cred, asignatura)"
                                         class="plus"></button>
                                 </div>
