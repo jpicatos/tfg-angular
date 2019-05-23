@@ -441,7 +441,6 @@ export class EleccionListComponent implements OnInit {
   }
 
   changeCreditVal(credits, asignatura) {
-    debugger
     asignatura.minCreditos = asignatura.creditos / 3;
     var creditosUsados = 0;
     asignatura.docencia_divisible.map(docencia => {
