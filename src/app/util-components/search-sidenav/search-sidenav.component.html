@@ -8,8 +8,12 @@
     </div>
 
     <form class="columnizar">
-        <mat-slide-toggle #available (change)="mostrarOnlyAvailable(available)" class="profesores" matTooltip="Mostrar solo asignaturas disponibles">
-            Mostrar solo asignaturas disponibles</mat-slide-toggle>
+        <mat-slide-toggle #available id="onlyAvailable" (change)="mostrarOnlyAvailable()" class="profesores"
+            matTooltip="Mostrar solo asignaturas disponibles">
+            Solo asignaturas disponibles</mat-slide-toggle>
+        <mat-slide-toggle #selected id="onlySelected" (change)="mostrarOnlySelected()" class="profesores"
+            matTooltip="Mostrar solo asignaturas seleccionadas">
+            Solo asignaturas seleccionadas</mat-slide-toggle>
         <mat-form-field>
             <input (change)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
             <mat-placeholder>
@@ -21,7 +25,7 @@
                 [(ngModel)]="searchVals.siglas" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
         <mat-form-field>
-            <input (change)="search()" matInput placeholder="Código" [(ngModel)]="searchVals.codigo"
+            <input (change)="search()" type="number" matInput placeholder="Código" [(ngModel)]="searchVals.codigo"
                 [ngModelOptions]="{standalone: true}">
         </mat-form-field>
         <mat-form-field>

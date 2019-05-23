@@ -41,12 +41,14 @@ export class AsignaturasService {
   searchAsignatura(siglas: string, nombre: string, codigo: string, curso: string, cuatrimestre: number, inicio: string, fin: string, dia: string[]): Observable<Asignatura[]> {
     var params = '&siglas=' + siglas +
       '&nombre=' + nombre +
-      '&codigo=' + codigo +
       '&curso=' + curso +
       '&inicio=' + inicio +
       '&fin=' + fin;
     if (cuatrimestre) {
       params += '&cuatrimestre=' + cuatrimestre
+    }
+    if(codigo){
+      params += '&codigo=' + codigo
     }
     dia.forEach(d => {
       params += '&dia=' + d

@@ -40,14 +40,14 @@
             </mat-toolbar>
 
             <mat-card class="info" *ngIf="eleccion && eleccion.mensaje && eleccion.mensaje !== '.' && admin">
-                    <mat-card-title>
-                        Mensaje del profesor
-                    </mat-card-title>
-                    <mat-card-content>
-                            {{eleccion.mensaje}}
-                    </mat-card-content>
-    
-                </mat-card>
+                <mat-card-title>
+                    Mensaje del profesor
+                </mat-card-title>
+                <mat-card-content>
+                    {{eleccion.mensaje}}
+                </mat-card-content>
+
+            </mat-card>
 
             <mat-card class="info">
                 <mat-card-title>
@@ -77,7 +77,8 @@
                                     Cŕeditos seleccionados:
                                 </span>
                                 <div class="cred-select">
-                                    <span>{{creditos | number:'1.3-3'}}</span> de {{profesor.creditos_escoger | number:'1.3-3'}} créditos
+                                    <span>{{creditos | number:'1.3-3'}}</span> de
+                                    {{profesor.creditos_escoger | number:'1.3-3'}} créditos
                                 </div>
                             </div>
                         </mat-grid-tile>
@@ -148,7 +149,9 @@
                             <!-- Asignatura no divisible -->
                             <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)"
                                 [selected]="asignatura.selected" *ngIf="!asignatura.divisible"
-                                [disabled]="!asignatura.disponible" [ngClass]="{'disabled': !asignatura.disponible}">
+                                [disabled]="!asignatura.disponible"
+                                [ngClass]="{'disabled': !asignatura.disponible, 'selected': asignatura.selected, 'non-selected': !asignatura.selected}"
+                                id="asignatura{{asignatura.id}}">
                                 <h3 mat-line class="wrapedText">
                                     <a target="_blank" routerLink="/asignaturas/{{asignatura.id}}"
                                         matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
@@ -170,11 +173,12 @@
                                 <p mat-line>
                                     <strong>Créditos: </strong>{{asignatura.creditos}}
                                 </p>
+                                <mat-divider></mat-divider>
                             </mat-list-option>
 
                             <!-- Asignatura divisible -->
                             <mat-list-item #opt *ngIf="asignatura.divisible"
-                                [ngClass]="{'disabled': !asignatura.disponible}">
+                                [ngClass]="{'disabled': !asignatura.disponible, 'selected': cred.valueAsNumber > 0, 'non-selected': !cred.valueAsNumber}">
                                 <h3 mat-line class="wrapedText">
                                     <a target="_blank" routerLink="/asignaturas/{{asignatura.id}}"
                                         matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
@@ -200,12 +204,13 @@
                                 <div class="number-input">
                                     <button (click)="cred.stepDown(); changeCreditVal(cred, asignatura)"></button>
                                     <input #cred id="divisible{{asignatura.id}}" class="divisible" type="number"
-                                        (change)="changeCreditVal(cred, asignatura)" 
+                                        (change)="changeCreditVal(cred, asignatura)"
                                         (keyup)="changeCreditVal(cred, asignatura)" min=0 step="0.01"
                                         max={{asignatura.maxCreditos}} [disabled]="!asignatura.disponible">
                                     <button (click)="cred.stepUp(); changeCreditVal(cred, asignatura)"
                                         class="plus"></button>
                                 </div>
+                                <mat-divider></mat-divider>
                             </mat-list-item>
 
                             <!-- Desdoble común para asignaturas divisibles y no divisibles -->
@@ -213,7 +218,8 @@
                                 (click)="onSelectDesdoble(asignatura, optDesdobles)"
                                 [selected]="asignatura.desdobles[0].selected"
                                 [disabled]="!asignatura.desdobles[0].disponible"
-                                [ngClass]="{'disabled': !asignatura.desdobles[0].disponible}">
+                                [ngClass]="{'disabled': !asignatura.desdobles[0].disponible, 'selected': asignatura.desdobles[0].selected, 'non-selected': !asignatura.desdobles[0].selected}"
+                                id="desdoble{{asignatura.id}}">
                                 <!-- <div class="asignatura-no-disponible" *ngIf="!admin && !asignaturaDisponible(asignatura.desdobles[0])">vdvdfvdfsvsdvsdvsdvs</div>    -->
                                 <h3 class="wrapedText">
                                     <mat-chip color="accent" selected>Desdoble
@@ -238,9 +244,8 @@
                                     <strong>Créditos:
                                     </strong>{{asignatura.desdobles[0].creditos}}
                                 </p>
+                                <mat-divider></mat-divider>
                             </mat-list-option>
-                            <mat-divider class="divider"></mat-divider>
-                            <mat-divider class="divider"></mat-divider>
                         </div>
 
                     </mat-selection-list>

@@ -396,9 +396,11 @@ export class EleccionListComponent implements OnInit {
     return this.eleccion;
   }
 
-  onSelectAsignatura(asignatura, { selected }) {
+  onSelectAsignatura(asignatura, opt) {
+    var { selected } = opt;
     if (this.asignaturaDisponible(asignatura)) {
       if (selected) {
+        opt.classList.add("selected")
         this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
         this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
         this.creditos += asignatura.creditos;

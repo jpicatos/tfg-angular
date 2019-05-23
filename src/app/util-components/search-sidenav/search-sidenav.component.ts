@@ -64,6 +64,8 @@ export class SearchSidenavComponent implements OnInit {
       .subscribe(asignaturas => {
         this.updateAsignaturas.emit(asignaturas);
         this.updateLoading.emit(false);
+        this.mostrarOnlyAvailable();
+        this.mostrarOnlySelected();
       });
   }
   updateDias(dia: string) {
@@ -76,27 +78,31 @@ export class SearchSidenavComponent implements OnInit {
     }
   }
 
-  mostrarOnlyAvailable(event) {
-    if (event.checked) {
-      this.asignaturasService.getAsignaturas()
-        .subscribe(asignaturas => {
-          this.asignaturas = asignaturas;
-          this.asignaturas = this.asignaturas.filter(asignatura => {
-            if (asignatura.desdobles.length && asignatura.desdobles[0].disponible) {
-              return true
-            }
-            if (asignatura.disponible && asignatura.desdobles.length && !asignatura.desdobles[0].disponible) {
-              asignatura.desdobles.pop();
-              return true
-            }
-            if (asignatura.disponible && !asignatura.desdobles.length) {
-              return true;
-            }
-          })
-        })
+  mostrarOnlyAvailable() {
+    var disableds = document.getElementsByClassName("disabled");
+    if (document.getElementById("onlyAvailable-input").checked) {
+      for (let i = 0; i < disableds.length; i++) {
+        disableds[i].classList.add("hidden")
+      }
     }
     else {
-      this.search();
+      for (let i = 0; i < disableds.length; i++) {
+        disableds[i].classList.remove("hidden")
+      }
+    }
+  }
+
+  mostrarOnlySelected() {
+    var nonSelecteds = document.getElementsByClassName("non-selected");
+    if (document.getElementById("onlySelected-input").checked) {
+      for (let i = 0; i < nonSelecteds.length; i++) {
+        nonSelecteds[i].classList.add("hidden")
+      }
+    }
+    else {
+      for (let i = 0; i < nonSelecteds.length; i++) {
+        nonSelecteds[i].classList.remove("hidden")
+      }
     }
   }
 }
