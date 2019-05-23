@@ -75,14 +75,14 @@ export class DashboardComponent implements OnInit {
     this.graficaCreditos.labels = ['Créditos asignados: ' + this.departamento.creditos_asignados, 'Créditos no asignados: ' + this.departamento.creditos_sin_asignar, "Creditos desdoble asignados: " + (this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar), "Creditos desdoble no asignados: " + this.departamento.creditos_desdobles_sin_asignar]
 
     this.graficaNumCreditos.datas = [
-      { data: [this.departamento.total_creditos_carga, this.departamento.creditos_fijos, this.departamento.resto_creditos], backgroundColor: this.graficaNumCreditos.colour }
+      { data: [this.departamento.total_creditos_carga.toFixed(2), this.departamento.creditos_fijos.toFixed(2), this.departamento.resto_creditos.toFixed(2)], backgroundColor: this.graficaNumCreditos.colour }
     ];
-    this.graficaNumCreditos.labels = ['Total de Créditos carga: ' + this.departamento.total_creditos_carga, 'Créditos fijos: ' + this.departamento.creditos_fijos, "Resto de Créditos: " + this.departamento.resto_creditos]
+    this.graficaNumCreditos.labels = ['Total de Créditos carga: ' + this.departamento.total_creditos_carga.toFixed(2), 'Créditos fijos: ' + this.departamento.creditos_fijos.toFixed(2), "Resto de Créditos: " + this.departamento.resto_creditos.toFixed(2)]
 
     this.graficaDeudaPDA.datas = [
-      { data: [this.departamento.deudas, this.departamento.deudas_corregidas, this.departamento.pda], backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'] },
+      { data: [this.departamento.deudas.toFixed(2), this.departamento.deudas_corregidas.toFixed(2), this.departamento.pda.toFixed(2)], backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'] },
     ];
-    this.graficaDeudaPDA.labels = ['Deudas: ' + this.departamento.deudas, 'Deudas Corregidas: ' + this.departamento.deudas_corregidas, "PDA: " + this.departamento.pda]
+    this.graficaDeudaPDA.labels = ['Deudas: ' + this.departamento.deudas.toFixed(2), 'Deudas Corregidas: ' + this.departamento.deudas_corregidas.toFixed(2), "PDA: " + this.departamento.pda.toFixed(2)]
   }
 
   getProfesoresDataset(){
