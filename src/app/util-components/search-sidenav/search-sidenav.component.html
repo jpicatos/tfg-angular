@@ -1,4 +1,7 @@
 <div class="searchContainer">
+    <div class="overflow" *ngIf="loading">
+        <mat-spinner [diameter]="75" color="accent"></mat-spinner>
+    </div>
     <div class="title-buscar">
         <h2 class="title">Buscar</h2>
         <button mat-icon-button class="close" (click)="sidenav.toggle()">
@@ -8,28 +11,29 @@
 
     <form class="columnizar">
         <mat-slide-toggle #available id="onlyAvailable" (change)="mostrarOnlyAvailable(available)" class="profesores"
-            matTooltip="Mostrar solo asignaturas disponibles">
+            matTooltip="Mostrar solo asignaturas disponibles" [disabled]="loading">
             Solo asignaturas disponibles</mat-slide-toggle>
         <mat-slide-toggle #selected id="onlySelected" (change)="mostrarOnlySelected(selected)" class="profesores"
-            matTooltip="Mostrar solo asignaturas seleccionadas">
+            matTooltip="Mostrar solo asignaturas seleccionadas" [disabled]="loading">
             Solo asignaturas seleccionadas</mat-slide-toggle>
         <mat-form-field>
-            <input (change)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}">
+            <input (change)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}"
+                [disabled]="loading">
             <mat-placeholder>
                 Buscar por nombre
             </mat-placeholder>
         </mat-form-field>
         <mat-form-field>
             <input (change)="search()" matInput placeholder="Siglas" style="text-transform: uppercase"
-                [(ngModel)]="searchVals.siglas" [ngModelOptions]="{standalone: true}">
+                [(ngModel)]="searchVals.siglas" [ngModelOptions]="{standalone: true}" [disabled]="loading">
         </mat-form-field>
         <mat-form-field>
             <input (change)="search()" type="number" matInput placeholder="Código" [(ngModel)]="searchVals.codigo"
-                [ngModelOptions]="{standalone: true}">
+                [ngModelOptions]="{standalone: true}" [disabled]="loading">
         </mat-form-field>
         <mat-form-field>
             <mat-select (selectionChange)="search()" placeholder="Curso" [(ngModel)]="searchVals.curso"
-                [ngModelOptions]="{standalone: true}">
+                [ngModelOptions]="{standalone: true}" [disabled]="loading">
                 <mat-option value="">--</mat-option>
                 <mat-option value="1º">1º</mat-option>
                 <mat-option value="2º">2º</mat-option>
@@ -41,7 +45,7 @@
 
         <mat-form-field>
             <mat-select (selectionChange)="search()" placeholder="Cuatrimestre" [(ngModel)]="searchVals.cuatrimestre"
-                [ngModelOptions]="{standalone: true}">
+                [ngModelOptions]="{standalone: true}" [disabled]="loading">
                 <mat-option value="">--</mat-option>
                 <mat-option value="1">1º cuatrimestre</mat-option>
                 <mat-option value="2">2º cuatrimestre</mat-option>
@@ -49,17 +53,23 @@
         </mat-form-field>
 
         <h4>Día(s)</h4>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('L')">Lunes</mat-checkbox>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('M')">Martes</mat-checkbox>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('X')">Miércoles</mat-checkbox>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('J')">Jueves</mat-checkbox>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('V')">Viernes</mat-checkbox>
+        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('L')" [disabled]="loading">Lunes
+        </mat-checkbox>
+        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('M')" [disabled]="loading">Martes
+        </mat-checkbox>
+        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('X')" [disabled]="loading">Miércoles
+        </mat-checkbox>
+        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('J')" [disabled]="loading">Jueves
+        </mat-checkbox>
+        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('V')" [disabled]="loading">Viernes
+        </mat-checkbox>
 
         <!-- <app-filtro-hora [ayuda]="ayudaHoraIni" (horaChange)="horaIni($event)"></app-filtro-hora>
 
       <app-filtro-hora [ayuda]="ayudaHoraFin" (horaChange)="horaFin($event)"></app-filtro-hora> -->
 
-        <button mat-raised-button color="accent" type="submit" (click)="search();sidenav.toggle()" class="filtrar">
+        <button mat-raised-button color="accent" type="submit" (click)="search();sidenav.toggle()" class="filtrar"
+            [disabled]="loading">
             Filtrar
             <mat-icon>search</mat-icon>
         </button>

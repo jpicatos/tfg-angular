@@ -50,8 +50,8 @@ export class SearchSidenavComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onlyAvaliable.checked = false;
-    this.onlyAvaliable.checked = true;
+    this.onlyAvaliable = {}
+    this.onlySelected = {}
   }
   @Output()
   updateLoading = new EventEmitter<boolean>();
@@ -61,6 +61,7 @@ export class SearchSidenavComponent implements OnInit {
 
   search(): void {
     this.updateLoading.emit(true);
+    this.loading = true;
     var diasAux = []
     if (this.searchVals.dias.length < 5) {
       diasAux = this.searchVals.dias;
@@ -69,6 +70,7 @@ export class SearchSidenavComponent implements OnInit {
       .subscribe(asignaturas => {
         this.updateAsignaturas.emit(asignaturas);
         this.updateLoading.emit(false);
+        this.loading = false;
         this.onlyAvaliable.checked = false;
         this.onlySelected.checked = false;
       });
