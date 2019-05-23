@@ -69,8 +69,8 @@ export class SearchSidenavComponent implements OnInit {
       .subscribe(asignaturas => {
         this.updateAsignaturas.emit(asignaturas);
         this.updateLoading.emit(false);
-        this.mostrarOnlyAvailable(this.onlyAvaliable);
-        this.mostrarOnlySelected(this.onlySelected);
+        this.onlyAvaliable.checked = false;
+        this.onlySelected.checked = false;
       });
   }
   updateDias(dia: string) {
