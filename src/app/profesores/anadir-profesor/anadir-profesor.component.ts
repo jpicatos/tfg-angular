@@ -95,7 +95,19 @@ export class AnadirProfesorComponent implements OnInit {
       !this.profesor.categoria ||
       !this.profesor.departamento
     ) {
-      this.avisosService.enviarMensaje("Completa todos los campos antes de continuar");
+      this.avisosService.enviarMensaje("Completa los campos antes de continuar");
+    }
+    else if(this.profesor.escalafon <= 0){
+      this.avisosService.enviarMensaje("El escalafón no puede ser menor o igual a 0");
+    }
+    else if (
+      this.profesor.deuda.hace_uno < 0 ||
+      this.profesor.deuda.hace_dos < 0 ||
+      this.profesor.deuda.hace_tres < 0 ||
+      this.profesor.deuda.hace_cuatro < 0 ||
+      this.profesor.pda < 0
+    ) {
+      this.avisosService.enviarMensaje("Revisa la deuda y la PDA");
     }
     else {
       this.angularService.saveProfesor(this.profesor);

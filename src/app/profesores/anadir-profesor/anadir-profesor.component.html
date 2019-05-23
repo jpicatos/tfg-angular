@@ -34,15 +34,15 @@
                 required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput type="email" placeholder="Email" [(ngModel)]=profesor.usuario.email
-                [ngModelOptions]="{standalone: true}" required>
+              <input matInput type="email" placeholder="Email" [(ngModel)]=profesor.usuario.email [ngModelOptions]="{standalone: true}"
+              email required>
             </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="Teléfono" [(ngModel)]=profesor.telefono [ngModelOptions]="{standalone: true}"
-                required>
+               required>
             </mat-form-field>
             <mat-form-field *ngIf="isAdmin">
-              <input matInput placeholder="Escalafón" type="number" min="0" [(ngModel)]=profesor.escalafon
+              <input matInput placeholder="Escalafón" type="number" min="1" [(ngModel)]=profesor.escalafon
                 [ngModelOptions]="{standalone: true}" required>
             </mat-form-field>
             <mat-form-field>

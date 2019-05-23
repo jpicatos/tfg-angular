@@ -41,7 +41,7 @@ export class MenuToolbarComponent implements OnInit {
   initData(): void {
     this.globalConfigService.getStartLoading().subscribe(loading => {
       setTimeout(() => {
-        if(this.loading){
+        if (this.loading) {
           window.location.reload();
         }
       }, 10000);
@@ -94,43 +94,35 @@ export class MenuToolbarComponent implements OnInit {
 
   turno(): void {
     if (!this.usuario.docencia) {
-      if (this.usuario.escalafon - 1 < 1) {
+      if (this.usuario.escalafon === 0) {
         this.endLoading();
         this.tuTurno = true;
         this.globalConfigService.saveTurno(true);
       }
       else {
-        this.profesoresService.searchProfesor("", "", "", "", null, this.usuario.escalafon - 1, null).subscribe(profesores => {
-          if (profesores[0].docencia) {
-            this.eleccionService.getEleccion(profesores[0].docencia).subscribe(docencia => {
-              this.endLoading();
-              if (docencia.confirmada) {
-                this.tuTurno = true;
-                this.globalConfigService.saveTurno(true);
-              }
-            });
+        this.profesoresService.getProfesores().subscribe(profesores => {
+          var profesorAnterior = profesores.find(profe => profe.escalafon === this.usuario.escalafon);
+          var profesorAnteriorIndex = profesores.indexOf(profesorAnterior) - 1;
+          profesorAnterior = profesores[profesorAnteriorIndex];
+          if (profesorAnterior.docencia && profesorAnterior.docencia_confirmada) {
+            this.tuTurno = true;
+            this.globalConfigService.saveTurno(true);
           }
-          else {
-            this.endLoading();
-          }
-        })
+          this.endLoading();
+        });
       }
     }
     else {
-      this.eleccionService.getEleccion(this.usuario.docencia).subscribe(docencia => {
-        docencia.confirmada ? this.tuTurno = false : this.tuTurno = true;
+        this.usuario.docencia_confirmada ? this.tuTurno = false : this.tuTurno = true;
         this.globalConfigService.saveTurno(this.tuTurno);
         this.endLoading();
-        // this.loading = false;
-      })
-
     }
   }
 
   endLoading() {
     setTimeout(() => {
       this.loading = false;
-    }, 4000);
+    }, 3000);
   }
 
 }
