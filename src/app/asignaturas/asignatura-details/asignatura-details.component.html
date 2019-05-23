@@ -3,7 +3,11 @@
     <div class="card-container">
         <mat-card class="card">
             <mat-card-header>
-                <div mat-card-avatar class="header-image"></div>
+                <div mat-card-avatar>
+                    <a href="javascript:history.back()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </a>
+                </div>
                 <mat-card-subtitle><a routerLink="/asignaturas">asignaturas</a> / <a
                         routerLink="/asignaturas/{{asignatura.id}}">{{asignatura.siglas}}</a></mat-card-subtitle>
                 <mat-card-title routerLink="/asignaturas/{{asignatura.id}}" class="nombre-asig">[{{asignatura.siglas}}]
