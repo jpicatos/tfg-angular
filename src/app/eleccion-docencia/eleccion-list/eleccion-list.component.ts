@@ -159,7 +159,7 @@ export class EleccionListComponent implements OnInit {
     }
   }
 
-  asignaturasDisponibles(asignaturas){
+  asignaturasDisponibles(asignaturas) {
     asignaturas.map(asignatura => {
       if (asignatura.divisible) {
         asignatura.minCreditos = asignatura.creditos / 3;
@@ -224,7 +224,7 @@ export class EleccionListComponent implements OnInit {
     const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda = 0 } = eleccion;
     this.creditosDeuda = deuda + this.profesor.pda;
     this.creditos += this.creditosDeuda;
-    if(asignaturas.length){
+    if (asignaturas.length) {
       this.fillAsignaturasWithEleccion(asignaturas);
     }
     if (desdobles.length) {
@@ -236,10 +236,10 @@ export class EleccionListComponent implements OnInit {
 
     this.eleccion = eleccion;
     console.log(asignaturas.length || desdobles.length || asignaturas_divisibles.length)
-    if(asignaturas.length || desdobles.length || asignaturas_divisibles.length){
+    if (asignaturas.length || desdobles.length || asignaturas_divisibles.length) {
       this.comprobarEleccion(eleccion);
     }
-    
+
     this.loading = false;
   }
 
@@ -441,11 +441,34 @@ export class EleccionListComponent implements OnInit {
   }
 
   changeCreditVal(credits, asignatura) {
+    debugger
+    asignatura.minCreditos = asignatura.creditos / 3;
+    var creditosUsados = 0;
+    asignatura.docencia_divisible.map(docencia => {
+      if (docencia.profesor !== this.profesor.usuario.id) {
+        creditosUsados = creditosUsados + docencia.creditos;
+      }
+    })
+    var creditosDisponibles = asignatura.creditos - creditosUsados;
+    if (creditosDisponibles) {
+      asignatura.maxCreditos = creditosDisponibles;
+    }
+    else {
+      creditosDisponibles = asignatura.maxCreditos = asignatura.minCreditos = 0;
+    }
+    if (credits.valueAsNumber < 0) {
+      credits.valueAsNumber = asignatura.minCreditos
+      document.getElementById(`divisible${asignatura.id}`).setAttribute("value", '0');
+    }
+    if (credits.valueAsNumber > asignatura.maxCreditos){
+      credits.valueAsNumber = asignatura.maxCreditos
+      document.getElementById(`divisible${asignatura.id}`).setAttribute("value", asignatura.maxCreditos);
+    }
     if (credits.valueAsNumber) {
       let asignaturaD;
 
       this.asignaturasDivisiblesSelected.map(a => {
-        if (a.asignatura === asignatura) {
+        if (a.asignatura.id === asignatura.id) {
           this.creditos -= a.creditos;
           a.creditos = credits.valueAsNumber;
           asignaturaD = a;
@@ -457,7 +480,6 @@ export class EleccionListComponent implements OnInit {
       this.creditos += credits.valueAsNumber;
     }
     else {
-
       let asignaturaD = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id == asignatura.id)
       this.creditos -= asignaturaD[0].creditos;
       this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id !== asignatura.id)

@@ -200,9 +200,9 @@
                                 <div class="number-input">
                                     <button (click)="cred.stepDown(); changeCreditVal(cred, asignatura)"></button>
                                     <input #cred id="divisible{{asignatura.id}}" class="divisible" type="number"
-                                        (change)="changeCreditVal(cred, asignatura)" min=0 step="0.5"
-                                        max={{asignatura.maxCreditos}} [disabled]="!asignatura.disponible"
-                                        (keydown)="onPreventKey($event)">
+                                        (change)="changeCreditVal(cred, asignatura)" 
+                                        (keyup)="changeCreditVal(cred, asignatura)" min=0 step="0.01"
+                                        max={{asignatura.maxCreditos}} [disabled]="!asignatura.disponible">
                                     <button (click)="cred.stepUp(); changeCreditVal(cred, asignatura)"
                                         class="plus"></button>
                                 </div>
