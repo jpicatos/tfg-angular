@@ -80,7 +80,8 @@ export class SearchSidenavComponent implements OnInit {
 
   mostrarOnlyAvailable() {
     var disableds = document.getElementsByClassName("disabled");
-    if (document.getElementById("onlyAvailable-input").checked) {
+    var onlyAvailable = document.getElementById("onlyAvailable-input");
+    if (onlyAvailable.checked) {
       for (let i = 0; i < disableds.length; i++) {
         disableds[i].classList.add("hidden")
       }
@@ -94,7 +95,8 @@ export class SearchSidenavComponent implements OnInit {
 
   mostrarOnlySelected() {
     var nonSelecteds = document.getElementsByClassName("non-selected");
-    if (document.getElementById("onlySelected-input").checked) {
+    var onlySelected = document.getElementById("onlySelected-input");
+    if (onlySelected.checked) {
       for (let i = 0; i < nonSelecteds.length; i++) {
         nonSelecteds[i].classList.add("hidden")
       }
