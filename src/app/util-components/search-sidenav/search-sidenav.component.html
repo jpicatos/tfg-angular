@@ -1,5 +1,4 @@
 <div class="searchContainer">
-
     <div class="title-buscar">
         <h2 class="title">Buscar</h2>
         <button mat-icon-button class="close" (click)="sidenav.toggle()">
@@ -8,10 +7,10 @@
     </div>
 
     <form class="columnizar">
-        <mat-slide-toggle #available id="onlyAvailable" (change)="mostrarOnlyAvailable()" class="profesores"
+        <mat-slide-toggle #available id="onlyAvailable" (change)="mostrarOnlyAvailable(available)" class="profesores"
             matTooltip="Mostrar solo asignaturas disponibles">
             Solo asignaturas disponibles</mat-slide-toggle>
-        <mat-slide-toggle #selected id="onlySelected" (change)="mostrarOnlySelected()" class="profesores"
+        <mat-slide-toggle #selected id="onlySelected" (change)="mostrarOnlySelected(selected)" class="profesores"
             matTooltip="Mostrar solo asignaturas seleccionadas">
             Solo asignaturas seleccionadas</mat-slide-toggle>
         <mat-form-field>

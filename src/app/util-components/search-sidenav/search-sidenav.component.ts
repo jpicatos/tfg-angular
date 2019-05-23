@@ -29,6 +29,9 @@ export class SearchSidenavComponent implements OnInit {
   ayudaHoraIni = "A partir de la hora...";
   ayudaHoraFin = "Antes de la hora...";
   @Input() sidenav: MatSidenav;
+  onlyAvaliable
+  onlySelected
+
 
   constructor(private asignaturasService: AsignaturasService) {
     this.asignaturas = [];
@@ -47,6 +50,8 @@ export class SearchSidenavComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.onlyAvaliable.checked = false;
+    this.onlyAvaliable.checked = true;
   }
   @Output()
   updateLoading = new EventEmitter<boolean>();
@@ -64,8 +69,8 @@ export class SearchSidenavComponent implements OnInit {
       .subscribe(asignaturas => {
         this.updateAsignaturas.emit(asignaturas);
         this.updateLoading.emit(false);
-        this.mostrarOnlyAvailable();
-        this.mostrarOnlySelected();
+        this.mostrarOnlyAvailable(this.onlyAvaliable);
+        this.mostrarOnlySelected(this.onlySelected);
       });
   }
   updateDias(dia: string) {
@@ -78,10 +83,10 @@ export class SearchSidenavComponent implements OnInit {
     }
   }
 
-  mostrarOnlyAvailable() {
+  mostrarOnlyAvailable(event) {
+    this.onlyAvaliable = event;
     var disableds = document.getElementsByClassName("disabled");
-    var onlyAvailable = document.getElementById("onlyAvailable-input");
-    if (onlyAvailable.checked) {
+    if (event.checked) {
       for (let i = 0; i < disableds.length; i++) {
         disableds[i].classList.add("hidden")
       }
@@ -93,10 +98,10 @@ export class SearchSidenavComponent implements OnInit {
     }
   }
 
-  mostrarOnlySelected() {
+  mostrarOnlySelected(event) {
+    this.onlySelected = event
     var nonSelecteds = document.getElementsByClassName("non-selected");
-    var onlySelected = document.getElementById("onlySelected-input");
-    if (onlySelected.checked) {
+    if (event.checked) {
       for (let i = 0; i < nonSelecteds.length; i++) {
         nonSelecteds[i].classList.add("hidden")
       }
