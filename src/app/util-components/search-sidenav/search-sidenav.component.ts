@@ -29,8 +29,8 @@ export class SearchSidenavComponent implements OnInit {
   ayudaHoraIni = "A partir de la hora...";
   ayudaHoraFin = "Antes de la hora...";
   @Input() sidenav: MatSidenav;
-  onlyAvaliable
-  onlySelected
+  onlyAvaliables: boolean;
+  onlySelecteds: boolean;
 
 
   constructor(private asignaturasService: AsignaturasService) {
@@ -50,8 +50,8 @@ export class SearchSidenavComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onlyAvaliable = {}
-    this.onlySelected = {}
+    this.onlySelecteds = false;
+    this.onlyAvaliables = false;
   }
   @Output()
   updateLoading = new EventEmitter<boolean>();
@@ -70,8 +70,7 @@ export class SearchSidenavComponent implements OnInit {
       .subscribe(asignaturas => {
         this.updateAsignaturas.emit(asignaturas);
         setTimeout(() => {
-          this.mostrarOnlyAvailable({ checked: this.onlyAvaliable.checked });
-          this.mostrarOnlySelected({ checked: this.onlySelected.checked });
+          this.updateFilters();
           this.loading = false;
           this.updateLoading.emit(false);
         });
@@ -87,33 +86,33 @@ export class SearchSidenavComponent implements OnInit {
     }
   }
 
-  mostrarOnlyAvailable(event) {
-    this.onlyAvaliable = event;
-    var disableds = document.getElementsByClassName("disabled");
-    if (event.checked) {
-      for (let i = 0; i < disableds.length; i++) {
-        disableds[i].classList.add("hidden")
+  hideElements(elements) {
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.add("hidden")
       }
-    }
-    else {
-      for (let i = 0; i < disableds.length; i++) {
-        disableds[i].classList.remove("hidden")
-      }
-    }
   }
 
-  mostrarOnlySelected(event) {
-    this.onlySelected = event
-    var nonSelecteds = document.getElementsByClassName("non-selected");
-    if (event.checked) {
-      for (let i = 0; i < nonSelecteds.length; i++) {
-        nonSelecteds[i].classList.add("hidden")
+  showHiddenElements() {
+    var elements = document.getElementsByClassName("hidden");
+
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.remove("hidden")
       }
+  }
+  updateFilters(){
+    this.showHiddenElements()
+    var disableds = Array.from(document.getElementsByClassName("disabled"));
+    var nonSelected = Array.from(document.getElementsByClassName("non-selected"));
+    var elements = []
+    if(this.onlyAvaliables && this.onlySelecteds){
+      elements = [...disableds, ...nonSelected];
     }
-    else {
-      for (let i = 0; i < nonSelecteds.length; i++) {
-        nonSelecteds[i].classList.remove("hidden")
-      }
+    else if (this.onlySelecteds) {
+      elements = [...nonSelected];
     }
+    else if(this.onlyAvaliables){
+      elements = [...disableds];
+    }
+    this.hideElements(elements)
   }
 }

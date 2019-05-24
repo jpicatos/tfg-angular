@@ -10,12 +10,15 @@
     </div>
 
     <form class="columnizar">
-        <mat-slide-toggle #available id="onlyAvailable" (change)="mostrarOnlyAvailable(available)" class="profesores"
-            matTooltip="Mostrar solo asignaturas disponibles" [disabled]="loading">
+        <mat-slide-toggle [(ngModel)]=onlyAvaliables [ngModelOptions]="{standalone: true}"
+            matTooltip="Mostrar solo asignaturas disponibles" [disabled]="loading"
+            (change)="updateFilters()">
             Solo asignaturas disponibles</mat-slide-toggle>
-        <mat-slide-toggle #selected id="onlySelected" (change)="mostrarOnlySelected(selected)" class="profesores"
-            matTooltip="Mostrar solo asignaturas seleccionadas" [disabled]="loading">
+        <mat-slide-toggle [(ngModel)]=onlySelecteds [ngModelOptions]="{standalone: true}"
+            matTooltip="Mostrar solo asignaturas seleccionadas" [disabled]="loading"
+            (change)="updateFilters()">
             Solo asignaturas seleccionadas</mat-slide-toggle>
+
         <mat-form-field>
             <input (change)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}"
                 [disabled]="loading">
