@@ -7,6 +7,7 @@ import { Usuario } from '../models/usuario';
 import { ProfesoresService } from '../services/profesores.service';
 import { EleccionService } from '../services/eleccion.service';
 import { finalize } from 'rxjs/operators';
+import { Departamento } from '../models/departamento';
 
 @Component({
   selector: 'app-menu-toolbar',
@@ -20,11 +21,14 @@ export class MenuToolbarComponent implements OnInit {
   usuario: Profesor;
   loading: boolean;
   tuTurno: boolean;
+  departamento: Departamento;
+  miCuenta: boolean;
 
   constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService, private profesoresService: ProfesoresService, private eleccionService: EleccionService, private router: Router) {
     MenuToolbarComponent.routeTitle = "";
     this.usuario = new Profesor;
     this.usuario.usuario = new Usuario;
+    this.miCuenta = true;
     this.initData();
   }
 
@@ -52,6 +56,7 @@ export class MenuToolbarComponent implements OnInit {
       this.globalConfigService.saveTurno(false);
       this.globalConfigService.loadDepartamento().subscribe(departamento => {
         this.globalConfigService.saveDepartamento(departamento);
+        this.departamento = departamento;
         if (userid !== null) {
           this.profesoresService.getProfesor(userid)
             .pipe(finalize(() => {
@@ -82,6 +87,7 @@ export class MenuToolbarComponent implements OnInit {
                   profesor.usuario.last_name = "undefined";
                   this.globalConfigService.saveProfeInfo(profesor);
                   this.usuario = profesor;
+                  this.miCuenta = false;
                   this.endLoading();
                 }
               }
@@ -93,7 +99,8 @@ export class MenuToolbarComponent implements OnInit {
   }
 
   turno(): void {
-    if (!this.usuario.docencia) {
+    if (this.departamento.docencia_iniciada) {
+      if (!this.usuario.docencia) {
         this.profesoresService.getProfesores().subscribe(profesores => {
           var turnoProfesorAnterior = profesores.find(profe => !profe.docencia_confirmada);
           if (turnoProfesorAnterior.escalafon === this.usuario.escalafon) {
@@ -102,12 +109,17 @@ export class MenuToolbarComponent implements OnInit {
           }
           this.endLoading();
         });
-    }
-    else {
+      }
+      else {
         this.usuario.docencia_confirmada ? this.tuTurno = false : this.tuTurno = true;
         this.globalConfigService.saveTurno(this.tuTurno);
         this.endLoading();
+      }
     }
+    else {
+      this.endLoading();
+    }
+
   }
 
   endLoading() {
