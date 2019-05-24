@@ -156,6 +156,7 @@ export class EleccionListComponent implements OnInit {
         this.eleccion = new Eleccion;
         this.eleccion.profesor = this.profesor.usuario.id;
         this.loading = false;
+        this.creditos = this.profesor.pda;
       }
     }
   }
@@ -513,6 +514,7 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasDivisiblesSelected = new Array;
     this.eleccion = new Eleccion;
     this.errores = new ErroresEleccion;
+    document.getElementById('deudaInput').setAttribute("value", '0');
   }
 
   puedesElegir(): boolean {
