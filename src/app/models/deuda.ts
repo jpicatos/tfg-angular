@@ -1,7 +1,7 @@
 export class Deuda {
     id: number;
-    hace_uno: Number;
-    hace_dos: Number;
-    hace_tres: Number;
-    hace_cuatro: Number;
+    hace_uno: number;
+    hace_dos: number;
+    hace_tres: number;
+    hace_cuatro: number;
 };

@@ -77,8 +77,11 @@ export class AnadirAsignaturaComponent implements OnInit {
     let id = this.route.snapshot.paramMap.get('id');
 
     if (id != null) {
+      this.titleService.setTitle("Editar asignatura")
       this.angularService.getAsignatura(Number(id)).subscribe(
-        asignatura => this.asignatura = asignatura
+        asignatura => {
+          this.asignatura = asignatura
+        }
       );
 
       this.editar = true;   // Al existir un ID en la URL es una edición de una asignatura existente
@@ -118,6 +121,8 @@ export class AnadirAsignaturaComponent implements OnInit {
   }
 
   save(): void {
+    
+    
     if (!(this.asignatura.hasOwnProperty('codigo') && this.asignatura.hasOwnProperty('cuatrimestre')
       && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
       && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
@@ -139,7 +144,8 @@ export class AnadirAsignaturaComponent implements OnInit {
         });
 
       }
-
+      this.asignatura.siglas = this.asignatura.siglas.toUpperCase();
+      this.asignatura.calendario = this.calendarios[this.asignatura.calendario.id]
       this.angularService.saveAsignatura(this.asignatura);
     }
   }

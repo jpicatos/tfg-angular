@@ -29,6 +29,9 @@ export class SearchSidenavComponent implements OnInit {
   ayudaHoraIni = "A partir de la hora...";
   ayudaHoraFin = "Antes de la hora...";
   @Input() sidenav: MatSidenav;
+  onlyAvaliables: boolean;
+  onlySelecteds: boolean;
+
 
   constructor(private asignaturasService: AsignaturasService) {
     this.asignaturas = [];
@@ -47,6 +50,8 @@ export class SearchSidenavComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.onlySelecteds = false;
+    this.onlyAvaliables = false;
   }
   @Output()
   updateLoading = new EventEmitter<boolean>();
@@ -56,6 +61,7 @@ export class SearchSidenavComponent implements OnInit {
 
   search(): void {
     this.updateLoading.emit(true);
+    this.loading = true;
     var diasAux = []
     if (this.searchVals.dias.length < 5) {
       diasAux = this.searchVals.dias;
@@ -63,7 +69,11 @@ export class SearchSidenavComponent implements OnInit {
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
       .subscribe(asignaturas => {
         this.updateAsignaturas.emit(asignaturas);
-        this.updateLoading.emit(false);
+        setTimeout(() => {
+          this.updateFilters();
+          this.loading = false;
+          this.updateLoading.emit(false);
+        });
       });
   }
   updateDias(dia: string) {
@@ -76,27 +86,33 @@ export class SearchSidenavComponent implements OnInit {
     }
   }
 
-  mostrarOnlyAvailable(event) {
-    if (event.checked) {
-      this.asignaturasService.getAsignaturas()
-        .subscribe(asignaturas => {
-          this.asignaturas = asignaturas;
-          this.asignaturas = this.asignaturas.filter(asignatura => {
-            if (asignatura.desdobles.length && asignatura.desdobles[0].disponible) {
-              return true
-            }
-            if (asignatura.disponible && asignatura.desdobles.length && !asignatura.desdobles[0].disponible) {
-              asignatura.desdobles.pop();
-              return true
-            }
-            if (asignatura.disponible && !asignatura.desdobles.length) {
-              return true;
-            }
-          })
-        })
+  hideElements(elements) {
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.add("hidden")
+      }
+  }
+
+  showHiddenElements() {
+    var elements = document.getElementsByClassName("hidden");
+
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.remove("hidden")
+      }
+  }
+  updateFilters(){
+    this.showHiddenElements()
+    var disableds = Array.from(document.getElementsByClassName("disabled"));
+    var nonSelected = Array.from(document.getElementsByClassName("non-selected"));
+    var elements = []
+    if(this.onlyAvaliables && this.onlySelecteds){
+      elements = [...disableds, ...nonSelected];
     }
-    else {
-      this.search();
+    else if (this.onlySelecteds) {
+      elements = [...nonSelected];
     }
+    else if(this.onlyAvaliables){
+      elements = [...disableds];
+    }
+    this.hideElements(elements)
   }
 }

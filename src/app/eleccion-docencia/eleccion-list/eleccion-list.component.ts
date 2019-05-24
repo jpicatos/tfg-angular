@@ -139,6 +139,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   updateAsignaturas(asignaturas: Asignatura[], refreshSelected: boolean) {
+    this.loading = true;
     this.asignaturas = asignaturas;
     this.asignaturasDisponibles(asignaturas);
     if (!refreshSelected) {
@@ -155,6 +156,7 @@ export class EleccionListComponent implements OnInit {
         this.eleccion = new Eleccion;
         this.eleccion.profesor = this.profesor.usuario.id;
         this.loading = false;
+        this.creditos = this.profesor.pda;
       }
     }
   }
@@ -221,9 +223,11 @@ export class EleccionListComponent implements OnInit {
     this.eleccion.profesor = this.profesor.usuario.id;
 
     eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = ".";
-    const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda = 0 } = eleccion;
-    this.creditosDeuda = deuda + this.profesor.pda;
+    const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda} = eleccion;
+    this.creditosDeuda = deuda;
+    document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
     this.creditos += this.creditosDeuda;
+    this.creditos += this.profesor.pda;
     if (asignaturas.length) {
       this.fillAsignaturasWithEleccion(asignaturas);
     }
@@ -338,6 +342,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   clearEleccion() {
+    this.loading = true;
     this.desdoblesSelected = [];
     this.asignaturasSelected = [];
     this.asignaturasDivisiblesSelected = []
@@ -357,6 +362,8 @@ export class EleccionListComponent implements OnInit {
 
     this.valida = true;
     this.creditos = 0 + this.profesor.pda;
+    this.creditosDeuda = 0;
+    document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
     this.updateEleccion();
   }
 
@@ -393,6 +400,8 @@ export class EleccionListComponent implements OnInit {
 
     this.eleccion.desdobles = [];
     this.eleccion.desdobles = this.desdoblesSelected;
+    this.loading = false;
+    this.eleccion.deuda = this.creditosDeuda;
     return this.eleccion;
   }
 
@@ -432,12 +441,6 @@ export class EleccionListComponent implements OnInit {
       }
       this.comprobarEleccion(this.updateEleccion());
     }
-  }
-
-  updateConDeuda(deudaInput) {
-    this.creditos -= this.creditosDeuda;
-    this.creditosDeuda = deudaInput.valueAsNumber;
-    this.creditos += this.creditosDeuda;
   }
 
   changeCreditVal(credits, asignatura) {
@@ -511,10 +514,25 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasDivisiblesSelected = new Array;
     this.eleccion = new Eleccion;
     this.errores = new ErroresEleccion;
-    this.profesor
+    document.getElementById('deudaInput').setAttribute("value", '0');
   }
 
   puedesElegir(): boolean {
     return this.admin || this.tuTurno
+  }
+
+  changeDeudaVal(cred){
+    debugger
+    this.creditos -= this.creditosDeuda
+    var creditos = cred.valueAsNumber;
+    if (creditos<0 || !creditos) {
+      cred.value = 0
+    }
+    var maxCred = this.profesor.deuda.hace_uno + this.profesor.deuda.hace_dos + this.profesor.deuda.hace_tres + this.profesor.deuda.hace_cuatro
+    if(creditos> maxCred){
+      cred.value = maxCred
+    }
+    this.creditosDeuda = cred.valueAsNumber;
+    this.creditos += this.creditosDeuda;
   }
 }

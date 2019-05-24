@@ -15,11 +15,12 @@ export class AsignaturasService {
 
   private asignaturasUrl = '/api/asignaturas/';
   private calendariosUrl = '/api/asignaturas/calendarios/';
+  private asignaturasOrder = "?ordering=nombre"
 
   constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) { }
 
   getAsignaturas(): Observable<Asignatura[]> {
-    return this.http.get<Asignatura[]>(this.asignaturasUrl);
+    return this.http.get<Asignatura[]>(this.asignaturasUrl+this.asignaturasOrder);
   }
 
   getAsignatura(id: number): Observable<Asignatura> {
@@ -41,17 +42,19 @@ export class AsignaturasService {
   searchAsignatura(siglas: string, nombre: string, codigo: string, curso: string, cuatrimestre: number, inicio: string, fin: string, dia: string[]): Observable<Asignatura[]> {
     var params = '&siglas=' + siglas +
       '&nombre=' + nombre +
-      '&codigo=' + codigo +
       '&curso=' + curso +
       '&inicio=' + inicio +
       '&fin=' + fin;
     if (cuatrimestre) {
       params += '&cuatrimestre=' + cuatrimestre
     }
+    if(codigo){
+      params += '&codigo=' + codigo
+    }
     dia.forEach(d => {
       params += '&dia=' + d
     });
-    return this.http.get<Asignatura[]>(this.asignaturasUrl + '?' + params);
+    return this.http.get<Asignatura[]>(this.asignaturasUrl + this.asignaturasOrder + params);
   }
 
   saveAsignatura(asignatura: Asignatura): void {

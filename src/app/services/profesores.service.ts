@@ -11,11 +11,11 @@ import { Cacheable } from "ngx-cacheable";
 export class ProfesoresService {
 
   private profesoresUrl = '/api/profesores/';
-
+  private profesoresOrder = "?ordering=escalafon";
   constructor(private http: HttpClient, private router: Router, private avisosService: AvisosService) { }
   // @Cacheable()
   getProfesores(): Observable<Profesor[]> {
-    return this.http.get<Profesor[]>(this.profesoresUrl + "?ordering=escalafon");
+    return this.http.get<Profesor[]>(this.profesoresUrl + this.profesoresOrder);
   }
 
   getProfesor(id: number): Observable<Profesor> {
@@ -79,7 +79,7 @@ export class ProfesoresService {
       params += '&escalafon=' + escalafon;
     }
 
-    return this.http.get<Profesor[]>(this.profesoresUrl + '?' + params);
+    return this.http.get<Profesor[]>(this.profesoresUrl + this.profesoresOrder + params);
   }
 
   importar(archivo: File, departamento_siglas: string, sobrescribir: boolean): Observable<ProfesorImportar> {

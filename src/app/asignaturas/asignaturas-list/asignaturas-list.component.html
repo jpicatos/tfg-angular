@@ -69,28 +69,28 @@
                         <div *ngFor="let asignatura of asignaturas">
                             <mat-grid-list cols={{numCols}} rowHeight="50px" routerLink="/asignaturas/{{asignatura.id}}" class="row">
                                 <mat-grid-tile *ngIf="opts.codigo">
-                                    <div class="content-row" [innerHTML]="asignatura.codigo">
+                                    <div class="content-row wrapedText" [innerHTML]="asignatura.codigo">
                                     </div>
                                 </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.nombre" class="nombre" [colspan]=2>
-                                    <div class="content-row" [innerHTML]="'[' + asignatura.siglas + '] ' + asignatura.nombre"></div>
+                                    <div class="content-row" [ngClass]="{wrapedText: searchVals.nombre}" [innerHTML]="'[' + asignatura.siglas + '] ' + asignatura.nombre"></div>
                                 </mat-grid-tile>
                                 <mat-grid-tile *ngIf="opts.curso">
-                                    <div class="content-row">
+                                    <div class="content-row wrapedText">
                                         {{asignatura.curso}}
                                     </div>
                                 </mat-grid-tile>
-                                <mat-grid-tile *ngIf="opts.grupo">
+                                <mat-grid-tile *ngIf="opts.grupo wrapedText">
                                     <div class="content-row">
                                         {{asignatura.grupo}}
                                     </div>
                                 </mat-grid-tile>
-                                <mat-grid-tile *ngIf="opts.cuatrimestre">
+                                <mat-grid-tile *ngIf="opts.cuatrimestre wrapedText">
                                     <div class="content-row">
                                         {{asignatura.cuatrimestre}}
                                     </div>
                                 </mat-grid-tile>
-                                <mat-grid-tile *ngIf="opts.titulacion">
+                                <mat-grid-tile *ngIf="opts.titulacion wrapedText">
                                     <div class="content-row">
                                         {{asignatura.titulacion}}
                                     </div>
