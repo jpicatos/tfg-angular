@@ -94,23 +94,14 @@ export class MenuToolbarComponent implements OnInit {
 
   turno(): void {
     if (!this.usuario.docencia) {
-      if (this.usuario.escalafon <= 1) {
-        this.endLoading();
-        this.tuTurno = true;
-        this.globalConfigService.saveTurno(true);
-      }
-      else {
         this.profesoresService.getProfesores().subscribe(profesores => {
-          var profesorAnterior = profesores.find(profe => profe.escalafon === this.usuario.escalafon);
-          var profesorAnteriorIndex = profesores.indexOf(profesorAnterior) - 1;
-          profesorAnterior = profesores[profesorAnteriorIndex];
-          if (profesorAnterior.docencia && profesorAnterior.docencia_confirmada) {
+          var turnoProfesorAnterior = profesores.find(profe => !profe.docencia_confirmada);
+          if (turnoProfesorAnterior.escalafon === this.usuario.escalafon) {
             this.tuTurno = true;
             this.globalConfigService.saveTurno(true);
           }
           this.endLoading();
         });
-      }
     }
     else {
         this.usuario.docencia_confirmada ? this.tuTurno = false : this.tuTurno = true;
