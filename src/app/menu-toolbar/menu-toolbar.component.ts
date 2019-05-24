@@ -52,6 +52,8 @@ export class MenuToolbarComponent implements OnInit {
       this.loading = true;
       this.admin = this.globalConfigService.isAdmin();
       var userid = this.globalConfigService.userId();
+      userid === 1? this.miCuenta === false : null;
+      console.log(userid)
       this.tuTurno = false;
       this.globalConfigService.saveTurno(false);
       this.globalConfigService.loadDepartamento().subscribe(departamento => {
@@ -87,7 +89,6 @@ export class MenuToolbarComponent implements OnInit {
                   profesor.usuario.last_name = "undefined";
                   this.globalConfigService.saveProfeInfo(profesor);
                   this.usuario = profesor;
-                  this.miCuenta = false;
                   this.endLoading();
                 }
               }
