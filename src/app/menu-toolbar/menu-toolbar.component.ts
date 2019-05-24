@@ -94,7 +94,7 @@ export class MenuToolbarComponent implements OnInit {
 
   turno(): void {
     if (!this.usuario.docencia) {
-      if (this.usuario.escalafon === 0) {
+      if (this.usuario.escalafon <= 1) {
         this.endLoading();
         this.tuTurno = true;
         this.globalConfigService.saveTurno(true);
