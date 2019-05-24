@@ -15,38 +15,56 @@
                     <form [formGroup]="firstFormGroup" class="formulario">
                         <ng-template matStepLabel>Detalles generales</ng-template>
                         <mat-form-field>
-                            <input matInput placeholder="Nombre" [(ngModel)]=asignatura.nombre [ngModelOptions]="{standalone: true}" required>
+                            <input matInput placeholder="Nombre" [(ngModel)]=asignatura.nombre
+                                [ngModelOptions]="{standalone: true}" required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Siglas" [(ngModel)]=asignatura.siglas [ngModelOptions]="{standalone: true}" required>
+                            <input matInput placeholder="Siglas" style="text-transform: uppercase;"
+                                [(ngModel)]=asignatura.siglas [ngModelOptions]="{standalone: true}" required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Codigo" [(ngModel)]=asignatura.codigo [ngModelOptions]="{standalone: true}" required>
+                            <input matInput type="number" placeholder="Codigo" [(ngModel)]=asignatura.codigo
+                                [ngModelOptions]="{standalone: true}" required>
                         </mat-form-field>
                         <mat-form-field>
-                            <mat-select placeholder="Cuatrimestre" [(ngModel)]=asignatura.cuatrimestre [ngModelOptions]="{standalone: true}" [compareWith]="compareCuatrimestres" required>
+                            <mat-select placeholder="Cuatrimestre" [(ngModel)]=asignatura.cuatrimestre
+                                [ngModelOptions]="{standalone: true}" [compareWith]="compareCuatrimestres" required>
                                 <mat-option value="1">1 cuatrimestre</mat-option>
                                 <mat-option value="2">2 cuatrimestre</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Curso" [(ngModel)]=asignatura.curso [ngModelOptions]="{standalone: true}" required>
+                            <mat-select placeholder="Curso" [(ngModel)]="asignatura.curso"
+                                [ngModelOptions]="{standalone: true}">
+                                <mat-option value="1º">1º</mat-option>
+                                <mat-option value="2º">2º</mat-option>
+                                <mat-option value="3º">3º</mat-option>
+                                <mat-option value="4º">4º</mat-option>
+                                <mat-option value="5º">5 DGº</mat-option>
+                            </mat-select>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Grupo" [(ngModel)]=asignatura.grupo [ngModelOptions]="{standalone: true}" required>
+                            <input matInput placeholder="Grupo" [(ngModel)]=asignatura.grupo
+                                [ngModelOptions]="{standalone: true}" required>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Créditos" [(ngModel)]=asignatura.creditos [ngModelOptions]="{standalone: true}" required>
+                            <input matInput type="number" placeholder="Créditos" [(ngModel)]=asignatura.creditos
+                                [ngModelOptions]="{standalone: true}" required>
                         </mat-form-field>
+                        <mat-slide-toggle [(ngModel)]=asignatura.divisible [ngModelOptions]="{standalone: true}"
+                            required>
+                            Divisible</mat-slide-toggle>
                         <mat-form-field>
-                            <mat-select placeholder="Calendario" [(ngModel)]=asignatura.calendario [ngModelOptions]="{standalone: true}" required>
-                                <mat-option *ngFor="let calendario of calendarios" [value]="calendario">
+                            <mat-select placeholder="Calendario" [(ngModel)]=asignatura.calendario.id
+                                [ngModelOptions]="{standalone: true}" required>
+                                <mat-option *ngFor="let calendario of calendarios" [value]="calendario.id">
                                     {{calendario.nombre}} ({{calendario.fecha_ini}} - {{calendario.fecha_fin}})
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput placeholder="Titulación" [(ngModel)]=asignatura.titulacion [ngModelOptions]="{standalone: true}" required>
+                            <input matInput placeholder="Titulación" [(ngModel)]=asignatura.titulacion
+                                [ngModelOptions]="{standalone: true}" required>
                         </mat-form-field>
                         <div>
                             <button mat-button matStepperNext type="submit">Siguiente</button>
@@ -57,7 +75,10 @@
                     <form [formGroup]="secondFormGroup" class="formulario">
                         <ng-template matStepLabel>Departamento</ng-template>
                         <mat-form-field>
-                            <input matInput placeholder="Siglas del departamento" [(ngModel)]=asignatura.departamento [ngModelOptions]="{standalone: true}" required>
+                            <mat-select placeholder="Departamento" [(ngModel)]=asignatura.departamento
+                                [ngModelOptions]="{standalone: true}" required>
+                                <mat-option value="SIC">SIC</mat-option>
+                            </mat-select>
                         </mat-form-field>
                         <div>
                             <button mat-button matStepperPrevious>Atrás</button>
@@ -80,24 +101,31 @@
                             <div *ngFor="let horario of desdoble.horario; let t = index" class="formulario tabulado">
                                 <div class="titulo-horarios">
                                     <h5>Horario #{{t + 1}}</h5>
-                                    <button class="boton-eliminar" mat-mini-fab color="primary" (click)="removeHorarioDesdoble(i,t)">
+                                    <button class="boton-eliminar" mat-mini-fab color="primary"
+                                        (click)="removeHorarioDesdoble(i,t)">
                                         <mat-icon>delete</mat-icon>
                                     </button>
                                 </div>
                                 <mat-form-field>
-                                    <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=horario.aula [ngModelOptions]="{standalone: true}" required>
-                                    <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4' ...</strong></mat-hint>
+                                    <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=horario.aula
+                                        [ngModelOptions]="{standalone: true}" required>
+                                    <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4'
+                                            ...</strong></mat-hint>
                                 </mat-form-field>
                                 <mat-form-field>
-                                    <input matInput placeholder="Día de la semana" [(ngModel)]=horario.dia [ngModelOptions]="{standalone: true}" required>
+                                    <input matInput placeholder="Día de la semana" [(ngModel)]=horario.dia
+                                        [ngModelOptions]="{standalone: true}" required>
                                     <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint>
                                 </mat-form-field>
 
-                                <app-filtro-hora [hora]="horario.hora_inicio" [isRequired]="true" [ayuda]="ayudaHoraIni" (horaChange)="horario.hora_inicio = $event"></app-filtro-hora>
-                                <app-filtro-hora [hora]="horario.hora_fin" [isRequired]="true" [ayuda]="ayudaHoraFin" (horaChange)="horario.hora_fin = $event"></app-filtro-hora>
+                                <app-filtro-hora [hora]="horario.hora_inicio" [isRequired]="true" [ayuda]="ayudaHoraIni"
+                                    (horaChange)="horario.hora_inicio = $event"></app-filtro-hora>
+                                <app-filtro-hora [hora]="horario.hora_fin" [isRequired]="true" [ayuda]="ayudaHoraFin"
+                                    (horaChange)="horario.hora_fin = $event"></app-filtro-hora>
 
                                 <mat-form-field>
-                                    <input matInput placeholder="Créditos" [(ngModel)]=desdoble.creditos [ngModelOptions]="{standalone: true}" required>
+                                    <input matInput placeholder="Créditos" [(ngModel)]=desdoble.creditos
+                                        [ngModelOptions]="{standalone: true}" required>
                                     <mat-hint align="start"><strong>Créditos asociados al desdoble</strong></mat-hint>
                                 </mat-form-field>
                             </div>
@@ -121,16 +149,21 @@
                                 </button>
                             </div>
                             <mat-form-field>
-                                <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=h.aula [ngModelOptions]="{standalone: true}" required>
-                                <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4' ...</strong></mat-hint>
+                                <input matInput placeholder="Aula/Laboratorio" [(ngModel)]=h.aula
+                                    [ngModelOptions]="{standalone: true}" required>
+                                <mat-hint align="start"><strong>Ej. 'Aula 1', 'Aula 13', 'Laboratorio 4' ...</strong>
+                                </mat-hint>
                             </mat-form-field>
                             <mat-form-field>
-                                <input matInput placeholder="Día de la semana" [(ngModel)]=h.dia [ngModelOptions]="{standalone: true}" required>
+                                <input matInput placeholder="Día de la semana" [(ngModel)]=h.dia
+                                    [ngModelOptions]="{standalone: true}" required>
                                 <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint>
                             </mat-form-field>
 
-                            <app-filtro-hora [hora]="h.hora_inicio" [isRequired]="true" [ayuda]="ayudaHoraIni" (horaChange)="h.hora_inicio = $event"></app-filtro-hora>
-                            <app-filtro-hora [hora]="h.hora_fin" [isRequired]="true" [ayuda]="ayudaHoraFin" (horaChange)="h.hora_fin = $event"></app-filtro-hora>
+                            <app-filtro-hora [hora]="h.hora_inicio" [isRequired]="true" [ayuda]="ayudaHoraIni"
+                                (horaChange)="h.hora_inicio = $event"></app-filtro-hora>
+                            <app-filtro-hora [hora]="h.hora_fin" [isRequired]="true" [ayuda]="ayudaHoraFin"
+                                (horaChange)="h.hora_fin = $event"></app-filtro-hora>
                         </div>
 
                         <div>

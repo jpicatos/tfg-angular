@@ -78,7 +78,9 @@ export class AnadirAsignaturaComponent implements OnInit {
 
     if (id != null) {
       this.angularService.getAsignatura(Number(id)).subscribe(
-        asignatura => this.asignatura = asignatura
+        asignatura => {
+          this.asignatura = asignatura
+        }
       );
 
       this.editar = true;   // Al existir un ID en la URL es una edición de una asignatura existente
@@ -118,6 +120,7 @@ export class AnadirAsignaturaComponent implements OnInit {
   }
 
   save(): void {
+    this.asignatura.siglas = this.asignatura.siglas.toUpperCase();
     if (!(this.asignatura.hasOwnProperty('codigo') && this.asignatura.hasOwnProperty('cuatrimestre')
       && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
       && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
