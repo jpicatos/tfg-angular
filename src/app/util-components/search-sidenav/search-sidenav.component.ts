@@ -69,10 +69,12 @@ export class SearchSidenavComponent implements OnInit {
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
       .subscribe(asignaturas => {
         this.updateAsignaturas.emit(asignaturas);
-        this.updateLoading.emit(false);
-        this.loading = false;
-        this.onlyAvaliable.checked = false;
-        this.onlySelected.checked = false;
+        setTimeout(() => {
+          this.mostrarOnlyAvailable({ checked: this.onlyAvaliable.checked });
+          this.mostrarOnlySelected({ checked: this.onlySelected.checked });
+          this.loading = false;
+          this.updateLoading.emit(false);
+        });
       });
   }
   updateDias(dia: string) {
