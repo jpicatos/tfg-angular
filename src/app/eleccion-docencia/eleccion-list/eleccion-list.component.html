@@ -87,13 +87,14 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Deuda utilizada</mat-label>
                                 <div class="number-input deuda">
-                                    <button (click)="deudaInput.stepDown(); updateConDeuda(deudaInput)"></button>
+                                    <button (click)="deudaInput.stepDown(); changeDeudaVal(deudaInput)"></button>
                                     <input #deudaInput type="number" value="0"
                                         max="{{profesor.deuda.hace_uno +profesor.deuda.hace_dos +profesor.deuda.hace_tres +profesor.deuda.hace_cuatro}}"
-                                        min=0 matInput [(ngModel)]="creditosDeuda" [ngModelOptions]="{standalone: true}"
-                                        (keydown)="onPreventKey($event)">
+                                        min=0 matInput id="deudaInput"
+                                        (keyup)="changeDeudaVal(deudaInput)" (change)="changeDeudaVal(deudaInput)"
+                                        step="0.01">
 
-                                    <button (click)="deudaInput.stepUp(); updateConDeuda(deudaInput)"
+                                    <button (click)="deudaInput.stepUp(); changeDeudaVal(deudaInput)"
                                         class="plus"></button>
                                 </div>
                                 <mat-hint>Deuda disponible:
