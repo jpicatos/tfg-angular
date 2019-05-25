@@ -415,7 +415,7 @@ export class EleccionListComponent implements OnInit {
       }
       else {
         this.asignaturasSelected = this.asignaturasSelected.filter(asign => asign.id !== asignatura.id);
-        this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
+        this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = false;
         this.creditos -= asignatura.creditos;
       }
       this.comprobarEleccion(this.updateEleccion());
@@ -438,6 +438,7 @@ export class EleccionListComponent implements OnInit {
       else {
         this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
         this.creditos -= asignatura.desdobles[0].creditos;
+        asignatura.desdobles[0].selected = false;
       }
       this.comprobarEleccion(this.updateEleccion());
     }
@@ -482,8 +483,10 @@ export class EleccionListComponent implements OnInit {
       this.creditos += credits.valueAsNumber;
     }
     else {
-      let asignaturaD = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id == asignatura.id)
-      this.creditos -= asignaturaD[0].creditos;
+      let asignaturaD = this.asignaturasDivisiblesSelected.find(asign => asign.asignatura.id == asignatura.id)
+      if(asignaturaD){
+        this.creditos -= asignaturaD.creditos;
+      }
       this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id !== asignatura.id)
     }
     this.comprobarEleccion(this.updateEleccion());

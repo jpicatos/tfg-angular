@@ -31,6 +31,7 @@ export class SearchSidenavComponent implements OnInit {
   @Input() sidenav: MatSidenav;
   onlyAvaliables: boolean;
   onlySelecteds: boolean;
+  hiddenElements;
 
 
   constructor(private asignaturasService: AsignaturasService) {
@@ -52,6 +53,7 @@ export class SearchSidenavComponent implements OnInit {
   ngOnInit() {
     this.onlySelecteds = false;
     this.onlyAvaliables = false;
+    this.hiddenElements = [];
   }
   @Output()
   updateLoading = new EventEmitter<boolean>();
@@ -87,32 +89,31 @@ export class SearchSidenavComponent implements OnInit {
   }
 
   hideElements(elements) {
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].classList.add("hidden")
-      }
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].classList.add("asign-hidden")
+    }
   }
 
   showHiddenElements() {
-    var elements = document.getElementsByClassName("hidden");
-
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].classList.remove("hidden")
-      }
+    for (let i = 0; i < this.hiddenElements.length; i++) {
+      this.hiddenElements[i].classList.remove("asign-hidden")
+    }
   }
-  updateFilters(){
+  updateFilters() {
     this.showHiddenElements()
     var disableds = Array.from(document.getElementsByClassName("disabled"));
     var nonSelected = Array.from(document.getElementsByClassName("non-selected"));
-    var elements = []
-    if(this.onlyAvaliables && this.onlySelecteds){
-      elements = [...disableds, ...nonSelected];
+    this.hiddenElements = []
+    if (this.onlyAvaliables && this.onlySelecteds) {
+      this.hiddenElements = [...disableds, ...nonSelected];
     }
     else if (this.onlySelecteds) {
-      elements = [...nonSelected];
+      this.hiddenElements = [...nonSelected];
     }
-    else if(this.onlyAvaliables){
-      elements = [...disableds];
+    else if (this.onlyAvaliables) {
+      this.hiddenElements = [...disableds];
     }
-    this.hideElements(elements)
+    console.log(this.hiddenElements.length)
+    this.hideElements(this.hiddenElements)
   }
 }
