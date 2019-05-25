@@ -25,6 +25,7 @@ export class ImportarAsignaturasComponent implements OnInit {
   constructor(private asignaturasService: AsignaturasService,
     private http: HttpClient, private avisosService: AvisosService) {
     this.progreso = false;
+    this.departamento_siglas = "SIC"
   }
 
   ngOnInit() {
