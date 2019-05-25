@@ -113,9 +113,17 @@
                                             ...</strong></mat-hint>
                                 </mat-form-field>
                                 <mat-form-field>
-                                    <input matInput placeholder="Día de la semana" [(ngModel)]=horario.dia
+                                    <mat-select placeholder="Día de la semana" [(ngModel)]="horario.dia"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <mat-option value="L">Lunes</mat-option>
+                                        <mat-option value="M">Martes</mat-option>
+                                        <mat-option value="X">Miércoles</mat-option>
+                                        <mat-option value="J">Jueves</mat-option>
+                                        <mat-option value="V">Viernes</mat-option>
+                                    </mat-select>
+                                    <!-- <input matInput placeholder="Día de la semana" [(ngModel)]=horario.dia
                                         [ngModelOptions]="{standalone: true}" required>
-                                    <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint>
+                                    <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint> -->
                                 </mat-form-field>
 
                                 <app-filtro-hora [hora]="horario.hora_inicio" [isRequired]="true" [ayuda]="ayudaHoraIni"
@@ -155,9 +163,17 @@
                                 </mat-hint>
                             </mat-form-field>
                             <mat-form-field>
-                                <input matInput placeholder="Día de la semana" [(ngModel)]=h.dia
+                                <mat-select placeholder="Día de la semana" [(ngModel)]="h.dia"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <mat-option value="L">Lunes</mat-option>
+                                    <mat-option value="M">Martes</mat-option>
+                                    <mat-option value="X">Miércoles</mat-option>
+                                    <mat-option value="J">Jueves</mat-option>
+                                    <mat-option value="V">Viernes</mat-option>
+                                </mat-select>
+                                <!-- <input matInput placeholder="Día de la semana" [(ngModel)]=h.dia
                                     [ngModelOptions]="{standalone: true}" required>
-                                <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint>
+                                <mat-hint align="start"><strong>Ej. 'L', 'M', 'X', 'J' ...</strong></mat-hint> -->
                             </mat-form-field>
 
                             <app-filtro-hora [hora]="h.hora_inicio" [isRequired]="true" [ayuda]="ayudaHoraIni"

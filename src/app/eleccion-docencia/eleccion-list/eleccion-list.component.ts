@@ -178,7 +178,10 @@ export class EleccionListComponent implements OnInit {
         else {
           creditosDisponibles = asignatura.maxCreditos = asignatura.minCreditos = 0;
         }
-        asignatura.disponible = this.asignaturaDisponible(asignatura) || asignatura.maxCreditos > 0
+        asignatura.disponible = this.asignaturaDisponible(asignatura) || asignatura.maxCreditos > 0;
+        asignatura.desdobles.map(desdoble => {
+          desdoble.disponible = this.asignaturaDisponible(desdoble);
+        })
 
       }
       else {
