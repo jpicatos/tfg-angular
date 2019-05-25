@@ -136,9 +136,6 @@ export class ProfesoresDetailsComponent implements OnInit {
     if (profesor != undefined) {
       this.angularService.deleteProfesor(this.profesor.usuario.id);
     }
-    else {
-      console.log('Cancelada eliminación profesor');
-    }
   }
 
   saveEleccion() {
@@ -147,7 +144,6 @@ export class ProfesoresDetailsComponent implements OnInit {
         this.docencia.confirmada = true;
       }
       if (this.docencia.id !== undefined) {
-        console.log(this.docencia)
         this.eleccionService.saveEleccion(this.docencia);
       }
       else {

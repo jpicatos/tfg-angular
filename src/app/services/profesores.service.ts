@@ -79,7 +79,7 @@ export class ProfesoresService {
       params += '&escalafon=' + escalafon;
     }
 
-    return this.http.get<Profesor[]>(this.profesoresUrl + this.profesoresOrder + params);
+    return this.http.get<Profesor[]>(this.profesoresUrl + this.profesoresOrder + '&' + params);
   }
 
   importar(archivo: File, departamento_siglas: string, sobrescribir: boolean): Observable<ProfesorImportar> {

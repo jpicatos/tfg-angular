@@ -23,7 +23,6 @@ export class ChangePasswordComponent implements OnInit {
   constructor(private globalService: GlobalConfigService, private http: HttpClient, private avisosService: AvisosService, private router: Router) {
     this.profesor = this.globalService.getUserinfo();
     this.equal = false;
-    console.log(this.profesor)
     this.requiredData = false;
     this.sortPass = true;
     this.actualPass = this.newPass = this.newPass2 = "";
@@ -39,19 +38,17 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword() {
-    console.log(this.actualPass, this.newPass, this.newPass2)
-    console.log(this.profesor.usuario.id)
     if (this.equal || this.requiredData || !this.sortPass) {
       this.http.post('/api/profesores/password/', {
         profesor: this.profesor.usuario.id,
         old_password: this.actualPass,
         new_password: this.newPass
       }).subscribe(data => {
-        this.avisosService.enviarMensaje("Se ha cambiado la asignatura correctamente");
+        this.avisosService.enviarMensaje("Se ha cambiado la contraseña correctamente");
         this.router.navigate(['/dashboard/']);
       },
         error => {
-          console.log(error)
+          this.avisosService.enviarMensaje("Error al cambiar la contraseña");
         });
     }
 

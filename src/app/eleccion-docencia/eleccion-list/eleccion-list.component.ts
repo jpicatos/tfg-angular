@@ -119,7 +119,6 @@ export class EleccionListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result.message, result.confirm);
       if (result.confirm) {
         this.eleccion.mensaje = result.message || this.eleccion.mensaje || ".";
         this.saveEleccion();
@@ -235,8 +234,15 @@ export class EleccionListComponent implements OnInit {
     eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = ".";
     const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda} = eleccion;
     this.creditosDeuda = deuda;
-    document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
+    if(deuda === undefined){
+      this.creditosDeuda = 0;
+    }
+    else{
+      document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
+    
     this.creditos += this.creditosDeuda;
+    }
+      
     this.creditos += this.profesor.pda;
     if (asignaturas.length) {
       this.fillAsignaturasWithEleccion(asignaturas);
@@ -249,7 +255,6 @@ export class EleccionListComponent implements OnInit {
     }
 
     this.eleccion = eleccion;
-    console.log(asignaturas.length || desdobles.length || asignaturas_divisibles.length)
     if (asignaturas.length || desdobles.length || asignaturas_divisibles.length) {
       this.comprobarEleccion(eleccion);
     }
@@ -535,7 +540,6 @@ export class EleccionListComponent implements OnInit {
   }
 
   changeDeudaVal(cred){
-    debugger
     this.creditos -= this.creditosDeuda
     var creditos = cred.valueAsNumber;
     if (creditos<0 || !creditos) {

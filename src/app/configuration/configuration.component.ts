@@ -37,7 +37,6 @@ export class ConfigurationComponent implements OnInit {
   }
 
   save() {
-    console.log(this.departamento)
     this.configService.setDepartamento(this.departamento);
   }
 
@@ -47,7 +46,6 @@ export class ConfigurationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       result ? this.reiniciar() : null;
     });
   }

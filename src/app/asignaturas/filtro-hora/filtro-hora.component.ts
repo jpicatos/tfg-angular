@@ -14,6 +14,7 @@ export class FiltroHoraComponent implements OnInit {
   myControl = new FormControl();
   options: string[] = [];
   filteredOptions: Observable<string[]>;
+  text: string;
 
   @Input() hora: string;
   @Input() ayuda: string;
@@ -37,9 +38,9 @@ export class FiltroHoraComponent implements OnInit {
   }
 
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value;
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    return this.options.filter(option => option.includes(filterValue));
   }
 
   private createOptions(): void {
@@ -60,7 +61,17 @@ export class FiltroHoraComponent implements OnInit {
   }
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent) {
-    this.horaChange.emit(event.option.value);
+    if(event.option.value){
+      this.horaChange.emit(event.option.value);
+    }
+    else {
+      this.horaChange.emit("");
+      this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+    }
   }
 
 }
