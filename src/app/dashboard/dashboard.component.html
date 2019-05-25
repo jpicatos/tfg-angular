@@ -77,21 +77,21 @@
         <li><b>Docencia iniciada:</b><span>{{departamento.docencia_iniciada}}</span></li>
         <li><b>Siglas del departamento:</b> <span>{{departamento.siglas}}</span></li>
         <li><b>Nombre del departamento:</b> <span>{{departamento.nombre}}</span></li>
-        <li><b>Total de créditos:</b> <span>{{departamento.total_creditos}}</span></li>
-        <li><b>Total créditos carga:</b> <span>{{departamento.total_creditos_carga}}</span>
+        <li><b>Total de créditos:</b> <span>{{departamento.total_creditos | number:'1.2-2'}}</span></li>
+        <li><b>Total créditos carga:</b> <span>{{departamento.total_creditos_carga | number:'1.2-2'}}</span>
         </li>
-        <li><b>Créditos fijos:</b> <span>{{departamento.creditos_fijos}}</span></li>
-        <li><b>Resto de créditos:</b> <span>{{departamento.resto_creditos}}</span></li>
-        <li><b>Créditos asignados:</b> <span>{{departamento.creditos_asignados}}</span></li>
-        <li><b>Créditos sin asignar:</b> <span>{{departamento.creditos_sin_asignar}}</span></li>
+        <li><b>Créditos fijos:</b> <span>{{departamento.creditos_fijos | number:'1.2-2'}}</span></li>
+        <li><b>Resto de créditos:</b> <span>{{departamento.resto_creditos | number:'1.2-2'}}</span></li>
+        <li><b>Créditos asignados:</b> <span>{{departamento.creditos_asignados | number:'1.2-2'}}</span></li>
+        <li><b>Créditos sin asignar:</b> <span>{{departamento.creditos_sin_asignar | number:'1.2-2'}}</span></li>
         <li><b>Créditos desdoble asignados:</b>
-          <span>{{departamento.creditos_desdoble - departamento.creditos_desdobles_sin_asignar}}</span></li>
-        <li><b>Créditos desdoble sin asignar:</b> <span>{{departamento.creditos_desdobles_sin_asignar}}</span></li>
-        <li><b>Capacidad restante:</b> <span>{{departamento.capacidad_restante}}</span></li>
-        <li><b>Carga dinámica:</b> <span>{{departamento.carga_dinamica}}</span></li>
-        <li><b>Deudas:</b> <span>{{departamento.deudas}}</span></li>
-        <li><b>Deudas Corregidas:</b> <span>{{departamento.deudas_corregidas}}</span></li>
-        <li><b>PDA:</b> <span>{{departamento.pda}}</span></li>
+          <span>{{departamento.creditos_desdoble - departamento.creditos_desdobles_sin_asignar | number:'1.2-2'}}</span></li>
+        <li><b>Créditos desdoble sin asignar:</b> <span>{{departamento.creditos_desdobles_sin_asignar | number:'1.2-2'}}</span></li>
+        <li><b>Capacidad restante:</b> <span>{{departamento.capacidad_restante | number:'1.2-2'}}</span></li>
+        <li><b>Carga dinámica:</b> <span>{{departamento.carga_dinamica | number:'1.2-2'}}</span></li>
+        <li><b>Deudas:</b> <span>{{departamento.deudas | number:'1.2-2'}}</span></li>
+        <li><b>Deudas Corregidas:</b> <span>{{departamento.deudas_corregidas | number:'1.2-2'}}</span></li>
+        <li><b>PDA:</b> <span>{{departamento.pda | number:'1.2-2'}}</span></li>
       </ul>
     </mat-card-content>
   </mat-card>
