@@ -45,7 +45,7 @@
                         </mat-form-field>
                         <mat-form-field>
                             <input matInput placeholder="Grupo" [(ngModel)]=asignatura.grupo
-                                [ngModelOptions]="{standalone: true}" required>
+                                [ngModelOptions]="{standalone: true}"  minlength="1" maxlength="1" required>
                         </mat-form-field>
                         <mat-form-field>
                             <input matInput type="number" min=0 placeholder="Créditos" [(ngModel)]=asignatura.creditos
