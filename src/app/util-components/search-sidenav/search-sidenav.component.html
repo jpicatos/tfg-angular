@@ -17,7 +17,7 @@
         <mat-slide-toggle [(ngModel)]=onlySelecteds [ngModelOptions]="{standalone: true}"
             matTooltip="Mostrar solo asignaturas seleccionadas" [disabled]="loading"
             (change)="updateFilters()">
-            Solo asignaturas seleccionadas</mat-slide-toggle>
+            Solo docencia asignada al profesor</mat-slide-toggle>
 
         <mat-form-field>
             <input (change)="search()" matInput [(ngModel)]="searchVals.nombre" [ngModelOptions]="{standalone: true}"
