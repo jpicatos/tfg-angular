@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-filtro-hora',
@@ -15,15 +16,20 @@ export class FiltroHoraComponent implements OnInit {
   options: string[] = [];
   filteredOptions: Observable<string[]>;
   text: string;
+  displayCualquiera: boolean;
 
   @Input() hora: string;
   @Input() ayuda: string;
   @Input() isRequired: boolean;
   @Output() horaChange = new EventEmitter<string>();
 
-  constructor() {
+  constructor( private location: Location) {
     this.createOptions();
     this.isRequired = false;
+    this.displayCualquiera = false;
+    if(this.location.path().indexOf('asignaturas') >= 0){
+      this.displayCualquiera = true;
+    }
   }
 
   ngOnInit() {
