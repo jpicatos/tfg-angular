@@ -12,7 +12,7 @@
 <div class="total-container">
     <mat-sidenav-container>
         <mat-sidenav #sidenav [autoFocus]="false" [mode]="over" position="end" class="sidenav">
-            <app-search-sidenav [sidenav]="sidenav" (updateLoading)="updateLoading($event)"
+            <app-search-sidenav [sidenav]="sidenav" [researchEvent]="researchEvent" (updateLoading)="updateLoading($event)"
                 (updateAsignaturas)="updateAsignaturas($event)"></app-search-sidenav>
         </mat-sidenav>
         <mat-sidenav-content>

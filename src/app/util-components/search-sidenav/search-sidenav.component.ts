@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, NgModule, Output, EventEmitter, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { Asignatura } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
 import { MatSidenav } from '@angular/material';
@@ -9,7 +9,7 @@ import { MatSidenav } from '@angular/material';
   templateUrl: './search-sidenav.component.html',
   styleUrls: ['./search-sidenav.component.scss']
 })
-export class SearchSidenavComponent implements OnInit {
+export class SearchSidenavComponent implements OnChanges, OnInit {
   asignaturas: Asignatura[];
   selectedAsignatura: Asignatura;
   selected: number;
@@ -32,8 +32,16 @@ export class SearchSidenavComponent implements OnInit {
   onlyAvaliables: boolean;
   onlySelecteds: boolean;
   hiddenElements;
+  rEvent:Object;
 
+  get researchEvent(): Object {
+		return this.rEvent
+	}
 
+	@Input() set researchEvent(obj: Object) {
+		this.rEvent = obj;
+  };
+  
   constructor(private asignaturasService: AsignaturasService) {
     this.asignaturas = [];
     this.selected = 1;
@@ -47,6 +55,13 @@ export class SearchSidenavComponent implements OnInit {
       dias: ['L', 'M', 'X', 'J', 'V'],
       ini: '',
       fin: ''
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const id: SimpleChange = changes.researchEvent;
+    if (id) {
+        this.clear();
     }
   }
 
@@ -78,6 +93,22 @@ export class SearchSidenavComponent implements OnInit {
         });
       });
   }
+
+  clear(){
+    this.searchVals = {
+      nombre: '',
+      siglas: '',
+      codigo: '',
+      curso: '',
+      cuatrimestre: undefined,
+      dias: ['L', 'M', 'X', 'J', 'V'],
+      ini: '',
+      fin: ''
+    }
+    this.onlySelecteds = false;
+    this.onlyAvaliables = false;
+  }
+
   updateDias(dia: string) {
     var index = this.searchVals.dias.indexOf(dia);
     if (index === -1) {
@@ -113,7 +144,6 @@ export class SearchSidenavComponent implements OnInit {
     else if (this.onlyAvaliables) {
       this.hiddenElements = [...disableds];
     }
-    console.log(this.hiddenElements.length)
     this.hideElements(this.hiddenElements)
   }
 }
