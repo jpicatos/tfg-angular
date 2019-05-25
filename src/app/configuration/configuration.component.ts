@@ -22,10 +22,15 @@ export class ConfigurationComponent implements OnInit {
   departamento: Departamento;
   animal: string;
   name: string;
+  loading: boolean;
   constructor(private configService: GlobalConfigService, private eleccionService: EleccionService, private avisosService: AvisosService, public dialog: MatDialog, private titleService: Title) {
     this.titleService.setTitle("Configuración")
     MenuToolbarComponent.updateTitle("Configuración");
-    this.departamento = this.configService.getDepartamento()[0];
+    this.loading = true;
+    this.configService.loadDepartamento().subscribe(departamentos => {
+      this.departamento = departamentos[0]
+      this.loading = false;
+    });
   }
 
   ngOnInit() {

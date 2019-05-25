@@ -58,9 +58,11 @@ export class EleccionListComponent implements OnInit {
   isMinimiceRight;
   minimiceRight;
   fetchDay;
+  researchEvent;
 
   constructor(private router: Router, private asignaturasService: AsignaturasService, private location: Location, private route: ActivatedRoute, private eleccionService: EleccionService, private avisosService: AvisosService, private profesoresService: ProfesoresService, private globalConfigService: GlobalConfigService, public dialog: MatDialog, private titleService: Title) {
     this.titleService.setTitle("Elección de docencia");
+    this.researchEvent = new Object;
     this.admin = this.globalConfigService.isAdmin();
     this.tuTurno = this.globalConfigService.getTurno();
     if (this.globalConfigService.getUserinfo().telefono) {
@@ -178,7 +180,10 @@ export class EleccionListComponent implements OnInit {
         else {
           creditosDisponibles = asignatura.maxCreditos = asignatura.minCreditos = 0;
         }
-        asignatura.disponible = this.asignaturaDisponible(asignatura) || asignatura.maxCreditos > 0
+        asignatura.disponible = this.asignaturaDisponible(asignatura) || asignatura.maxCreditos > 0;
+        asignatura.desdobles.map(desdoble => {
+          desdoble.disponible = this.asignaturaDisponible(desdoble);
+        })
 
       }
       else {
@@ -189,11 +194,16 @@ export class EleccionListComponent implements OnInit {
 
   getAsignaturas(): void {
     this.location.go('eleccion-docencia/' + this.profesor.usuario.id);
+    this.cleanSearch()
     this.asignaturasService.getAsignaturas()
       .subscribe((asignaturas) => {
         this.todasAsignaturas = asignaturas;
         this.updateAsignaturas(asignaturas, true);
       })
+  }
+
+  cleanSearch() {
+      this.researchEvent = new Object;
   }
 
   checkDisponibilidad(asignatura) {
@@ -415,7 +425,7 @@ export class EleccionListComponent implements OnInit {
       }
       else {
         this.asignaturasSelected = this.asignaturasSelected.filter(asign => asign.id !== asignatura.id);
-        this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
+        this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = false;
         this.creditos -= asignatura.creditos;
       }
       this.comprobarEleccion(this.updateEleccion());
@@ -438,6 +448,7 @@ export class EleccionListComponent implements OnInit {
       else {
         this.desdoblesSelected = this.desdoblesSelected.filter(asign => asign.id !== asignatura.id);
         this.creditos -= asignatura.desdobles[0].creditos;
+        asignatura.desdobles[0].selected = false;
       }
       this.comprobarEleccion(this.updateEleccion());
     }
@@ -482,8 +493,10 @@ export class EleccionListComponent implements OnInit {
       this.creditos += credits.valueAsNumber;
     }
     else {
-      let asignaturaD = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id == asignatura.id)
-      this.creditos -= asignaturaD[0].creditos;
+      let asignaturaD = this.asignaturasDivisiblesSelected.find(asign => asign.asignatura.id == asignatura.id)
+      if(asignaturaD){
+        this.creditos -= asignaturaD.creditos;
+      }
       this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id !== asignatura.id)
     }
     this.comprobarEleccion(this.updateEleccion());

@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, NgModule, Output, EventEmitter, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { Asignatura } from 'src/app/models/asignatura';
 import { AsignaturasService } from 'src/app/services/asignaturas.service';
 import { MatSidenav } from '@angular/material';
@@ -9,7 +9,7 @@ import { MatSidenav } from '@angular/material';
   templateUrl: './search-sidenav.component.html',
   styleUrls: ['./search-sidenav.component.scss']
 })
-export class SearchSidenavComponent implements OnInit {
+export class SearchSidenavComponent implements OnChanges, OnInit {
   asignaturas: Asignatura[];
   selectedAsignatura: Asignatura;
   selected: number;
@@ -31,8 +31,17 @@ export class SearchSidenavComponent implements OnInit {
   @Input() sidenav: MatSidenav;
   onlyAvaliables: boolean;
   onlySelecteds: boolean;
+  hiddenElements;
+  rEvent:Object;
 
+  get researchEvent(): Object {
+		return this.rEvent
+	}
 
+	@Input() set researchEvent(obj: Object) {
+		this.rEvent = obj;
+  };
+  
   constructor(private asignaturasService: AsignaturasService) {
     this.asignaturas = [];
     this.selected = 1;
@@ -49,9 +58,17 @@ export class SearchSidenavComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const id: SimpleChange = changes.researchEvent;
+    if (id) {
+        this.clear();
+    }
+  }
+
   ngOnInit() {
     this.onlySelecteds = false;
     this.onlyAvaliables = false;
+    this.hiddenElements = [];
   }
   @Output()
   updateLoading = new EventEmitter<boolean>();
@@ -76,6 +93,22 @@ export class SearchSidenavComponent implements OnInit {
         });
       });
   }
+
+  clear(){
+    this.searchVals = {
+      nombre: '',
+      siglas: '',
+      codigo: '',
+      curso: '',
+      cuatrimestre: undefined,
+      dias: ['L', 'M', 'X', 'J', 'V'],
+      ini: '',
+      fin: ''
+    }
+    this.onlySelecteds = false;
+    this.onlyAvaliables = false;
+  }
+
   updateDias(dia: string) {
     var index = this.searchVals.dias.indexOf(dia);
     if (index === -1) {
@@ -87,32 +120,30 @@ export class SearchSidenavComponent implements OnInit {
   }
 
   hideElements(elements) {
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].classList.add("hidden")
-      }
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].classList.add("asign-hidden")
+    }
   }
 
   showHiddenElements() {
-    var elements = document.getElementsByClassName("hidden");
-
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].classList.remove("hidden")
-      }
+    for (let i = 0; i < this.hiddenElements.length; i++) {
+      this.hiddenElements[i].classList.remove("asign-hidden")
+    }
   }
-  updateFilters(){
+  updateFilters() {
     this.showHiddenElements()
     var disableds = Array.from(document.getElementsByClassName("disabled"));
     var nonSelected = Array.from(document.getElementsByClassName("non-selected"));
-    var elements = []
-    if(this.onlyAvaliables && this.onlySelecteds){
-      elements = [...disableds, ...nonSelected];
+    this.hiddenElements = []
+    if (this.onlyAvaliables && this.onlySelecteds) {
+      this.hiddenElements = [...disableds, ...nonSelected];
     }
     else if (this.onlySelecteds) {
-      elements = [...nonSelected];
+      this.hiddenElements = [...nonSelected];
     }
-    else if(this.onlyAvaliables){
-      elements = [...disableds];
+    else if (this.onlyAvaliables) {
+      this.hiddenElements = [...disableds];
     }
-    this.hideElements(elements)
+    this.hideElements(this.hiddenElements)
   }
 }

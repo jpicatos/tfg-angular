@@ -3,8 +3,8 @@
     <h3 *ngIf="admin">Como administrador puedes acceder a la <a routerLink="/config">
         <mat-icon>settings</mat-icon> configuración
       </a> para editar los
-      valores que se muestran a continuación <br> <br>
-      <span *ngIf="!departamento.docencia_iniciada"> Aún no ha comenzado la elección, edita el valor de Docencia
+      valores que se muestran a continuación
+      <span *ngIf="!departamento.docencia_iniciada"><br> <br> Aún no ha comenzado la elección, edita el valor de Docencia
         Iniciada en la configuración si quieres que comience</span></h3>
     <h3 *ngIf="!admin">
       <span *ngIf="tuTurno"> Es tu turno así que puedes <a routerLink="/eleccion-docencia">empiezar a elegir

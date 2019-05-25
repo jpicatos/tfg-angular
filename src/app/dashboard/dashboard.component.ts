@@ -67,10 +67,18 @@ export class DashboardComponent implements OnInit {
     this.admin = this.configService.isAdmin();
     this.tuTurno = this.configService.getTurno();
     this.departamento = this.configService.getDepartamento()[0];
+    this.configService.loadDepartamento().subscribe(departamentos => {
+      this.departamento = departamentos[0]
+      this.setDepartamentoData()
+    })
     this.getProfesoresDataset();
   }
 
   ngOnInit() {
+    this.setDepartamentoData()
+  }
+
+  setDepartamentoData(){
     this.graficaCreditos.datas = [{ data: [this.departamento.creditos_asignados, this.departamento.creditos_sin_asignar, this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar, this.departamento.creditos_desdobles_sin_asignar], label: "Créditos" }];
     this.graficaCreditos.labels = ['Créditos asignados: ' + this.departamento.creditos_asignados, 'Créditos no asignados: ' + this.departamento.creditos_sin_asignar, "Creditos desdoble asignados: " + (this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar), "Creditos desdoble no asignados: " + this.departamento.creditos_desdobles_sin_asignar]
 

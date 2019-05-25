@@ -1,5 +1,6 @@
 <div class="decorator"></div>
-<div class="form-container">
+<mat-progress-bar *ngIf="loading" mode="indeterminate" color="primary" class="progress-bar"></mat-progress-bar>
+<div class="form-container" *ngIf="!loading">
   <mat-card class="card">
     <mat-card-header>
       <mat-card-title>Departamento</mat-card-title>
@@ -25,7 +26,7 @@
             required>
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Deudas Corregidas" [(ngModel)]=departamento.deudas
+          <input matInput placeholder="Deudas Corregidas" [(ngModel)]=departamento.deudas_corregidas
             [ngModelOptions]="{standalone: true}" required>
         </mat-form-field>
         <mat-form-field>
