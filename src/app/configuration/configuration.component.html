@@ -10,10 +10,6 @@
       <button mat-raised-button class="reiniciar-docencia" color="accent" (click)="openDialog()">Reiniciar docencia</button>
       <form class="formulario">
         <mat-form-field>
-          <input matInput placeholder="Siglas" [(ngModel)]=departamento.siglas [ngModelOptions]="{standalone: true}"
-            required>
-        </mat-form-field>
-        <mat-form-field>
           <input matInput placeholder="Nombre del departamento" [(ngModel)]=departamento.nombre
             [ngModelOptions]="{standalone: true}" required>
         </mat-form-field>
