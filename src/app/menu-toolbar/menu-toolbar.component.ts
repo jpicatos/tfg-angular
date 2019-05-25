@@ -23,20 +23,24 @@ export class MenuToolbarComponent implements OnInit {
   tuTurno: boolean;
   departamento: Departamento;
   miCuenta: boolean;
-  profesores: Profesor[];
+  profesoresLength: boolean;
 
   constructor(private route: ActivatedRoute, private authService: AuthenticationService, private globalConfigService: GlobalConfigService, private profesoresService: ProfesoresService, private eleccionService: EleccionService, private router: Router) {
     MenuToolbarComponent.routeTitle = "";
     this.usuario = new Profesor;
     this.usuario.usuario = new Usuario;
     this.miCuenta = true;
+    this.profesoresLength = true;
+    this.profesoresService.getProfesores().subscribe(profesores => {
+      var profes = profesores.filter(profe => !profe.usuario.is_staff);
+      if(!profes.length){
+        this.profesoresLength = false;
+      }
+    })
     this.initData();
   }
 
   ngOnInit() {
-    this.profesoresService.getProfesores().subscribe(profesores => {
-      this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
-    })
   }
 
   public static updateTitle(title: string): void {
