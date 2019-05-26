@@ -108,12 +108,10 @@ export class MenuToolbarComponent implements OnInit {
   }
 
   turno(): void {
-    console.log(this.departamento)
     if (this.departamento.docencia_iniciada) {
       if (!this.usuario.docencia) {
         this.profesoresService.getProfesores().subscribe(profesores => {
           var turnoProfesorAnterior = profesores.find(profe => !profe.docencia_confirmada);
-          console.log(turnoProfesorAnterior)
           if (turnoProfesorAnterior.escalafon === this.usuario.escalafon) {
             this.tuTurno = true;
             this.globalConfigService.saveTurno(true);
