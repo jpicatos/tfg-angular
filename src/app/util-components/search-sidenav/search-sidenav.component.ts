@@ -20,7 +20,7 @@ export class SearchSidenavComponent implements OnChanges, OnInit {
     codigo: string,
     curso: string,
     cuatrimestre: number,
-    dias: string[],
+    dias: { dia: string, selected: boolean }[],
     ini: string,
     fin: string
   }
@@ -32,16 +32,17 @@ export class SearchSidenavComponent implements OnChanges, OnInit {
   onlyAvaliables: boolean;
   onlySelecteds: boolean;
   hiddenElements;
-  rEvent:Object;
+  rEvent: Object;
 
   get researchEvent(): Object {
-		return this.rEvent
-	}
+    return this.rEvent
+  }
 
-	@Input() set researchEvent(obj: Object) {
-		this.rEvent = obj;
+  @Input() set researchEvent(obj: Object) {
+    this.rEvent = obj;
   };
-  
+
+
   constructor(private asignaturasService: AsignaturasService) {
     this.asignaturas = [];
     this.selected = 1;
@@ -52,7 +53,28 @@ export class SearchSidenavComponent implements OnChanges, OnInit {
       codigo: '',
       curso: '',
       cuatrimestre: undefined,
-      dias: ['L', 'M', 'X', 'J', 'V'],
+      dias: [
+        {
+          dia: 'L',
+          selected: false
+        },
+        {
+          dia: 'M',
+          selected: false
+        },
+        {
+          dia: 'X',
+          selected: false
+        },
+        {
+          dia: 'J',
+          selected: false
+        },
+        {
+          dia: 'V',
+          selected: false
+        }
+      ],
       ini: '',
       fin: ''
     }
@@ -61,7 +83,7 @@ export class SearchSidenavComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     const id: SimpleChange = changes.researchEvent;
     if (id) {
-        this.clear();
+      this.clear();
     }
   }
 
@@ -79,9 +101,9 @@ export class SearchSidenavComponent implements OnChanges, OnInit {
   search(): void {
     this.updateLoading.emit(true);
     this.loading = true;
-    var diasAux = []
-    if (this.searchVals.dias.length < 5) {
-      diasAux = this.searchVals.dias;
+    var diasAux = this.updateDias();
+    if (diasAux.length === 5) {
+      diasAux = [];
     }
     this.asignaturasService.searchAsignatura(this.searchVals.siglas, this.searchVals.nombre, this.searchVals.codigo, this.searchVals.curso, this.searchVals.cuatrimestre, this.searchVals.ini, this.searchVals.fin, diasAux)
       .subscribe(asignaturas => {
@@ -94,14 +116,15 @@ export class SearchSidenavComponent implements OnChanges, OnInit {
       });
   }
 
-  clear(){
+  clear() {
+    this.clearDias();
     this.searchVals = {
       nombre: '',
       siglas: '',
       codigo: '',
       curso: '',
       cuatrimestre: undefined,
-      dias: ['L', 'M', 'X', 'J', 'V'],
+      dias: this.searchVals.dias,
       ini: '',
       fin: ''
     }
@@ -109,14 +132,20 @@ export class SearchSidenavComponent implements OnChanges, OnInit {
     this.onlyAvaliables = false;
   }
 
-  updateDias(dia: string) {
-    var index = this.searchVals.dias.indexOf(dia);
-    if (index === -1) {
-      this.searchVals.dias.push(dia);
-    }
-    else {
-      this.searchVals.dias.splice(index, 1);
-    }
+  updateDias() {
+    var dias = [];
+    this.searchVals.dias.map(dia => {
+      if(!dia.selected){
+        dias.push(dia.dia)
+      }
+    })
+    return dias
+  }
+
+  clearDias(){
+    this.searchVals.dias.map(dia => {
+      dia.selected = false;
+    })
   }
 
   hideElements(elements) {

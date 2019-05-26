@@ -30,7 +30,6 @@ export class AuthenticationService {
       this.name.next(decoded.name);
     }
     catch (error) {
-      console.log("Invalid token");
     }
 
     if (token) {

@@ -56,15 +56,15 @@
         </mat-form-field>
 
         <h4>Día(s)</h4>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('L')" [disabled]="loading">Lunes
+        <mat-checkbox (change)="search()" color='primary' [(ngModel)]=searchVals.dias[0].selected [ngModelOptions]="{standalone: true}" [disabled]="loading">Lunes
         </mat-checkbox>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('M')" [disabled]="loading">Martes
+        <mat-checkbox (change)="search()" color='primary' [(ngModel)]=searchVals.dias[1].selected [ngModelOptions]="{standalone: true}"  [disabled]="loading">Martes
         </mat-checkbox>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('X')" [disabled]="loading">Miércoles
+        <mat-checkbox (change)="search()" color='primary' [(ngModel)]=searchVals.dias[2].selected [ngModelOptions]="{standalone: true}"  [disabled]="loading">Miércoles
         </mat-checkbox>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('J')" [disabled]="loading">Jueves
+        <mat-checkbox (change)="search()" color='primary' [(ngModel)]=searchVals.dias[3].selected  [ngModelOptions]="{standalone: true}" [disabled]="loading">Jueves
         </mat-checkbox>
-        <mat-checkbox (change)="search()" color='primary' (click)="updateDias('V')" [disabled]="loading">Viernes
+        <mat-checkbox (change)="search()" color='primary' [(ngModel)]=searchVals.dias[4].selected  [ngModelOptions]="{standalone: true}" [disabled]="loading">Viernes
         </mat-checkbox>
 
         <!-- <app-filtro-hora [ayuda]="ayudaHoraIni" (horaChange)="horaIni($event)"></app-filtro-hora>

@@ -32,7 +32,7 @@
             </button>
             <mat-divider></mat-divider>
             <p class="menu-title">Docencia</p>
-            <button mat-button routerLink="/eleccion-docencia" (click)="sidenav.toggle()">
+            <button mat-button routerLink="/eleccion-docencia" (click)="sidenav.toggle()" *ngIf="profesoresLength">
                 <span class="menu-button-content">
                     <mat-icon>view_list</mat-icon>
                     DOCENCIA

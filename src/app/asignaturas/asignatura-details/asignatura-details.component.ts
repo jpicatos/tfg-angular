@@ -110,9 +110,6 @@ export class AsignaturaDetailsComponent implements OnInit {
     if (asignatura != undefined) {
       this.angularService.deleteAsignatura(this.asignatura.id);
     }
-    else {
-      console.log('Cancelada eliminación asignatura');
-    }
   }
 
   openDialog(i: number): void {

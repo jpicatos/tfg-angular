@@ -124,7 +124,7 @@
             </mat-card>
 
             <button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()"
-                matTooltip="Borrar la docencia y guardar" [disabled]="loading">
+                matTooltip="Borrar la docencia y guardar" [disabled]="loading || eleccion.id === undefined">
                 <mat-icon>delete</mat-icon>
             </button>
             <button class="mat-fab-bottom-right1" *ngIf="puedesElegir()" mat-fab (click)="clearEleccion()"
@@ -161,10 +161,10 @@
                                     </a>
                                 </h3>
                                 <p mat-line>
-                                    <mat-chip class="withIcon">
+                                    <span class="customChip primary withIcon">
                                         <mat-icon>calendar_today</mat-icon>
                                         {{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
-                                    </mat-chip>
+                                    </span>
                                 </p>
 
                                 <p mat-line *ngFor="let hora of asignatura.horario">
@@ -188,10 +188,10 @@
                                     </a>
                                 </h3>
                                 <p mat-line>
-                                    <mat-chip class="withIcon">
+                                    <span class="customChip primary withIcon">
                                         <mat-icon>calendar_today</mat-icon>
                                         {{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
-                                    </mat-chip>
+                                    </span>
                                 </p>
 
                                 <p mat-line *ngFor="let hora of asignatura.horario">
@@ -223,8 +223,8 @@
                                 id="desdoble{{asignatura.id}}">
                                 <!-- <div class="asignatura-no-disponible" *ngIf="!admin && !asignaturaDisponible(asignatura.desdobles[0])">vdvdfvdfsvsdvsdvsdvs</div>    -->
                                 <h3 class="wrapedText">
-                                    <mat-chip color="accent" selected>Desdoble
-                                    </mat-chip>
+                                    <span class="customChip accent">Desdoble
+                                    </span>
                                     <a target="_blank" routerLink="/asignaturas/{{asignatura.id}}"
                                         matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
                                         [{{asignatura.siglas}}]
@@ -232,10 +232,10 @@
                                     </a>
                                 </h3>
                                 <p mat-line>
-                                    <mat-chip class="withIcon">
+                                    <span class="customChip primary withIcon">
                                         <mat-icon>calendar_today</mat-icon>
                                         {{asignatura.calendario.fecha_ini}}/{{asignatura.calendario.fecha_fin}}
-                                    </mat-chip>
+                                    </span>
                                 </p>
                                 <p mat-line *ngFor="let hora of asignatura.desdobles[0].horario">
                                     <strong> {{fetchDay(hora.dia)}}:
