@@ -111,6 +111,7 @@ export class MenuToolbarComponent implements OnInit {
     if (this.departamento.docencia_iniciada) {
       if (!this.usuario.docencia) {
         this.profesoresService.getProfesores().subscribe(profesores => {
+          profesores = profesores.filter(profe => !profe.usuario.is_staff);
           var turnoProfesorAnterior = profesores.find(profe => !profe.docencia_confirmada);
           if (turnoProfesorAnterior.escalafon === this.usuario.escalafon) {
             this.tuTurno = true;
