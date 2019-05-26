@@ -61,7 +61,7 @@ export class MenuToolbarComponent implements OnInit {
       this.loading = true;
       this.admin = this.globalConfigService.isAdmin();
       var userid = this.globalConfigService.userId();
-      userid === 1? this.miCuenta === false : null;
+      userid === 1? this.miCuenta = false : null;
       this.tuTurno = false;
       this.globalConfigService.saveTurno(false);
       this.globalConfigService.loadDepartamento().subscribe(departamento => {
