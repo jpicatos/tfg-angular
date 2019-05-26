@@ -8,6 +8,7 @@
     max-width: 100%;
     max-height: 100%;
 }
+
 mat-list-option {
     &.disabled {
         opacity: 0.4;
@@ -71,11 +72,12 @@ mat-list-option {
     }
 }
 
-.asignaturas{
+.asignaturas {
     overflow: auto;
     max-height: 1000px;
 }
-#stateContent{
+
+#stateContent {
     overflow: auto;
     max-height: 1000px;
 }
@@ -163,18 +165,35 @@ mat-list-option {
     background-color: $accent;
 }
 
-.withIcon {
-    display: inline-flex !important;
-    align-items: center;
-    padding: 1px;
-    width: fit-content;
+.customChip {
+    font-size: 16px;
+    font-weight: 500;
 
-    mat-icon {
-        margin-right: 5px;
-        font-size: inherit;
-        height: unset;
-        width: unset;
+    &.accent {
+        background-color: #990033;
+        color: #fff;
     }
+
+    &.primary {
+        background-color: #e0e0e0;
+        color: rgba(0, 0, 0, 0.87);
+    }
+
+    &.withIcon {
+        display: inline-flex !important;
+        align-items: center;
+        padding: 1px;
+        padding-right: 2px;
+        width: fit-content;
+
+        mat-icon {
+            margin-right: 5px;
+            font-size: inherit;
+            height: unset;
+            width: unset;
+        }
+    }
+
 }
 
 .sidenav {
@@ -337,33 +356,37 @@ mat-option {
     }
 }
 
-.creditos{
+.creditos {
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
-    span{
+
+    span {
         display: flex;
         align-items: center;
-        mat-icon{
+
+        mat-icon {
             margin-right: 5px;
         }
     }
-    .cred-select{
+
+    .cred-select {
         border: 2px solid #ddd;
         text-align: center;
         padding: 9px;
         margin-top: 5px;
         font-weight: bold;
-        span{
+
+        span {
             display: inline;
             color: $accent;
         }
     }
 }
-.cred-select-top{
+
+.cred-select-top {
     position: fixed;
     transition: 0.1s all;
     top: 13px;
@@ -375,15 +398,17 @@ mat-option {
     text-align: center;
     padding: 9px;
     font-weight: bold;
-    span{
+
+    span {
         display: inline;
         color: $accent;
     }
 }
 
-.is-visible{
+.is-visible {
     opacity: 1 !important;
 }
-.asign-hidden{
+
+.asign-hidden {
     display: none !important;
 }
