@@ -97,7 +97,7 @@ export class EleccionListComponent implements OnInit {
       this.profesoresService.getProfesores()
         .subscribe((profesores) => {
           this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
-          this.profesor = profesores.find(profe => profe.usuario.id === id) || profesores[0];
+          this.profesor = profesores.find(profe => profe.usuario.id === id) || this.profesores[0];
           this.getAsignaturas();
         })
     }
