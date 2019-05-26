@@ -202,7 +202,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   cleanSearch() {
-      this.researchEvent = new Object;
+    this.researchEvent = new Object;
   }
 
   checkDisponibilidad(asignatura) {
@@ -232,17 +232,17 @@ export class EleccionListComponent implements OnInit {
     this.eleccion.profesor = this.profesor.usuario.id;
 
     eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = ".";
-    const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda} = eleccion;
+    const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda } = eleccion;
     this.creditosDeuda = deuda;
-    if(deuda === undefined){
+    if (deuda === undefined) {
       this.creditosDeuda = 0;
     }
-    else{
+    else {
       document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
-    
-    this.creditos += this.creditosDeuda;
+
+      this.creditos += this.creditosDeuda;
     }
-      
+
     this.creditos += this.profesor.pda;
     if (asignaturas.length) {
       this.fillAsignaturasWithEleccion(asignaturas);
@@ -326,6 +326,9 @@ export class EleccionListComponent implements OnInit {
       }
       this.eleccionService.saveEleccion(this.eleccion).subscribe(eleccion => {
         this.eleccion = eleccion;
+        this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profe => {
+          this.globalConfigService.saveProfeInfo(profe)
+        })
         this.updateEleccion();
         this.updateProfesores();
       });
@@ -346,6 +349,9 @@ export class EleccionListComponent implements OnInit {
         data => {
           this.avisosService.enviarMensaje("Elección de docencia creada correctamente");
           this.eleccion = data;
+          this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profe => {
+            this.globalConfigService.saveProfeInfo(profe)
+          })
           this.updateEleccion();
           this.updateProfesores();
         },
@@ -478,7 +484,7 @@ export class EleccionListComponent implements OnInit {
       credits.valueAsNumber = asignatura.minCreditos
       document.getElementById(`divisible${asignatura.id}`).setAttribute("value", '0');
     }
-    if (credits.valueAsNumber > asignatura.maxCreditos){
+    if (credits.valueAsNumber > asignatura.maxCreditos) {
       credits.valueAsNumber = asignatura.maxCreditos
       document.getElementById(`divisible${asignatura.id}`).setAttribute("value", asignatura.maxCreditos);
     }
@@ -499,7 +505,7 @@ export class EleccionListComponent implements OnInit {
     }
     else {
       let asignaturaD = this.asignaturasDivisiblesSelected.find(asign => asign.asignatura.id == asignatura.id)
-      if(asignaturaD){
+      if (asignaturaD) {
         this.creditos -= asignaturaD.creditos;
       }
       this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id !== asignatura.id)
@@ -539,14 +545,14 @@ export class EleccionListComponent implements OnInit {
     return this.admin || this.tuTurno
   }
 
-  changeDeudaVal(cred){
+  changeDeudaVal(cred) {
     this.creditos -= this.creditosDeuda
     var creditos = cred.valueAsNumber;
-    if (creditos<0 || !creditos) {
+    if (creditos < 0 || !creditos) {
       cred.value = 0
     }
     var maxCred = this.profesor.deuda.hace_uno + this.profesor.deuda.hace_dos + this.profesor.deuda.hace_tres + this.profesor.deuda.hace_cuatro
-    if(creditos> maxCred){
+    if (creditos > maxCred) {
       cred.value = maxCred
     }
     this.creditosDeuda = cred.valueAsNumber;
