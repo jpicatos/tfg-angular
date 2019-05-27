@@ -83,7 +83,10 @@ export class MenuToolbarComponent implements OnInit {
                 this.globalConfigService.saveProfeInfo(usuario);
                 this.usuario = usuario;
                 if (!this.admin) {
-                  this.turno();
+                  this.globalConfigService.calculateTurno(this.departamento, usuario).subscribe(turno => {
+                    turno ? this.tuTurno = true : this.tuTurno = false;
+                    this.endLoading()
+                  })
                 }
               },
               error => {
@@ -105,31 +108,6 @@ export class MenuToolbarComponent implements OnInit {
 
       });
     })
-  }
-
-  turno(): void {
-    if (this.departamento.docencia_iniciada) {
-      if (!this.usuario.docencia) {
-        this.profesoresService.getProfesores().subscribe(profesores => {
-          profesores = profesores.filter(profe => !profe.usuario.is_staff);
-          var turnoProfesorAnterior = profesores.find(profe => !profe.docencia_confirmada);
-          if (turnoProfesorAnterior.escalafon === this.usuario.escalafon) {
-            this.tuTurno = true;
-            this.globalConfigService.saveTurno(true);
-          }
-          this.endLoading();
-        });
-      }
-      else {
-        this.usuario.docencia_confirmada ? this.tuTurno = false : this.tuTurno = true;
-        this.globalConfigService.saveTurno(this.tuTurno);
-        this.endLoading();
-      }
-    }
-    else {
-      this.endLoading();
-    }
-
   }
 
   endLoading() {

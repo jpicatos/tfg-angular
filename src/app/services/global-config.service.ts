@@ -43,11 +43,11 @@ export class GlobalConfigService {
     this.globalConfig.departamento = departamento;
   }
 
-  setDepartamento(departamento:Departamento): void {
+  setDepartamento(departamento: Departamento): void {
     this.http.patch<Departamento>(this.departamentoUrl + departamento.siglas + '/', departamento)
-        .subscribe(data => {
-          this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
-        });
+      .subscribe(data => {
+        this.avisosService.enviarMensaje("Se han actualizado los cambios correctamente");
+      });
   }
 
   getUserinfo(): Profesor {
@@ -75,7 +75,7 @@ export class GlobalConfigService {
     this.globalConfig.tuTurno = turno;
   }
 
-  getTurno(): boolean{
+  getTurno(): boolean {
     return this.globalConfig.tuTurno;
   }
 
@@ -85,5 +85,46 @@ export class GlobalConfigService {
 
   getConfig() {
     return this.globalConfig;
+  }
+
+  calculateTurno(departamento, usuario: Profesor) {
+    return new Observable((observer) => {
+      if (departamento.docencia_iniciada) {
+        this.profesoresService.getProfesores().subscribe(profesores => {
+          profesores = profesores.filter(profe => !profe.usuario.is_staff);
+          var turnoProfesorAnterior = profesores.find(profe => usuario.docencia && !profe.docencia_confirmada);
+          this.globalConfig.tuTurno = turnoProfesorAnterior.usuario.id === usuario.usuario.id;
+          observer.next(turnoProfesorAnterior.usuario.id === usuario.usuario.id)
+          observer.complete()
+        });
+      }
+      else {
+        observer.next(false)
+        observer.complete()
+      }
+    })
+  }
+
+  updateAll(profesor) {
+    return new Observable((observer) => {
+      this.loadDepartamento().subscribe(departamento => {
+        this.globalConfig.departamento = departamento[0];
+        if (profesor) {
+          this.profesoresService.getProfesor(profesor).subscribe(profe => {
+            this.globalConfig.usuario = profe;
+            this.calculateTurno(departamento, profe).subscribe(turno => {
+              this.globalConfig.tuTurno = turno;
+              observer.next()
+              observer.complete()
+            })
+          })
+        }
+        else {
+          observer.next()
+          observer.complete()
+        }
+
+      })
+    })
   }
 }
