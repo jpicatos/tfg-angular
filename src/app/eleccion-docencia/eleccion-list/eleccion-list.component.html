@@ -123,7 +123,12 @@
 
             </mat-card>
 
-            <button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()"
+            <button [ngClass]="{'mat-fab-bottom-right3': puedesElegir(), 'mat-fab-bottom-right2': !puedesElegir()}" mat-fab (click)="restaurarEleccion()"
+                matTooltip="Volver a la última elección guardada" [disabled]="loading || eleccion.id === undefined">
+                <mat-icon>undo</mat-icon>
+            </button>
+
+            <button class="mat-fab-bottom-right4" *ngIf="admin" mat-fab (click)="deleteEleccion()"
                 matTooltip="Borrar la docencia y guardar" [disabled]="loading || eleccion.id === undefined">
                 <mat-icon>delete</mat-icon>
             </button>

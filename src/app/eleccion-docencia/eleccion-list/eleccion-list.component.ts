@@ -600,4 +600,9 @@ export class EleccionListComponent implements OnInit {
   getLocalStorage(profesor) {
     return localStorage.getItem(profesor);
   }
+  restaurarEleccion(){
+    this.deleteLocalStorage(this.profesor.usuario.id);
+    this.clearEleccion();
+    this.getAsignaturas();
+  }
 }

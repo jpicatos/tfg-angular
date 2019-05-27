@@ -134,6 +134,15 @@ mat-list-option {
 .errores {
     margin-top: 10px;
 }
+.mat-fab-bottom-right4 {
+    z-index: 1000;
+    top: auto !important;
+    right: 235px !important;
+    bottom: 10px !important;
+    left: auto !important;
+    position: fixed !important;
+    background-color: $accent;
+}
 
 .mat-fab-bottom-right3 {
     z-index: 1000;
