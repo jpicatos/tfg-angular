@@ -127,7 +127,7 @@
                 matTooltip="Borrar la docencia y guardar" [disabled]="loading || eleccion.id === undefined">
                 <mat-icon>delete</mat-icon>
             </button>
-            <button class="mat-fab-bottom-right1" *ngIf="puedesElegir()" mat-fab (click)="clearEleccion()"
+            <button class="mat-fab-bottom-right1" *ngIf="puedesElegir()" mat-fab (click)="clearEleccion();updateEleccion(true)"
                 matTooltip="Limpiar los selecionados" [disabled]="loading">
                 <mat-icon>clear</mat-icon>
             </button>
