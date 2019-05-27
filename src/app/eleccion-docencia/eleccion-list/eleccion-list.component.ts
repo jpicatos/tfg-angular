@@ -142,13 +142,16 @@ export class EleccionListComponent implements OnInit {
       data: {
         message: this.eleccion.mensaje,
         confirm: false,
+        exit: false,
         admin: this.admin
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.confirm) {
+      if (result.exit) {
         this.eleccion.mensaje = result.message || this.eleccion.mensaje || null;
+        this.eleccion.confirmada = result.confirm;
+        this.profesor.docencia_confirmada = result.confirm;
         this.saveEleccion();
       }
     });
@@ -255,7 +258,6 @@ export class EleccionListComponent implements OnInit {
     eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = null;
     const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda } = eleccion;
     this.creditosDeuda = deuda;
-    debugger
     if (deuda === undefined) {
       this.creditosDeuda = 0;
     }
@@ -340,25 +342,29 @@ export class EleccionListComponent implements OnInit {
     var eleccionVacia = (!this.asignaturasSelected.length && !this.desdoblesSelected.length && !this.asignaturasDivisiblesSelected.length)
     this.loading = true;
     if (this.eleccion.id !== undefined && !eleccionVacia) {
-      if (this.admin) {
-        this.eleccion.confirmada = true;
-        this.profesor.docencia_confirmada = true;
-      }
-      this.eleccionService.saveEleccion(this.eleccion).subscribe(eleccion => {
-        this.eleccion = eleccion;
-        this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(
-          profe => {
-          this.globalConfigService.saveProfeInfo(profe)
-          this.loading = false
+      this.eleccionService.deleteEleccion(this.eleccion.id).subscribe(
+        docencia => {
+          this.eleccionService.createEleccion(this.eleccion).subscribe(
+            () => {
+              this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
+              this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(
+                profe => {
+                this.globalConfigService.saveProfeInfo(profe)
+                this.loading = false
+              })
+              this.updateEleccion(true);
+              this.updateProfesores();
+            },
+            err => {
+              this.avisosService.enviarMensaje("Error al guardar elección, prueba a volver a la última versión guardada, es posible que haya sido editada");
+              this.loading = false
+            })
         },
-        error => {
+        err => {
+          this.avisosService.enviarMensaje('Error al guardar elección, prueba a volver a la última versión guardada, es posible que haya sido editada');
           this.loading = false
-        },
-        
-        )
-        this.updateEleccion(true);
-        this.updateProfesores();
-      });
+        }
+      );
     }
     else if (this.eleccion.id !== undefined && eleccionVacia) {
       this.deleteEleccion()
@@ -383,7 +389,11 @@ export class EleccionListComponent implements OnInit {
           this.updateProfesores();
         },
         err => {
-          this.avisosService.enviarMensaje("Error al crear la docencia");
+          this.avisosService.enviarMensaje("Error al crear la docencia, prueba a volver a la última versión guardada, es posible que haya sido editada");
+          this.loading = false;
+        },
+        () => {
+          this.loading = false;
         }
       );
     }
@@ -434,8 +444,12 @@ export class EleccionListComponent implements OnInit {
         this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
       },
       err => {
-        this.avisosService.enviarMensaje("Error al eliminar la docencia");
+        this.avisosService.enviarMensaje("Error al eliminar la docencia, prueba a volver a la última versión guardada, es posible que haya sido editada");
+        this.loading = false;
         this.updateLocalStorage(this.eleccion)
+      },
+      ()=> {
+        this.loading = false;
       }
     );
   }

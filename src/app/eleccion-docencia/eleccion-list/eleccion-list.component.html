@@ -124,7 +124,7 @@
             </mat-card>
 
             <button [ngClass]="{'mat-fab-bottom-right3': puedesElegir(), 'mat-fab-bottom-right2': !puedesElegir()}" mat-fab (click)="restaurarEleccion()"
-                matTooltip="Volver a la última elección guardada" [disabled]="loading || eleccion.id === undefined">
+                matTooltip="Volver a la última elección guardada" [disabled]="loading">
                 <mat-icon>undo</mat-icon>
             </button>
 
