@@ -92,10 +92,18 @@ export class GlobalConfigService {
       if (departamento.docencia_iniciada) {
         this.profesoresService.getProfesores().subscribe(profesores => {
           profesores = profesores.filter(profe => !profe.usuario.is_staff);
-          var turnoProfesorAnterior = profesores.find(profe => usuario.docencia && !profe.docencia_confirmada);
-          this.globalConfig.tuTurno = turnoProfesorAnterior.usuario.id === usuario.usuario.id;
-          observer.next(turnoProfesorAnterior.usuario.id === usuario.usuario.id)
-          observer.complete()
+          var turnoProfesorAnterior = profesores.find(profe => !profe.docencia_confirmada);
+          if (turnoProfesorAnterior.usuario.id === usuario.usuario.id) {
+            this.globalConfig.tuTurno = true;
+            observer.next(true)
+            observer.complete()
+          }
+          else {
+            this.globalConfig.tuTurno = false;
+            observer.next(false)
+            observer.complete()
+          }
+
         });
       }
       else {
@@ -105,21 +113,31 @@ export class GlobalConfigService {
     })
   }
 
-  updateAll(profesor) {
+  updateAll(profesor: Profesor) {
     return new Observable((observer) => {
       this.loadDepartamento().subscribe(departamento => {
         this.globalConfig.departamento = departamento[0];
-        if (profesor) {
-          this.profesoresService.getProfesor(profesor).subscribe(profe => {
+        if (this.globalConfig.user_id !== 1) {
+          this.profesoresService.getProfesor(profesor.usuario.id).subscribe(profe => {
             this.globalConfig.usuario = profe;
-            this.calculateTurno(departamento, profe).subscribe(turno => {
-              this.globalConfig.tuTurno = turno;
+            if (profesor.usuario.is_staff) {
+              this.globalConfig.tuTurno = true;
               observer.next()
               observer.complete()
-            })
+            }
+            else {
+              this.calculateTurno(departamento[0], profe).subscribe(turno => {
+                this.globalConfig.tuTurno = turno;
+                observer.next()
+                observer.complete()
+              })
+            }
+
           })
         }
         else {
+          this.globalConfig.tuTurno = true;
+          this.globalConfig.usuario = profesor;
           observer.next()
           observer.complete()
         }

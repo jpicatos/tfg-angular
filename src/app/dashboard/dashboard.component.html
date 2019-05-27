@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-content>
+  <mat-card-content *ngIf="graficasLoaded && departamento">
     <h3 *ngIf="admin">Como administrador puedes acceder a la <a routerLink="/config">
         <mat-icon>settings</mat-icon> configuración
       </a> para editar los
@@ -28,7 +28,7 @@
     </mat-card-header>
     <mat-card-content>
       <div style="display: block">
-        <canvas baseChart [datasets]="graficaCreditos.datas" [labels]="graficaCreditos.labels"
+        <canvas *ngIf="graficasLoaded" baseChart [datasets]="graficaCreditos.datas" [labels]="graficaCreditos.labels"
           [chartType]="graficaCreditos.type" [options]="options"></canvas>
       </div>
     </mat-card-content>
@@ -50,7 +50,7 @@
     </mat-card-header>
     <mat-card-content>
       <div style="display: block">
-        <canvas baseChart [datasets]="graficaNumCreditos.datas" [labels]="graficaNumCreditos.labels"
+        <canvas *ngIf="graficasLoaded" baseChart [datasets]="graficaNumCreditos.datas" [labels]="graficaNumCreditos.labels"
           [chartType]="graficaNumCreditos.type" [options]="optionsBar" [legend]="false"
           [colors]="graficaNumCreditos.colour"></canvas>
       </div>
@@ -62,7 +62,7 @@
     </mat-card-header>
     <mat-card-content>
       <div style="display: block">
-        <canvas baseChart [datasets]="graficaDeudaPDA.datas" [labels]="graficaDeudaPDA.labels"
+        <canvas *ngIf="graficasLoaded" baseChart [datasets]="graficaDeudaPDA.datas" [labels]="graficaDeudaPDA.labels"
           [chartType]="graficaDeudaPDA.type" [options]="optionsBar" [legend]="false"
           [colors]="graficaDeudaPDA.colour"></canvas>
       </div>
@@ -73,7 +73,7 @@
       <mat-card-title>Datos</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <ul>
+      <ul *ngIf="graficasLoaded && departamento">
         <li><b>Docencia iniciada:</b><span>{{departamento.docencia_iniciada}}</span></li>
         <li><b>Siglas del departamento:</b> <span>{{departamento.siglas}}</span></li>
         <li><b>Nombre del departamento:</b> <span>{{departamento.nombre}}</span></li>

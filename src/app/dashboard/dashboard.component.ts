@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalConfigService } from '../services/global-config.service';
 import { Departamento } from '../models/departamento';
 import { ProfesoresService } from '../services/profesores.service';
 import { EleccionService } from '../services/eleccion.service';
 import { Title } from '@angular/platform-browser';
 import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
+import { Profesor } from '../models/profesor';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+    this.dataLoaded = false;
+    this.graficasLoaded = false;
+  }
   admin: boolean;
   tuTurno: boolean;
   departamento: Departamento;
-  dataLoaded = false;
+  dataLoaded: boolean;
+  profesor: Profesor;
+  graficasLoaded: boolean;
   graficaCreditos = {
     labels: ['Créditos asignados', 'Créditos no asignados', "Creditos desdoble asignados", "Creditos desdoble no asignados"],
     datas: [],
@@ -62,20 +69,24 @@ export class DashboardComponent implements OnInit {
     }
   }
   constructor(private configService: GlobalConfigService, private profesoresService: ProfesoresService, private docenciaService: EleccionService, private titleService: Title) {
+    this.dataLoaded = false;
+    this.graficasLoaded = false;
     MenuToolbarComponent.updateTitle("Dashboard");
     this.titleService.setTitle("Dashboard");
     this.admin = this.configService.isAdmin();
-    this.tuTurno = this.configService.getTurno();
     this.departamento = this.configService.getDepartamento()[0];
-    this.configService.loadDepartamento().subscribe(departamentos => {
-      this.departamento = departamentos[0]
-      this.setDepartamentoData()
-    })
-    this.getProfesoresDataset();
+
+    this.tuTurno = this.configService.getTurno();
+    this.profesor = this.configService.getUserinfo()
   }
 
   ngOnInit() {
-    this.setDepartamentoData()
+    this.configService.updateAll(this.profesor).subscribe(() => {
+      this.tuTurno = this.configService.getTurno();
+      this.departamento = this.configService.getDepartamento()
+      this.setDepartamentoData()
+    })
+    this.getProfesoresDataset();
   }
 
   setDepartamentoData(){
@@ -91,6 +102,7 @@ export class DashboardComponent implements OnInit {
       { data: [this.departamento.deudas.toFixed(2), this.departamento.deudas_corregidas.toFixed(2), this.departamento.pda.toFixed(2)], backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'] },
     ];
     this.graficaDeudaPDA.labels = ['Deudas: ' + this.departamento.deudas.toFixed(2), 'Deudas Corregidas: ' + this.departamento.deudas_corregidas.toFixed(2), "PDA: " + this.departamento.pda.toFixed(2)]
+    this.graficasLoaded=true;
   }
 
   getProfesoresDataset(){

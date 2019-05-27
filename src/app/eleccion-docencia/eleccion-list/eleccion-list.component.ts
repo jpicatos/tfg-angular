@@ -97,7 +97,7 @@ export class EleccionListComponent implements OnInit {
 
   }
   getInitialUserData() {
-    this.globalConfigService.updateAll(this.profesor.usuario.id).subscribe(() => {
+    this.globalConfigService.updateAll(this.profesor).subscribe(() => {
       this.admin = this.globalConfigService.isAdmin();
       if (this.admin) {
         const id = + this.route.snapshot.paramMap.get('id');
@@ -148,7 +148,7 @@ export class EleccionListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.confirm) {
-        this.eleccion.mensaje = result.message || this.eleccion.mensaje || ".";
+        this.eleccion.mensaje = result.message || this.eleccion.mensaje || null;
         this.saveEleccion();
       }
     });
@@ -252,7 +252,7 @@ export class EleccionListComponent implements OnInit {
     this.eleccion = eleccion;
     this.eleccion.profesor = this.profesor.usuario.id;
 
-    eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = ".";
+    eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = "";
     const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda } = eleccion;
     this.creditosDeuda = deuda;
     if (deuda === undefined) {
@@ -347,9 +347,16 @@ export class EleccionListComponent implements OnInit {
       }
       this.eleccionService.saveEleccion(this.eleccion).subscribe(eleccion => {
         this.eleccion = eleccion;
-        this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profe => {
+        this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(
+          profe => {
           this.globalConfigService.saveProfeInfo(profe)
-        })
+          this.loading = false
+        },
+        error => {
+          this.loading = false
+        },
+        
+        )
         this.updateEleccion(true);
         this.updateProfesores();
       });
@@ -581,6 +588,7 @@ export class EleccionListComponent implements OnInit {
     }
     this.creditosDeuda = cred.valueAsNumber;
     this.creditos += this.creditosDeuda;
+    this.updateEleccion(true)
   }
 
   updateLocalStorage(eleccion: Eleccion) {
