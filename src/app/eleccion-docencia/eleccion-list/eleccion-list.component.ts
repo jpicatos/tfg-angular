@@ -255,12 +255,11 @@ export class EleccionListComponent implements OnInit {
     eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = null;
     const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda } = eleccion;
     this.creditosDeuda = deuda;
+    debugger
     if (deuda === undefined) {
       this.creditosDeuda = 0;
     }
     else {
-      document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
-
       this.creditos += this.creditosDeuda;
     }
 
@@ -412,7 +411,6 @@ export class EleccionListComponent implements OnInit {
     this.valida = true;
     this.creditos = 0 + this.profesor.pda;
     this.creditosDeuda = 0;
-    document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
     this.updateEleccion(false);
   }
 
@@ -569,7 +567,7 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasDivisiblesSelected = new Array;
     this.eleccion = new Eleccion;
     this.errores = new ErroresEleccion;
-    document.getElementById('deudaInput').setAttribute("value", '0');
+    this.creditosDeuda = 0;
   }
 
   puedesElegir(): boolean {

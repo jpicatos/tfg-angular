@@ -91,7 +91,7 @@
                                     <input #deudaInput type="number" value="0"
                                         max="{{profesor.deuda.hace_uno +profesor.deuda.hace_dos +profesor.deuda.hace_tres +profesor.deuda.hace_cuatro}}"
                                         min=0 matInput id="deudaInput"
-                                        (keyup)="changeDeudaVal(deudaInput)" (change)="changeDeudaVal(deudaInput)"
+                                        (keyup)="changeDeudaVal(deudaInput)" [(ngModel)]="creditosDeuda" (change)="changeDeudaVal(deudaInput)"
                                         step="0.01">
 
                                     <button (click)="deudaInput.stepUp(); changeDeudaVal(deudaInput)"
