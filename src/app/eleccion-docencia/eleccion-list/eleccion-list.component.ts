@@ -252,7 +252,7 @@ export class EleccionListComponent implements OnInit {
     this.eleccion = eleccion;
     this.eleccion.profesor = this.profesor.usuario.id;
 
-    eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = "";
+    eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = null;
     const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda } = eleccion;
     this.creditosDeuda = deuda;
     if (deuda === undefined) {
