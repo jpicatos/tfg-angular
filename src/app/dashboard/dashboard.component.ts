@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getProfesoresDataset();
   }
 
-  setDepartamentoData(){
+  setDepartamentoData() {
     this.graficaCreditos.datas = [{ data: [this.departamento.creditos_asignados.toFixed(2), this.departamento.creditos_sin_asignar.toFixed(2), (this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar).toFixed(2), this.departamento.creditos_desdobles_sin_asignar.toFixed(2)], label: "Créditos" }];
     this.graficaCreditos.labels = ['Créditos asignados: ' + this.departamento.creditos_asignados.toFixed(2), 'Créditos no asignados: ' + this.departamento.creditos_sin_asignar.toFixed(2), "Creditos desdoble asignados: " + (this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar).toFixed(2), "Creditos desdoble no asignados: " + this.departamento.creditos_desdobles_sin_asignar.toFixed(2)]
 
@@ -102,29 +102,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
       { data: [this.departamento.deudas.toFixed(2), this.departamento.deudas_corregidas.toFixed(2), this.departamento.pda.toFixed(2)], backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'] },
     ];
     this.graficaDeudaPDA.labels = ['Deudas: ' + this.departamento.deudas.toFixed(2), 'Deudas Corregidas: ' + this.departamento.deudas_corregidas.toFixed(2), "PDA: " + this.departamento.pda.toFixed(2)]
-    this.graficasLoaded=true;
+    this.graficasLoaded = true;
   }
 
-  getProfesoresDataset(){
+  getProfesoresDataset() {
     this.profesoresService.getProfesores().subscribe(profesores => {
       var profesoresPendientes = profesores.filter(profe => profe.docencia === null).length
       var profesoresDocencia = profesores.filter(profe => profe.docencia)
-      var profesoresConfirmada  = 0 ;
-      profesoresDocencia.filter(profe =>{
-        this.docenciaService.getEleccion(profe.docencia).subscribe(doc => {
-          if(doc.confirmada){
-            profesoresConfirmada++;
+      var profesoresConfirmada = 0;
+      profesoresDocencia.filter(profe => {
+        if (profe.docencia_confirmada) {
+          profesoresConfirmada++;
+        }
+        var profesoresSinConfirmar = profesoresDocencia.length - profesoresConfirmada;
+        this.graficaProfesores.datas = [
+          {
+            data: [profesoresPendientes, profesoresConfirmada, profesoresSinConfirmar],
+            backgroundColor: this.graficaProfesores.colour
           }
-          var profesoresSinConfirmar = profesoresDocencia.length - profesoresConfirmada;
-          this.graficaProfesores.datas = [
-            {
-              data: [profesoresPendientes, profesoresConfirmada, profesoresSinConfirmar],
-              backgroundColor: this.graficaProfesores.colour
-            }
-          ]
-          this.graficaProfesores.labels = ['Profesores Pendientes: ' + profesoresPendientes, 'Profesores Confirmados: ' + profesoresConfirmada, "Profesores sin Confirmar: " + profesoresSinConfirmar]
-        })
+        ]
+        this.graficaProfesores.labels = ['Profesores Pendientes: ' + profesoresPendientes, 'Profesores Confirmados: ' + profesoresConfirmada, "Profesores sin Confirmar: " + profesoresSinConfirmar]
       })
+
 
       var profesoresSinConfirmar = profesoresDocencia.length - profesoresConfirmada;
 
@@ -138,5 +137,4 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.dataLoaded = true;
     })
   }
-
 }
