@@ -1,17 +1,17 @@
-<mat-card>
+<mat-card class="mensajeDashboard">
   <mat-card-content *ngIf="graficasLoaded && departamento">
     <h3 *ngIf="admin">Como administrador puedes acceder a la <a routerLink="/config">
         <mat-icon>settings</mat-icon> configuración
       </a> para editar los
       valores que se muestran a continuación
-      <span *ngIf="!departamento.docencia_iniciada"><br> <br> Aún no ha comenzado la elección, edita el valor de Docencia
+      <span *ngIf="!departamento.docencia_iniciada"><p class="accent">Aún no ha comenzado la elección</p>, edita el valor de Docencia
         Iniciada en la configuración si quieres que comience</span></h3>
     <h3 *ngIf="!admin">
-      <span *ngIf="tuTurno"> Es tu turno así que puedes <a routerLink="/eleccion-docencia">empiezar a elegir
+      <span *ngIf="tuTurno"> <p class="accent">Es tu turno</p> así que puedes <a routerLink="/eleccion-docencia">empezar a elegir
           asignaturas</a></span>
       <span *ngIf="!tuTurno && departamento.docencia_iniciada"> No es tu turno, si crees que es un error, por favor,
         ponte en contacto con un administrador</span>
-      <span *ngIf="!departamento.docencia_iniciada"><br> <br> Aún no ha comenzado la elección, si crees que es un error, por
+      <span *ngIf="!departamento.docencia_iniciada"> <p class="accent">Aún no ha comenzado la elección</p>, si crees que es un error, por
         favor, ponte en contacto con un administrador</span>
     </h3>
     <h3>
