@@ -124,6 +124,9 @@ export class EleccionListComponent implements OnInit {
       this.profesor.creditos_escoger = profesor.creditos_escoger;
       this.profesor.creditos_escogidos = profesor.creditos_escogidos;
       this.profesor.docencia_confirmada = profesor.docencia_confirmada;
+      this.globalConfigService.calculateTurno(this.globalConfigService.getDepartamento(), profesor).subscribe(turno => {
+        turno ? this.tuTurno = true : this.tuTurno = false;
+      })
       this.cleanSearch()
       this.asignaturasService.getAsignaturas()
         .subscribe((asignaturas) => {
@@ -198,30 +201,7 @@ export class EleccionListComponent implements OnInit {
 
   asignaturasDisponibles(asignaturas) {
     asignaturas.map(asignatura => {
-      if (asignatura.divisible) {
-        asignatura.minCreditos = asignatura.creditos / 3;
-        var creditosUsados = 0;
-        asignatura.docencia_divisible.map(docencia => {
-          if (docencia.profesor !== this.profesor.usuario.id) {
-            creditosUsados = creditosUsados + docencia.creditos;
-          }
-        })
-        var creditosDisponibles = asignatura.creditos - creditosUsados;
-        if (creditosDisponibles) {
-          asignatura.maxCreditos = creditosDisponibles;
-        }
-        else {
-          creditosDisponibles = asignatura.maxCreditos = asignatura.minCreditos = 0;
-        }
-        asignatura.disponible = this.asignaturaDisponible(asignatura) || asignatura.maxCreditos > 0;
-        asignatura.desdobles.map(desdoble => {
-          desdoble.disponible = this.asignaturaDisponible(desdoble);
-        })
-
-      }
-      else {
-        this.checkDisponibilidad(asignatura)
-      }
+      this.checkDisponibilidad(asignatura)
     })
   }
 
@@ -230,10 +210,33 @@ export class EleccionListComponent implements OnInit {
   }
 
   checkDisponibilidad(asignatura) {
-    asignatura.disponible = this.asignaturaDisponible(asignatura)
-    asignatura.desdobles.map(desdoble => {
-      desdoble.disponible = this.asignaturaDisponible(desdoble);
-    })
+    if (asignatura.divisible) {
+      asignatura.minCreditos = asignatura.creditos / 3;
+      var creditosUsados = 0;
+      asignatura.docencia_divisible.map(docencia => {
+        if (docencia.profesor !== this.profesor.usuario.id) {
+          creditosUsados = creditosUsados + docencia.creditos;
+        }
+      })
+      var creditosDisponibles = asignatura.creditos - creditosUsados;
+      if (creditosDisponibles) {
+        asignatura.maxCreditos = creditosDisponibles;
+      }
+      else {
+        creditosDisponibles = asignatura.maxCreditos = asignatura.minCreditos = 0;
+      }
+      asignatura.disponible = this.asignaturaDisponible(asignatura) || asignatura.maxCreditos > 0;
+      asignatura.desdobles.map(desdoble => {
+        desdoble.disponible = this.asignaturaDisponible(desdoble);
+      })
+
+    }
+    else {
+      asignatura.disponible = this.asignaturaDisponible(asignatura)
+      asignatura.desdobles.map(desdoble => {
+        desdoble.disponible = this.asignaturaDisponible(desdoble);
+      })
+    }
   }
 
   asignaturaDisponible(asignatura): boolean {
@@ -287,53 +290,68 @@ export class EleccionListComponent implements OnInit {
   fillAsignaturasWithEleccion(asignaturas) {
     this.asignaturasSelected = [...asignaturas];
     this.todasAsignaturas.map(asignatura => {
-      this.asignaturasSelected.map(selected => {
-        if (selected.id === asignatura.id) {
-          this.creditos += selected.creditos;
-          asignatura.selected = true;
-          var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
-          if (index > -1) {
-            this.asignaturas[index] = asignatura
+      if (this.asignaturaDisponible(asignatura)) {
+        this.asignaturasSelected.map(selected => {
+          if (selected.id === asignatura.id) {
+            this.creditos += selected.creditos;
+            asignatura.selected = true;
+            var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
+            if (index > -1) {
+              this.asignaturas[index] = asignatura
+            }
           }
-        }
-      })
+        })
+      }
+      else {
+        this.asignaturasSelected = this.asignaturasSelected.filter(a => a.id !== asignatura.id)
+      }
+
     });
   }
 
   fillDesdoblesWithEleccion(desdobles) {
     this.desdoblesSelected = [];
     desdobles.map(_desdoble => {
-      _desdoble.desdobles ? _desdoble = _desdoble.desdobles[0] : null
-      this.asignaturasService.getAsignaturaDesdoble(_desdoble.id)
-        .subscribe(asignatura => {
-          this.desdoblesSelected = [...this.desdoblesSelected, asignatura[0]];
-          this.todasAsignaturas.map(asignatura => {
-            asignatura.desdobles.map(desdoble => {
-              if (_desdoble.id == desdoble.id) {
-                this.creditos += desdoble.creditos;
-                desdoble.selected = true;
-                var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
-                if (index > -1) {
-                  this.asignaturas[index].desdobles = asignatura.desdobles;
+      if (this.asignaturaDisponible(_desdoble)) {
+        _desdoble.desdobles ? _desdoble = _desdoble.desdobles[0] : null
+        this.asignaturasService.getAsignaturaDesdoble(_desdoble.id)
+          .subscribe(asignatura => {
+            this.desdoblesSelected = [...this.desdoblesSelected, asignatura[0]];
+            this.todasAsignaturas.map(asignatura => {
+              asignatura.desdobles.map(desdoble => {
+                if (_desdoble.id == desdoble.id) {
+                  this.creditos += desdoble.creditos;
+                  desdoble.selected = true;
+                  var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
+                  if (index > -1) {
+                    this.asignaturas[index].desdobles = asignatura.desdobles;
+                  }
                 }
-              }
-
-            })
+              })
+            });
           });
-        });
+      }
+      else {
+        this.desdoblesSelected = this.desdoblesSelected.filter(a => a.id !== _desdoble.id)
+      }
     });
   }
 
   fillAsignaturasDivisiblesWithEleccion(asignaturasDivisibles) {
     this.asignaturasDivisiblesSelected = [...asignaturasDivisibles];
     this.asignaturasDivisiblesSelected.map(asignaturaDivisible => {
-      this.creditos += asignaturaDivisible.creditos;
-      setTimeout(() => {
-        if (document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`)) {
-          document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`).setAttribute("value", asignaturaDivisible.creditos.toString());
-        }
-      }, 0);
-
+      var asignatura_divisible = this.todasAsignaturas.find(a => a.id === asignaturaDivisible.asignatura.id)
+      if (this.asignaturaDisponible(asignatura_divisible)) {
+        this.creditos += asignaturaDivisible.creditos;
+        setTimeout(() => {
+          if (document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`)) {
+            document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`).setAttribute("value", asignaturaDivisible.creditos.toString());
+          }
+        }, 0);
+      }
+      else {
+        this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(a => a.id !== asignatura_divisible.id)
+      }
     });
   }
 
@@ -349,11 +367,12 @@ export class EleccionListComponent implements OnInit {
               this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
               this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(
                 profe => {
-                this.globalConfigService.saveProfeInfo(profe)
-                this.loading = false
-              })
+                  this.globalConfigService.saveProfeInfo(profe)
+                  this.loading = false
+                })
               this.updateEleccion(true);
               this.updateProfesores();
+              this.deleteLocalStorage(this.profesor.usuario.id);
             },
             err => {
               this.avisosService.enviarMensaje("Error al guardar elección, prueba a volver a la última versión guardada, es posible que haya sido editada");
@@ -374,28 +393,34 @@ export class EleccionListComponent implements OnInit {
       this.loading = false
     }
     else {
-      if (this.admin) {
-        this.eleccion.confirmada = true;
-        this.profesor.docencia_confirmada = true;
-      }
-      this.eleccionService.createEleccion(this.eleccion).subscribe(
-        data => {
-          this.avisosService.enviarMensaje("Elección de docencia creada correctamente");
-          this.eleccion = data;
-          this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profe => {
-            this.globalConfigService.saveProfeInfo(profe)
-          })
-          this.updateEleccion(true);
-          this.updateProfesores();
-        },
-        err => {
+      this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profe => {
+        if (!profe.docencia) {
+          this.eleccionService.createEleccion(this.eleccion).subscribe(
+            data => {
+              this.avisosService.enviarMensaje("Elección de docencia creada correctamente");
+              this.eleccion = data;
+
+              this.globalConfigService.saveProfeInfo(profe)
+              this.loading = false
+
+              this.updateEleccion(true);
+              this.updateProfesores();
+              this.deleteLocalStorage(this.profesor.usuario.id);
+            },
+            err => {
+              this.avisosService.enviarMensaje("Error al crear la docencia, prueba a volver a la última versión guardada, es posible que haya sido editada");
+              this.loading = false;
+            },
+            () => {
+              this.loading = false;
+            }
+          );
+        }
+        else {
           this.avisosService.enviarMensaje("Error al crear la docencia, prueba a volver a la última versión guardada, es posible que haya sido editada");
           this.loading = false;
-        },
-        () => {
-          this.loading = false;
         }
-      );
+      })
     }
   }
 
@@ -448,7 +473,7 @@ export class EleccionListComponent implements OnInit {
         this.loading = false;
         this.updateLocalStorage(this.eleccion)
       },
-      ()=> {
+      () => {
         this.loading = false;
       }
     );
@@ -612,7 +637,7 @@ export class EleccionListComponent implements OnInit {
   getLocalStorage(profesor) {
     return localStorage.getItem(profesor);
   }
-  restaurarEleccion(){
+  restaurarEleccion() {
     this.deleteLocalStorage(this.profesor.usuario.id);
     this.clearEleccion();
     this.getAsignaturas();
