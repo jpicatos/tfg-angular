@@ -35,3 +35,9 @@
 .tabulado {
     margin-left: 20px;
 }
+.calendars{
+    display: flex;
+    mat-form-field{
+        flex:1;
+    }
+}

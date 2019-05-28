@@ -30,13 +30,24 @@ export class AsignaturasService {
     return this.http.get<Asignatura[]>(`${this.asignaturasUrl}?desdoble=${idDesdoble}`);
   }
 
-  @Cacheable()
   getCalendarios(id: number): Observable<Calendario> {
     return this.http.get<Calendario>(this.calendariosUrl + id);
   }
 
   getAllCalendarios(): Observable<Calendario[]> {
     return this.http.get<Calendario[]>(this.calendariosUrl);
+  }
+
+  createCalendario(calendario): Observable<Calendario> {
+    return this.http.post<Calendario>(this.calendariosUrl, calendario)
+  }
+
+  updateCalendario(calendario): Observable<Calendario> {
+    return this.http.put<Calendario>(this.calendariosUrl + calendario.id+ '/', calendario)
+  }
+
+  deleteCalendario(calendario): Observable<Calendario> {
+    return this.http.delete<Calendario>(this.calendariosUrl + calendario.id + '/')
   }
 
   searchAsignatura(siglas: string, nombre: string, codigo: string, curso: string, cuatrimestre: number, inicio: string, fin: string, dia: string[]): Observable<Asignatura[]> {

@@ -9,6 +9,8 @@ import { Horario } from '../../models/horario';
 import { Calendario } from '../../models/calendario';
 import { MenuToolbarComponent } from '../../menu-toolbar/menu-toolbar.component';
 import { AvisosService } from '../../services/avisos.service';
+import { CalendariosListDialogComponent } from '../calendarios-list-dialog/calendarios-list-dialog.component';
+import { MatDialog } from '@angular/material';
 
 class HorarioDesdoble {
 
@@ -48,7 +50,7 @@ export class AnadirAsignaturaComponent implements OnInit {
 
 
   constructor(private angularService: AsignaturasService, private route: ActivatedRoute, private _formBuilder: FormBuilder,
-    private titleService: Title, private avisosService: AvisosService) {
+    private titleService: Title, private avisosService: AvisosService, public dialog: MatDialog) {
     this.titleService.setTitle("Añadir una asignatura")
     MenuToolbarComponent.updateTitle("Asignaturas");
     this.asignatura = new Asignatura;
@@ -152,6 +154,20 @@ export class AnadirAsignaturaComponent implements OnInit {
 
   compareCuatrimestres(c1, c2) {
     return c1 && c2 && c1 == c2;
+  }
+
+  openCalendariosList(): void {
+    const dialogRef = this.dialog.open(CalendariosListDialogComponent, {
+      width: '600px',
+      data: this.calendarios
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.angularService.getAllCalendarios().subscribe(calendarios => {
+        this.calendarios = calendarios;
+      });
+    });
   }
 
 }

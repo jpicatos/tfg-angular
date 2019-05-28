@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Calendario</h1>
+<div mat-dialog-content>
+    <form class="formulario">
+        <mat-form-field>
+            <input matInput placeholder="Nombre" [(ngModel)]=calendario.nombre [ngModelOptions]="{standalone: true}"
+                required>
+        </mat-form-field>
+        <p>Fecha inicio</p>
+        <input matInput type="date" placeholder="Fecha de inicio" [(ngModel)]=calendario.fecha_ini
+            [ngModelOptions]="{standalone: true}" required>
+        <span class="separator"></span>
+        <p>Fecha fin</p>
+        <input matInput type="date" placeholder="Fecha de fin" [(ngModel)]=calendario.fecha_fin
+            [ngModelOptions]="{standalone: true}" required>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" cdkFocusInitial>Salir</button>
+    <button mat-raised-button color="accent" (click)="checkAndSave()" cdkFocusInitial>Guardar</button>
+</div>

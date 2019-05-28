@@ -45,7 +45,7 @@
                         </mat-form-field>
                         <mat-form-field>
                             <input matInput placeholder="Grupo" [(ngModel)]=asignatura.grupo
-                                [ngModelOptions]="{standalone: true}"  minlength="1" maxlength="1" required>
+                                [ngModelOptions]="{standalone: true}" minlength="1" maxlength="1" required>
                         </mat-form-field>
                         <mat-form-field>
                             <input matInput type="number" min=0 placeholder="Créditos" [(ngModel)]=asignatura.creditos
@@ -54,14 +54,21 @@
                         <mat-slide-toggle [(ngModel)]=asignatura.divisible [ngModelOptions]="{standalone: true}"
                             required>
                             Divisible</mat-slide-toggle>
-                        <mat-form-field>
-                            <mat-select placeholder="Calendario" [(ngModel)]=asignatura.calendario.id
-                                [ngModelOptions]="{standalone: true}" required>
-                                <mat-option *ngFor="let calendario of calendarios" [value]="calendario.id">
-                                    {{calendario.nombre}} ({{calendario.fecha_ini}} - {{calendario.fecha_fin}})
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                        <div class="calendars">
+                            <mat-form-field>
+                                <mat-select placeholder="Calendario" [(ngModel)]=asignatura.calendario.id
+                                    [ngModelOptions]="{standalone: true}" required>
+                                    <mat-option *ngFor="let calendario of calendarios" [value]="calendario.id">
+                                        {{calendario.nombre}} ({{calendario.fecha_ini}} - {{calendario.fecha_fin}})
+                                    </mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                            <button mat-mini-fab color="primary" (click)="openCalendariosList()" matTooltip="Editar calendarios">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </div>
+
                         <mat-form-field>
                             <input matInput placeholder="Titulación" [(ngModel)]=asignatura.titulacion
                                 [ngModelOptions]="{standalone: true}" required>
