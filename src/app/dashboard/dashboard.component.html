@@ -9,7 +9,7 @@
     <h3 *ngIf="!admin">
       <span *ngIf="tuTurno"> <p class="accent">Es tu turno</p> así que puedes <a routerLink="/eleccion-docencia">empezar a elegir
           asignaturas</a></span>
-      <span *ngIf="!tuTurno && departamento.docencia_iniciada"> No es tu turno, si crees que es un error, por favor,
+      <span *ngIf="!tuTurno && departamento.docencia_iniciada"> <p class="accent">No es tu turno</p>, si crees que es un error, por favor,
         ponte en contacto con un administrador</span>
       <span *ngIf="!departamento.docencia_iniciada"> <p class="accent">Aún no ha comenzado la elección</p>, si crees que es un error, por
         favor, ponte en contacto con un administrador</span>

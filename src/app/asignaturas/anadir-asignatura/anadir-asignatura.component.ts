@@ -123,8 +123,6 @@ export class AnadirAsignaturaComponent implements OnInit {
   }
 
   save(): void {
-    
-    
     if (!(this.asignatura.hasOwnProperty('codigo') && this.asignatura.hasOwnProperty('cuatrimestre')
       && this.asignatura.hasOwnProperty('curso') && this.asignatura.hasOwnProperty('departamento')
       && this.asignatura.hasOwnProperty('grupo') && this.asignatura.hasOwnProperty('nombre')
@@ -147,7 +145,7 @@ export class AnadirAsignaturaComponent implements OnInit {
 
       }
       this.asignatura.siglas = this.asignatura.siglas.toUpperCase();
-      this.asignatura.calendario = this.calendarios[this.asignatura.calendario.id]
+      this.asignatura.calendario = this.calendarios.find(cale => cale.id === this.asignatura.calendario.id)
       this.angularService.saveAsignatura(this.asignatura);
     }
   }
