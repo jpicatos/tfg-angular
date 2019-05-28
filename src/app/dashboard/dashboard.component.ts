@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalConfigService } from '../services/global-config.service';
 import { Departamento } from '../models/departamento';
 import { ProfesoresService } from '../services/profesores.service';
 import { EleccionService } from '../services/eleccion.service';
 import { Title } from '@angular/platform-browser';
 import { MenuToolbarComponent } from '../menu-toolbar/menu-toolbar.component';
+import { Profesor } from '../models/profesor';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+    this.dataLoaded = false;
+    this.graficasLoaded = false;
+  }
   admin: boolean;
   tuTurno: boolean;
   departamento: Departamento;
-  dataLoaded = false;
+  dataLoaded: boolean;
+  profesor: Profesor;
+  graficasLoaded: boolean;
   graficaCreditos = {
     labels: ['Créditos asignados', 'Créditos no asignados', "Creditos desdoble asignados", "Creditos desdoble no asignados"],
     datas: [],
@@ -62,23 +69,27 @@ export class DashboardComponent implements OnInit {
     }
   }
   constructor(private configService: GlobalConfigService, private profesoresService: ProfesoresService, private docenciaService: EleccionService, private titleService: Title) {
+    this.dataLoaded = false;
+    this.graficasLoaded = false;
     MenuToolbarComponent.updateTitle("Dashboard");
     this.titleService.setTitle("Dashboard");
     this.admin = this.configService.isAdmin();
-    this.tuTurno = this.configService.getTurno();
     this.departamento = this.configService.getDepartamento()[0];
-    this.configService.loadDepartamento().subscribe(departamentos => {
-      this.departamento = departamentos[0]
+
+    this.tuTurno = this.configService.getTurno();
+    this.profesor = this.configService.getUserinfo()
+  }
+
+  ngOnInit() {
+    this.configService.updateAll(this.profesor).subscribe(() => {
+      this.tuTurno = this.configService.getTurno();
+      this.departamento = this.configService.getDepartamento()
       this.setDepartamentoData()
     })
     this.getProfesoresDataset();
   }
 
-  ngOnInit() {
-    this.setDepartamentoData()
-  }
-
-  setDepartamentoData(){
+  setDepartamentoData() {
     this.graficaCreditos.datas = [{ data: [this.departamento.creditos_asignados.toFixed(2), this.departamento.creditos_sin_asignar.toFixed(2), (this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar).toFixed(2), this.departamento.creditos_desdobles_sin_asignar.toFixed(2)], label: "Créditos" }];
     this.graficaCreditos.labels = ['Créditos asignados: ' + this.departamento.creditos_asignados.toFixed(2), 'Créditos no asignados: ' + this.departamento.creditos_sin_asignar.toFixed(2), "Creditos desdoble asignados: " + (this.departamento.creditos_desdoble - this.departamento.creditos_desdobles_sin_asignar).toFixed(2), "Creditos desdoble no asignados: " + this.departamento.creditos_desdobles_sin_asignar.toFixed(2)]
 
@@ -91,28 +102,28 @@ export class DashboardComponent implements OnInit {
       { data: [this.departamento.deudas.toFixed(2), this.departamento.deudas_corregidas.toFixed(2), this.departamento.pda.toFixed(2)], backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'] },
     ];
     this.graficaDeudaPDA.labels = ['Deudas: ' + this.departamento.deudas.toFixed(2), 'Deudas Corregidas: ' + this.departamento.deudas_corregidas.toFixed(2), "PDA: " + this.departamento.pda.toFixed(2)]
+    this.graficasLoaded = true;
   }
 
-  getProfesoresDataset(){
+  getProfesoresDataset() {
     this.profesoresService.getProfesores().subscribe(profesores => {
       var profesoresPendientes = profesores.filter(profe => profe.docencia === null).length
       var profesoresDocencia = profesores.filter(profe => profe.docencia)
-      var profesoresConfirmada  = 0 ;
-      profesoresDocencia.filter(profe =>{
-        this.docenciaService.getEleccion(profe.docencia).subscribe(doc => {
-          if(doc.confirmada){
-            profesoresConfirmada++;
+      var profesoresConfirmada = 0;
+      profesoresDocencia.filter(profe => {
+        if (profe.docencia_confirmada) {
+          profesoresConfirmada++;
+        }
+        var profesoresSinConfirmar = profesoresDocencia.length - profesoresConfirmada;
+        this.graficaProfesores.datas = [
+          {
+            data: [profesoresPendientes, profesoresConfirmada, profesoresSinConfirmar],
+            backgroundColor: this.graficaProfesores.colour
           }
-          var profesoresSinConfirmar = profesoresDocencia.length - profesoresConfirmada;
-          this.graficaProfesores.datas = [
-            {
-              data: [profesoresPendientes, profesoresConfirmada, profesoresSinConfirmar],
-              backgroundColor: this.graficaProfesores.colour
-            }
-          ]
-          this.graficaProfesores.labels = ['Profesores Pendientes: ' + profesoresPendientes, 'Profesores Confirmados: ' + profesoresConfirmada, "Profesores sin Confirmar: " + profesoresSinConfirmar]
-        })
+        ]
+        this.graficaProfesores.labels = ['Profesores Pendientes: ' + profesoresPendientes, 'Profesores Confirmados: ' + profesoresConfirmada, "Profesores sin Confirmar: " + profesoresSinConfirmar]
       })
+
 
       var profesoresSinConfirmar = profesoresDocencia.length - profesoresConfirmada;
 
@@ -126,5 +137,4 @@ export class DashboardComponent implements OnInit {
       this.dataLoaded = true;
     })
   }
-
 }

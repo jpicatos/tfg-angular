@@ -1,17 +1,17 @@
-<mat-card>
-  <mat-card-content>
+<mat-card class="mensajeDashboard">
+  <mat-card-content *ngIf="graficasLoaded && departamento">
     <h3 *ngIf="admin">Como administrador puedes acceder a la <a routerLink="/config">
         <mat-icon>settings</mat-icon> configuración
       </a> para editar los
       valores que se muestran a continuación
-      <span *ngIf="!departamento.docencia_iniciada"><br> <br> Aún no ha comenzado la elección, edita el valor de Docencia
+      <span *ngIf="!departamento.docencia_iniciada"><p class="accent">Aún no ha comenzado la elección</p>, edita el valor de Docencia
         Iniciada en la configuración si quieres que comience</span></h3>
     <h3 *ngIf="!admin">
-      <span *ngIf="tuTurno"> Es tu turno así que puedes <a routerLink="/eleccion-docencia">empiezar a elegir
+      <span *ngIf="tuTurno"> <p class="accent">Es tu turno</p> así que puedes <a routerLink="/eleccion-docencia">empezar a elegir
           asignaturas</a></span>
       <span *ngIf="!tuTurno && departamento.docencia_iniciada"> No es tu turno, si crees que es un error, por favor,
         ponte en contacto con un administrador</span>
-      <span *ngIf="!departamento.docencia_iniciada"><br> <br> Aún no ha comenzado la elección, si crees que es un error, por
+      <span *ngIf="!departamento.docencia_iniciada"> <p class="accent">Aún no ha comenzado la elección</p>, si crees que es un error, por
         favor, ponte en contacto con un administrador</span>
     </h3>
     <h3>
@@ -28,7 +28,7 @@
     </mat-card-header>
     <mat-card-content>
       <div style="display: block">
-        <canvas baseChart [datasets]="graficaCreditos.datas" [labels]="graficaCreditos.labels"
+        <canvas *ngIf="graficasLoaded" baseChart [datasets]="graficaCreditos.datas" [labels]="graficaCreditos.labels"
           [chartType]="graficaCreditos.type" [options]="options"></canvas>
       </div>
     </mat-card-content>
@@ -50,7 +50,7 @@
     </mat-card-header>
     <mat-card-content>
       <div style="display: block">
-        <canvas baseChart [datasets]="graficaNumCreditos.datas" [labels]="graficaNumCreditos.labels"
+        <canvas *ngIf="graficasLoaded" baseChart [datasets]="graficaNumCreditos.datas" [labels]="graficaNumCreditos.labels"
           [chartType]="graficaNumCreditos.type" [options]="optionsBar" [legend]="false"
           [colors]="graficaNumCreditos.colour"></canvas>
       </div>
@@ -62,7 +62,7 @@
     </mat-card-header>
     <mat-card-content>
       <div style="display: block">
-        <canvas baseChart [datasets]="graficaDeudaPDA.datas" [labels]="graficaDeudaPDA.labels"
+        <canvas *ngIf="graficasLoaded" baseChart [datasets]="graficaDeudaPDA.datas" [labels]="graficaDeudaPDA.labels"
           [chartType]="graficaDeudaPDA.type" [options]="optionsBar" [legend]="false"
           [colors]="graficaDeudaPDA.colour"></canvas>
       </div>
@@ -73,7 +73,7 @@
       <mat-card-title>Datos</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <ul>
+      <ul *ngIf="graficasLoaded && departamento">
         <li><b>Docencia iniciada:</b><span>{{departamento.docencia_iniciada}}</span></li>
         <li><b>Siglas del departamento:</b> <span>{{departamento.siglas}}</span></li>
         <li><b>Nombre del departamento:</b> <span>{{departamento.nombre}}</span></li>

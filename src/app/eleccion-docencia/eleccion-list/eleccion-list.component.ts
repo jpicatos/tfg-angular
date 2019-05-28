@@ -64,13 +64,7 @@ export class EleccionListComponent implements OnInit {
     this.titleService.setTitle("Elección de docencia");
     this.researchEvent = new Object;
     this.admin = this.globalConfigService.isAdmin();
-    this.tuTurno = this.globalConfigService.getTurno();
-    if (this.globalConfigService.getUserinfo().telefono) {
-      this.profesor = this.globalConfigService.getUserinfo()
-    } else {
-      this.profesor = new Profesor;
-      this.profesor.usuario = new Usuario;
-    }
+    this.tuTurno = false;
     this.isMinimiceLeft = isMinimiceLeft;
     this.minimiceLeft = minimiceLeft;
     this.isMinimiceRight = isMinimiceRight;
@@ -79,7 +73,13 @@ export class EleccionListComponent implements OnInit {
     this.searchVals = {
       nombre: ''
     }
-
+    if (this.globalConfigService.getUserinfo().telefono) {
+      this.profesor = this.globalConfigService.getUserinfo()
+      this.location.go('eleccion-docencia/' + this.profesor.usuario.id);
+    } else {
+      this.profesor = new Profesor;
+      this.profesor.usuario = new Usuario;
+    }
     this.creditos = 0;
     this.creditosDeuda = 0;
     addCreditListener()
@@ -92,20 +92,51 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasSelected = [];
     this.asignaturasDivisiblesSelected = [];
     this.desdoblesSelected = [];
-    if (this.admin) {
-      const id = + this.route.snapshot.paramMap.get('id');
-      this.profesoresService.getProfesores()
-        .subscribe((profesores) => {
-          this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
-          this.profesor = profesores.find(profe => profe.usuario.id === id) || this.profesores[0];
-          this.getAsignaturas();
-        })
-    }
-    else {
-      this.getAsignaturas();
-    }
+
+    this.getInitialUserData();
 
   }
+  getInitialUserData() {
+    this.globalConfigService.updateAll(this.profesor).subscribe(() => {
+      this.admin = this.globalConfigService.isAdmin();
+      if (this.admin) {
+        const id = + this.route.snapshot.paramMap.get('id');
+        this.profesoresService.getProfesores()
+          .subscribe((profesores) => {
+            this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
+            this.profesor = profesores.find(profe => profe.usuario.id === id) || this.profesores[0];
+            this.getAsignaturas();
+          })
+      }
+      else {
+        this.tuTurno = this.globalConfigService.getTurno();
+        this.profesor = this.globalConfigService.getUserinfo();
+        this.getAsignaturas();
+      }
+    })
+  }
+
+  getAsignaturas(): void {
+    this.loading = true;
+    this.location.go('eleccion-docencia/' + this.profesor.usuario.id);
+    this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profesor => {
+      this.profesor.docencia = profesor.docencia;
+      this.profesor.creditos_escoger = profesor.creditos_escoger;
+      this.profesor.creditos_escogidos = profesor.creditos_escogidos;
+      this.profesor.docencia_confirmada = profesor.docencia_confirmada;
+      this.globalConfigService.calculateTurno(this.globalConfigService.getDepartamento(), profesor).subscribe(turno => {
+        turno ? this.tuTurno = true : this.tuTurno = false;
+      })
+      this.cleanSearch()
+      this.asignaturasService.getAsignaturas()
+        .subscribe((asignaturas) => {
+          this.todasAsignaturas = asignaturas;
+          this.updateAsignaturas(asignaturas, true);
+        })
+    })
+
+  }
+
   onPreventKey(event) {
     event.preventDefault();
   }
@@ -114,25 +145,19 @@ export class EleccionListComponent implements OnInit {
       data: {
         message: this.eleccion.mensaje,
         confirm: false,
+        exit: false,
         admin: this.admin
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.confirm) {
-        this.eleccion.mensaje = result.message || this.eleccion.mensaje || ".";
+      if (result.exit) {
+        this.eleccion.mensaje = result.message || this.eleccion.mensaje || null;
+        this.eleccion.confirmada = result.confirm;
+        this.profesor.docencia_confirmada = result.confirm;
         this.saveEleccion();
       }
     });
-  }
-
-  search(): void {
-    this.loading = true;
-    this.asignaturasService.searchAsignatura("", this.searchVals.nombre, "", "", 0, "", "", [])
-      .subscribe(asignaturas => {
-        this.updateAsignaturas(asignaturas, false);
-        this.loading = false;
-      });
   }
 
   updateLoading(state: boolean) {
@@ -143,62 +168,41 @@ export class EleccionListComponent implements OnInit {
     this.loading = true;
     this.asignaturas = asignaturas;
     this.asignaturasDisponibles(asignaturas);
+    var eleccionLocal = this.getLocalStorage(this.profesor.usuario.id)
+    var eleccionLocalParsed;
+    if (eleccionLocal) {
+      eleccionLocalParsed = JSON.parse(eleccionLocal);
+    }
     if (!refreshSelected) {
       this.fillSelected(this.eleccion);
     }
+    else if (this.profesor.docencia !== null) {
+      this.eleccionService.getEleccion(this.profesor.docencia)
+        .subscribe(eleccion => {
+          if (eleccionLocal && eleccionLocalParsed.fecha >= eleccion.fecha) {
+            eleccion = eleccionLocalParsed;
+          }
+          else {
+            this.updateLocalStorage(eleccion);
+          }
+          this.fillSelected(eleccion);
+        });
+    }
+    else if (eleccionLocalParsed) {
+      this.fillSelected(eleccionLocalParsed);
+    }
     else {
-      if (this.profesor.docencia !== null) {
-        this.eleccionService.getEleccion(this.profesor.docencia)
-          .subscribe(eleccion => {
-            this.fillSelected(eleccion);
-          });
-      }
-      else {
-        this.eleccion = new Eleccion;
-        this.eleccion.profesor = this.profesor.usuario.id;
-        this.loading = false;
-        this.creditos = this.profesor.pda;
-      }
+      this.eleccion = new Eleccion;
+      this.eleccion.profesor = this.profesor.usuario.id;
+      this.loading = false;
+      this.creditos = this.profesor.pda;
     }
   }
 
   asignaturasDisponibles(asignaturas) {
     asignaturas.map(asignatura => {
-      if (asignatura.divisible) {
-        asignatura.minCreditos = asignatura.creditos / 3;
-        var creditosUsados = 0;
-        asignatura.docencia_divisible.map(docencia => {
-          if (docencia.profesor !== this.profesor.usuario.id) {
-            creditosUsados = creditosUsados + docencia.creditos;
-          }
-        })
-        var creditosDisponibles = asignatura.creditos - creditosUsados;
-        if (creditosDisponibles) {
-          asignatura.maxCreditos = creditosDisponibles;
-        }
-        else {
-          creditosDisponibles = asignatura.maxCreditos = asignatura.minCreditos = 0;
-        }
-        asignatura.disponible = this.asignaturaDisponible(asignatura) || asignatura.maxCreditos > 0;
-        asignatura.desdobles.map(desdoble => {
-          desdoble.disponible = this.asignaturaDisponible(desdoble);
-        })
-
-      }
-      else {
-        this.checkDisponibilidad(asignatura)
-      }
+      this.checkDisponibilidad(asignatura)
     })
-  }
-
-  getAsignaturas(): void {
-    this.location.go('eleccion-docencia/' + this.profesor.usuario.id);
-    this.cleanSearch()
-    this.asignaturasService.getAsignaturas()
-      .subscribe((asignaturas) => {
-        this.todasAsignaturas = asignaturas;
-        this.updateAsignaturas(asignaturas, true);
-      })
   }
 
   cleanSearch() {
@@ -206,10 +210,33 @@ export class EleccionListComponent implements OnInit {
   }
 
   checkDisponibilidad(asignatura) {
-    asignatura.disponible = this.asignaturaDisponible(asignatura)
-    asignatura.desdobles.map(desdoble => {
-      desdoble.disponible = this.asignaturaDisponible(desdoble);
-    })
+    if (asignatura.divisible) {
+      asignatura.minCreditos = asignatura.creditos / 3;
+      var creditosUsados = 0;
+      asignatura.docencia_divisible.map(docencia => {
+        if (docencia.profesor !== this.profesor.usuario.id) {
+          creditosUsados = creditosUsados + docencia.creditos;
+        }
+      })
+      var creditosDisponibles = asignatura.creditos - creditosUsados;
+      if (creditosDisponibles) {
+        asignatura.maxCreditos = creditosDisponibles;
+      }
+      else {
+        creditosDisponibles = asignatura.maxCreditos = asignatura.minCreditos = 0;
+      }
+      asignatura.disponible = this.asignaturaDisponible(asignatura) || asignatura.maxCreditos > 0;
+      asignatura.desdobles.map(desdoble => {
+        desdoble.disponible = this.asignaturaDisponible(desdoble);
+      })
+
+    }
+    else {
+      asignatura.disponible = this.asignaturaDisponible(asignatura)
+      asignatura.desdobles.map(desdoble => {
+        desdoble.disponible = this.asignaturaDisponible(desdoble);
+      })
+    }
   }
 
   asignaturaDisponible(asignatura): boolean {
@@ -231,15 +258,13 @@ export class EleccionListComponent implements OnInit {
     this.eleccion = eleccion;
     this.eleccion.profesor = this.profesor.usuario.id;
 
-    eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = ".";
+    eleccion.mensaje ? eleccion.mensaje : eleccion.mensaje = null;
     const { asignaturas = [], desdobles = [], asignaturas_divisibles = [], deuda } = eleccion;
     this.creditosDeuda = deuda;
     if (deuda === undefined) {
       this.creditosDeuda = 0;
     }
     else {
-      document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
-
       this.creditos += this.creditosDeuda;
     }
 
@@ -265,73 +290,100 @@ export class EleccionListComponent implements OnInit {
   fillAsignaturasWithEleccion(asignaturas) {
     this.asignaturasSelected = [...asignaturas];
     this.todasAsignaturas.map(asignatura => {
-      this.asignaturasSelected.map(selected => {
-        if (selected.id === asignatura.id) {
-          this.creditos += selected.creditos;
-          asignatura.selected = true;
-          var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
-          if (index > -1) {
-            this.asignaturas[index] = asignatura
+      if (this.asignaturaDisponible(asignatura)) {
+        this.asignaturasSelected.map(selected => {
+          if (selected.id === asignatura.id) {
+            this.creditos += selected.creditos;
+            asignatura.selected = true;
+            var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
+            if (index > -1) {
+              this.asignaturas[index] = asignatura
+            }
           }
-        }
-      })
+        })
+      }
+      else {
+        this.asignaturasSelected = this.asignaturasSelected.filter(a => a.id !== asignatura.id)
+      }
+
     });
   }
 
   fillDesdoblesWithEleccion(desdobles) {
     this.desdoblesSelected = [];
     desdobles.map(_desdoble => {
-      _desdoble.desdobles ? _desdoble = _desdoble.desdobles[0] : null
-      this.asignaturasService.getAsignaturaDesdoble(_desdoble.id)
-        .subscribe(asignatura => {
-          this.desdoblesSelected = [...this.desdoblesSelected, asignatura[0]];
-          this.todasAsignaturas.map(asignatura => {
-            asignatura.desdobles.map(desdoble => {
-              if (_desdoble.id == desdoble.id) {
-                this.creditos += desdoble.creditos;
-                desdoble.selected = true;
-                var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
-                if (index > -1) {
-                  this.asignaturas[index].desdobles = asignatura.desdobles;
+      if (this.asignaturaDisponible(_desdoble)) {
+        _desdoble.desdobles ? _desdoble = _desdoble.desdobles[0] : null
+        this.asignaturasService.getAsignaturaDesdoble(_desdoble.id)
+          .subscribe(asignatura => {
+            this.desdoblesSelected = [...this.desdoblesSelected, asignatura[0]];
+            this.todasAsignaturas.map(asignatura => {
+              asignatura.desdobles.map(desdoble => {
+                if (_desdoble.id == desdoble.id) {
+                  this.creditos += desdoble.creditos;
+                  desdoble.selected = true;
+                  var index = this.asignaturas.indexOf(this.asignaturas.find(a => a.id === asignatura.id))
+                  if (index > -1) {
+                    this.asignaturas[index].desdobles = asignatura.desdobles;
+                  }
                 }
-              }
-
-            })
+              })
+            });
           });
-        });
+      }
+      else {
+        this.desdoblesSelected = this.desdoblesSelected.filter(a => a.id !== _desdoble.id)
+      }
     });
   }
 
   fillAsignaturasDivisiblesWithEleccion(asignaturasDivisibles) {
     this.asignaturasDivisiblesSelected = [...asignaturasDivisibles];
     this.asignaturasDivisiblesSelected.map(asignaturaDivisible => {
-      this.creditos += asignaturaDivisible.creditos;
-      setTimeout(() => {
-        if (document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`)) {
-          document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`).setAttribute("value", asignaturaDivisible.creditos.toString());
-        }
-      }, 0);
-
+      var asignatura_divisible = this.todasAsignaturas.find(a => a.id === asignaturaDivisible.asignatura.id)
+      if (this.asignaturaDisponible(asignatura_divisible)) {
+        this.creditos += asignaturaDivisible.creditos;
+        setTimeout(() => {
+          if (document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`)) {
+            document.getElementById(`divisible${asignaturaDivisible.asignatura.id}`).setAttribute("value", asignaturaDivisible.creditos.toString());
+          }
+        }, 0);
+      }
+      else {
+        this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(a => a.id !== asignatura_divisible.id)
+      }
     });
   }
 
   saveEleccion() {
-    this.updateEleccion();
+    this.updateEleccion(true);
     var eleccionVacia = (!this.asignaturasSelected.length && !this.desdoblesSelected.length && !this.asignaturasDivisiblesSelected.length)
     this.loading = true;
     if (this.eleccion.id !== undefined && !eleccionVacia) {
-      if (this.admin) {
-        this.eleccion.confirmada = true;
-        this.profesor.docencia_confirmada = true;
-      }
-      this.eleccionService.saveEleccion(this.eleccion).subscribe(eleccion => {
-        this.eleccion = eleccion;
-        this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profe => {
-          this.globalConfigService.saveProfeInfo(profe)
-        })
-        this.updateEleccion();
-        this.updateProfesores();
-      });
+      this.eleccionService.deleteEleccion(this.eleccion.id).subscribe(
+        docencia => {
+          this.eleccionService.createEleccion(this.eleccion).subscribe(
+            () => {
+              this.avisosService.enviarMensaje("Elección de docencia guardada correctamente");
+              this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(
+                profe => {
+                  this.globalConfigService.saveProfeInfo(profe)
+                  this.loading = false
+                })
+              this.updateEleccion(true);
+              this.updateProfesores();
+              this.deleteLocalStorage(this.profesor.usuario.id);
+            },
+            err => {
+              this.avisosService.enviarMensaje("Error al guardar elección, prueba a volver a la última versión guardada, es posible que haya sido editada");
+              this.loading = false
+            })
+        },
+        err => {
+          this.avisosService.enviarMensaje('Error al guardar elección, prueba a volver a la última versión guardada, es posible que haya sido editada');
+          this.loading = false
+        }
+      );
     }
     else if (this.eleccion.id !== undefined && eleccionVacia) {
       this.deleteEleccion()
@@ -341,24 +393,34 @@ export class EleccionListComponent implements OnInit {
       this.loading = false
     }
     else {
-      if (this.admin) {
-        this.eleccion.confirmada = true;
-        this.profesor.docencia_confirmada = true;
-      }
-      this.eleccionService.createEleccion(this.eleccion).subscribe(
-        data => {
-          this.avisosService.enviarMensaje("Elección de docencia creada correctamente");
-          this.eleccion = data;
-          this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profe => {
-            this.globalConfigService.saveProfeInfo(profe)
-          })
-          this.updateEleccion();
-          this.updateProfesores();
-        },
-        err => {
-          this.avisosService.enviarMensaje("Error al crear la docencia");
+      this.profesoresService.getProfesor(this.profesor.usuario.id).subscribe(profe => {
+        if (!profe.docencia) {
+          this.eleccionService.createEleccion(this.eleccion).subscribe(
+            data => {
+              this.avisosService.enviarMensaje("Elección de docencia creada correctamente");
+              this.eleccion = data;
+
+              this.globalConfigService.saveProfeInfo(profe)
+              this.loading = false
+
+              this.updateEleccion(true);
+              this.updateProfesores();
+              this.deleteLocalStorage(this.profesor.usuario.id);
+            },
+            err => {
+              this.avisosService.enviarMensaje("Error al crear la docencia, prueba a volver a la última versión guardada, es posible que haya sido editada");
+              this.loading = false;
+            },
+            () => {
+              this.loading = false;
+            }
+          );
         }
-      );
+        else {
+          this.avisosService.enviarMensaje("Error al crear la docencia, prueba a volver a la última versión guardada, es posible que haya sido editada");
+          this.loading = false;
+        }
+      })
     }
   }
 
@@ -384,8 +446,7 @@ export class EleccionListComponent implements OnInit {
     this.valida = true;
     this.creditos = 0 + this.profesor.pda;
     this.creditosDeuda = 0;
-    document.getElementById('deudaInput').setAttribute("value", this.creditosDeuda.toString());
-    this.updateEleccion();
+    this.updateEleccion(false);
   }
 
   updateProfesores() {
@@ -399,6 +460,7 @@ export class EleccionListComponent implements OnInit {
 
   deleteEleccion() {
     this.loading = true;
+    this.deleteLocalStorage(this.profesor.usuario.id)
     this.eleccionService.deleteEleccion(this.eleccion.id).subscribe(
       () => {
         this.clearEleccion();
@@ -407,12 +469,17 @@ export class EleccionListComponent implements OnInit {
         this.avisosService.enviarMensaje("Elección de docencia eliminada correctamente");
       },
       err => {
-        this.avisosService.enviarMensaje("Error al eliminar la docencia");
+        this.avisosService.enviarMensaje("Error al eliminar la docencia, prueba a volver a la última versión guardada, es posible que haya sido editada");
+        this.loading = false;
+        this.updateLocalStorage(this.eleccion)
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
 
-  updateEleccion() {
+  updateEleccion(saveLocal) {
     this.eleccion.asignaturas = [];
     this.eleccion.asignaturas = this.asignaturasSelected;
 
@@ -423,6 +490,7 @@ export class EleccionListComponent implements OnInit {
     this.eleccion.desdobles = this.desdoblesSelected;
     this.loading = false;
     this.eleccion.deuda = this.creditosDeuda;
+    saveLocal ? this.updateLocalStorage(this.eleccion) : null;
     return this.eleccion;
   }
 
@@ -439,7 +507,7 @@ export class EleccionListComponent implements OnInit {
         this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = false;
         this.creditos -= asignatura.creditos;
       }
-      this.comprobarEleccion(this.updateEleccion());
+      this.comprobarEleccion(this.updateEleccion(true));
     }
   }
 
@@ -461,7 +529,7 @@ export class EleccionListComponent implements OnInit {
         this.creditos -= asignatura.desdobles[0].creditos;
         asignatura.desdobles[0].selected = false;
       }
-      this.comprobarEleccion(this.updateEleccion());
+      this.comprobarEleccion(this.updateEleccion(true));
     }
   }
 
@@ -510,7 +578,7 @@ export class EleccionListComponent implements OnInit {
       }
       this.asignaturasDivisiblesSelected = this.asignaturasDivisiblesSelected.filter(asign => asign.asignatura.id !== asignatura.id)
     }
-    this.comprobarEleccion(this.updateEleccion());
+    this.comprobarEleccion(this.updateEleccion(true));
   }
 
   comprobarEleccion(eleccion) {
@@ -538,7 +606,7 @@ export class EleccionListComponent implements OnInit {
     this.asignaturasDivisiblesSelected = new Array;
     this.eleccion = new Eleccion;
     this.errores = new ErroresEleccion;
-    document.getElementById('deudaInput').setAttribute("value", '0');
+    this.creditosDeuda = 0;
   }
 
   puedesElegir(): boolean {
@@ -557,5 +625,21 @@ export class EleccionListComponent implements OnInit {
     }
     this.creditosDeuda = cred.valueAsNumber;
     this.creditos += this.creditosDeuda;
+    this.updateEleccion(true)
+  }
+
+  updateLocalStorage(eleccion: Eleccion) {
+    localStorage.setItem(eleccion.profesor.toString(), JSON.stringify(eleccion));
+  }
+  deleteLocalStorage(profesor) {
+    localStorage.removeItem(profesor);
+  }
+  getLocalStorage(profesor) {
+    return localStorage.getItem(profesor);
+  }
+  restaurarEleccion() {
+    this.deleteLocalStorage(this.profesor.usuario.id);
+    this.clearEleccion();
+    this.getAsignaturas();
   }
 }

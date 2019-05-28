@@ -10,7 +10,7 @@ export class ConfirmEleccionComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmEleccionComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string, confirm: boolean }
+    @Inject(MAT_DIALOG_DATA) public data: { message: string, confirm: boolean, exit:boolean }
   ) { }
 
   onNoClick(): void {

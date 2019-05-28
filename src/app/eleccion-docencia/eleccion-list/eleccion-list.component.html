@@ -91,7 +91,7 @@
                                     <input #deudaInput type="number" value="0"
                                         max="{{profesor.deuda.hace_uno +profesor.deuda.hace_dos +profesor.deuda.hace_tres +profesor.deuda.hace_cuatro}}"
                                         min=0 matInput id="deudaInput"
-                                        (keyup)="changeDeudaVal(deudaInput)" (change)="changeDeudaVal(deudaInput)"
+                                        (keyup)="changeDeudaVal(deudaInput)" [(ngModel)]="creditosDeuda" (change)="changeDeudaVal(deudaInput)"
                                         step="0.01">
 
                                     <button (click)="deudaInput.stepUp(); changeDeudaVal(deudaInput)"
@@ -123,16 +123,21 @@
 
             </mat-card>
 
-            <button class="mat-fab-bottom-right3" *ngIf="admin" mat-fab (click)="deleteEleccion()"
+            <button [ngClass]="{'mat-fab-bottom-right3': (this.admin || this.tuTurno), 'mat-fab-bottom-right2': !(this.admin || this.tuTurno)}" mat-fab (click)="restaurarEleccion()"
+                matTooltip="Volver a la última elección guardada" [disabled]="loading">
+                <mat-icon>undo</mat-icon>
+            </button>
+
+            <button class="mat-fab-bottom-right4" *ngIf="admin" mat-fab (click)="deleteEleccion()"
                 matTooltip="Borrar la docencia y guardar" [disabled]="loading || eleccion.id === undefined">
                 <mat-icon>delete</mat-icon>
             </button>
-            <button class="mat-fab-bottom-right1" *ngIf="puedesElegir()" mat-fab (click)="clearEleccion()"
+            <button class="mat-fab-bottom-right1" *ngIf="this.admin || this.tuTurno" mat-fab (click)="clearEleccion();updateEleccion(true)"
                 matTooltip="Limpiar los selecionados" [disabled]="loading">
                 <mat-icon>clear</mat-icon>
             </button>
 
-            <button class="mat-fab-bottom-right2" mat-fab *ngIf="puedesElegir()" (click)="openDialog()"
+            <button class="mat-fab-bottom-right2" mat-fab *ngIf="this.admin || this.tuTurno" (click)="openDialog()"
                 matTooltip="Guardar y enviar" [disabled]="loading">
                 <mat-icon *ngIf="!admin">send</mat-icon>
                 <mat-icon *ngIf="admin">done</mat-icon>

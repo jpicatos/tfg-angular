@@ -6,6 +6,7 @@ import { Profesor, ProfesorImportar } from "../models/profesor";
 import { AvisosService } from './avisos.service';
 import { Categoria } from '../models/categoria';
 import { Cacheable } from "ngx-cacheable";
+import { Usuario } from '../models/usuario';
 
 @Injectable()
 export class ProfesoresService {
@@ -19,7 +20,20 @@ export class ProfesoresService {
   }
 
   getProfesor(id: number): Observable<Profesor> {
-    return this.http.get<Profesor>(this.profesoresUrl + id);
+    if (id > 1) {
+      return this.http.get<Profesor>(this.profesoresUrl + id);
+    }
+    return new Observable((observer) => {
+      var profesor = new Profesor;
+      profesor.usuario = new Usuario;
+      profesor.usuario.email = "no-email@no-email.com";
+      profesor.usuario.first_name = "Administrador";
+      profesor.usuario.id = id;
+      profesor.usuario.is_staff = true;
+      profesor.usuario.last_name = "administrador";
+      observer.next(profesor); 
+      observer.complete();
+    })
   }
 
   saveProfesor(profesor: Profesor): void {

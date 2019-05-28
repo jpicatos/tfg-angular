@@ -29,12 +29,13 @@ export class EleccionService {
               observer.complete()
             },
             err => {
-              this.avisosService.enviarMensaje("Error al guardar elección");
+              this.avisosService.enviarMensaje("Error al guardar elección, prueba a volver a la última versión guardada, es posible que haya sido editada");
               observer.error(err)
             })
         },
         err => {
-          this.avisosService.enviarMensaje("Error al guardar elección");
+          var symbol = ''
+          this.avisosService.enviarMensaje('Error al guardar elección, prueba a volver a la última versión guardada, es posible que haya sido editada');
           observer.error(err)
         }
       );

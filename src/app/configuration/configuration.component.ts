@@ -51,9 +51,20 @@ export class ConfigurationComponent implements OnInit {
   }
 
   reiniciar() {
+    this.loading=true;
     this.eleccionService.reiniciar()
       .subscribe(result => {
-        this.avisosService.enviarMensaje("Docencia reiniciada")
+        var currentUser = localStorage.getItem("currentUser")
+        var currentUserRefresh = localStorage.getItem("currentUserRefresh")
+        localStorage.clear();
+        localStorage.setItem("currentUser", currentUser);
+        localStorage.setItem("currentUserRefresh", currentUserRefresh);
+        this.configService.loadDepartamento().subscribe(departamentos => {
+          this.departamento = departamentos[0]
+          this.loading = false;
+          this.avisosService.enviarMensaje("Docencia reiniciada")
+        });
+        
       })
   }
 

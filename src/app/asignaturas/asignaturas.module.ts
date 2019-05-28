@@ -16,6 +16,8 @@ import { ImportarAsignaturasComponent } from './importar-asignaturas/importar-as
 import { EliminarDialogComponent } from './eliminar-dialog/eliminar-dialog.component';
 import { DialogDesdobleComponent } from './dialog-desdoble/dialog-desdoble.component';
 import { FiltroHoraComponent } from './filtro-hora/filtro-hora.component';
+import { CalendariosListDialogComponent } from './calendarios-list-dialog/calendarios-list-dialog.component';
+import { AnadirCalendarioDialogComponent } from './anadir-calendario-dialog/anadir-calendario-dialog.component';
 
 @NgModule({
   imports: [
@@ -37,9 +39,11 @@ import { FiltroHoraComponent } from './filtro-hora/filtro-hora.component';
     ImportarAsignaturasComponent,
     EliminarDialogComponent,
     DialogDesdobleComponent,
-    FiltroHoraComponent
+    FiltroHoraComponent,
+    CalendariosListDialogComponent,
+    AnadirCalendarioDialogComponent
   ],
   providers: [AsignaturasService],
-  entryComponents: [EliminarDialogComponent, DialogDesdobleComponent]
+  entryComponents: [EliminarDialogComponent, DialogDesdobleComponent,CalendariosListDialogComponent, AnadirCalendarioDialogComponent]
 })
 export class AsignaturasModule { }
