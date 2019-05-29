@@ -56,7 +56,7 @@
                 <mat-card-content>
                     <mat-grid-list cols="4" rowHeight="fit" style="height: 120px">
                         <mat-grid-tile>
-                            <div *ngIf="profesor.docencia_confirmada">
+                            <div *ngIf="profesor.docencia && profesor.docencia_confirmada">
                                 <div class="docencia-confirmada"></div>
                                 Esta elección está confirmada!
                             </div>
@@ -65,7 +65,7 @@
                                 </div>
                                 Esta elección está pendiente de aprobación
                             </div>
-                            <div *ngIf="!profesor.docencia && !profesor.docencia_confirmada">
+                            <div *ngIf="!profesor.docencia">
                                 Este profesor aún no tiene asignaturas guardadas en su
                                 elección
                             </div>
