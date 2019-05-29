@@ -21,7 +21,7 @@ export class ProfesoresService {
 
   getProfesor(id: number): Observable<Profesor> {
     if (id > 1) {
-      return this.http.get<Profesor>(this.profesoresUrl + id);
+      return this.http.get<Profesor>(this.profesoresUrl + id + '/');
     }
     return new Observable((observer) => {
       var profesor = new Profesor;
@@ -64,17 +64,17 @@ export class ProfesoresService {
   }
 
   deleteProfesor(id: number): void {
-    this.http.delete<Profesor>(this.profesoresUrl + id)
+    this.http.delete<Profesor>(this.profesoresUrl + id + '/')
       .subscribe(profesor => { this.router.navigate(['/profesores']); });
   }
 
   getCategoria(cate: string): Observable<Categoria> {
-    return this.http.get<Categoria>(this.profesoresUrl + "categorias/" + cate);
+    return this.http.get<Categoria>(this.profesoresUrl + "categorias/" + cate + '/');
   }
 
   @Cacheable()
   getCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(this.profesoresUrl + "categorias");
+    return this.http.get<Categoria[]>(this.profesoresUrl + "categorias/");
   }
 
   searchProfesor(nombre: string, apellidos: string, email: string, telefono: string, despacho: number, escalafon: number, categoria: string): Observable<Profesor[]> {

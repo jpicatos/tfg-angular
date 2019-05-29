@@ -24,14 +24,14 @@ export class AsignaturasService {
   }
 
   getAsignatura(id: number): Observable<Asignatura> {
-    return this.http.get<Asignatura>(this.asignaturasUrl + id);
+    return this.http.get<Asignatura>(this.asignaturasUrl + id + '/');
   }
   getAsignaturaDesdoble(idDesdoble: number): Observable<Asignatura[]> {
     return this.http.get<Asignatura[]>(`${this.asignaturasUrl}?desdoble=${idDesdoble}`);
   }
 
   getCalendarios(id: number): Observable<Calendario> {
-    return this.http.get<Calendario>(this.calendariosUrl + id);
+    return this.http.get<Calendario>(this.calendariosUrl + id + '/');
   }
 
   getAllCalendarios(): Observable<Calendario[]> {
@@ -39,7 +39,7 @@ export class AsignaturasService {
   }
 
   createCalendario(calendario): Observable<Calendario> {
-    return this.http.post<Calendario>(this.calendariosUrl, calendario)
+    return this.http.post<Calendario>(this.calendariosUrl, calendario + '/')
   }
 
   updateCalendario(calendario): Observable<Calendario> {
@@ -103,17 +103,17 @@ export class AsignaturasService {
   }
 
   deleteHorario(idAsignatura: number, idHorario: number): void {
-    this.http.delete<Horario>(this.asignaturasUrl + idAsignatura + '/horarios/' + idHorario)
+    this.http.delete<Horario>(this.asignaturasUrl + idAsignatura + '/horarios/' + idHorario + '/')
       .subscribe(res => { });
   }
 
   deleteDesdoble(idAsignatura: number, idDesdoble: number): void {
-    this.http.delete<Desdoble>(this.asignaturasUrl + idAsignatura + '/desdobles/' + idDesdoble)
+    this.http.delete<Desdoble>(this.asignaturasUrl + idAsignatura + '/desdobles/' + idDesdoble + '/')
       .subscribe(res => { });
   }
 
   deleteHorarioDesdoble(idAsignatura: number, idDesdoble: number, idHorario: number): void {
-    this.http.delete<Horario>(this.asignaturasUrl + idAsignatura + '/desdobles/' + idDesdoble + '/horarios/' + idHorario)
+    this.http.delete<Horario>(this.asignaturasUrl + idAsignatura + '/desdobles/' + idDesdoble + '/horarios/' + idHorario + '/')
       .subscribe(res => { });
   }
 
@@ -127,7 +127,7 @@ export class AsignaturasService {
     uploadData.append('anyo', anyo);
     uploadData.append('sobrescribir', sobrescribir ? "true" : "false");
 
-    return this.http.post<AsignaturaImportar>(this.asignaturasUrl + '/importar/', uploadData);
+    return this.http.post<AsignaturaImportar>(this.asignaturasUrl + 'importar/', uploadData);
   }
 
   exportar(): Observable<Blob> {

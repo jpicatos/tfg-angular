@@ -16,7 +16,7 @@ export class EleccionService {
     return this.http.get<Eleccion[]>(this.docenciaUrl);
   }
   getEleccion(id: number): Observable<Eleccion> {
-    return this.http.get<Eleccion>(this.docenciaUrl + id);
+    return this.http.get<Eleccion>(this.docenciaUrl + id + '/');
   }
   saveEleccion(eleccion: Eleccion): Observable<Eleccion> {
     return new Observable((observer) => {
@@ -74,10 +74,10 @@ export class EleccionService {
   }
 
   deleteEleccion(id: number): Observable<Eleccion> {
-    return this.http.delete<Eleccion>(this.docenciaUrl + id);
+    return this.http.delete<Eleccion>(this.docenciaUrl + id + '/');
   }
   reiniciar() {
-    return this.http.get(this.docenciaUrl + 'reiniciar')
+    return this.http.get(this.docenciaUrl + 'reiniciar/')
   }
 
 }
