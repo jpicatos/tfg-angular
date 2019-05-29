@@ -614,7 +614,6 @@ export class EleccionListComponent implements OnInit {
   }
 
   changeDeudaVal(cred) {
-    this.creditos -= this.creditosDeuda
     var creditos = cred.valueAsNumber;
     if (creditos < 0 || !creditos) {
       cred.value = 0
@@ -624,7 +623,12 @@ export class EleccionListComponent implements OnInit {
       cred.value = maxCred
     }
     this.creditosDeuda = cred.valueAsNumber;
+    this.creditos = 0;
+    this.asignaturasSelected.map(a => this.creditos += a.creditos)
+    this.desdoblesSelected.map(d => this.creditos += d.creditos)
+    this.asignaturasDivisiblesSelected.map(a => this.creditos += a.creditos)
     this.creditos += this.creditosDeuda;
+    this.creditos += this.profesor.pda;
     this.updateEleccion(true)
   }
 
