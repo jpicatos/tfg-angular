@@ -39,7 +39,7 @@ export class AsignaturasService {
   }
 
   createCalendario(calendario): Observable<Calendario> {
-    return this.http.post<Calendario>(this.calendariosUrl, calendario + '/')
+    return this.http.post<Calendario>(this.calendariosUrl, calendario)
   }
 
   updateCalendario(calendario): Observable<Calendario> {
