@@ -15,12 +15,12 @@ import { AvisosService } from '../../services/avisos.service';
 })
 export class ImportarAsignaturasComponent implements OnInit {
 
-  private selectedFile: File;
-  private departamento_siglas: string;
-  private departamento_nombre: string;
-  private anyo: string;
-  private progreso: boolean;
-  private sobrescribir: boolean;
+  selectedFile: File;
+  departamento_siglas: string;
+  departamento_nombre: string;
+  anyo: string;
+  progreso: boolean;
+  sobrescribir: boolean;
 
   constructor(private asignaturasService: AsignaturasService,
     private http: HttpClient, private avisosService: AvisosService) {

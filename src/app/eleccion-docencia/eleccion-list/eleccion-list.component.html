@@ -11,9 +11,9 @@
 </div>
 <div class="total-container">
     <mat-sidenav-container>
-        <mat-sidenav #sidenav [autoFocus]="false" [mode]="over" position="end" class="sidenav">
+        <mat-sidenav #sidenav [autoFocus]="false" [mode]="sidenav.over" position="end" class="sidenav">
             <app-search-sidenav [sidenav]="sidenav" [researchEvent]="researchEvent" (updateLoading)="updateLoading($event)"
-                (updateAsignaturas)="updateAsignaturas($event)"></app-search-sidenav>
+                (updateAsignaturas)="updateAsignaturas($event, true)"></app-search-sidenav>
         </mat-sidenav>
         <mat-sidenav-content>
             <mat-toolbar *ngIf="admin">

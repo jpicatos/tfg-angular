@@ -14,10 +14,10 @@ import { ProfesoresService } from "../../services/profesores.service";
 })
 export class ImportarProfesoresComponent implements OnInit {
 
-  private selectedFile: File;
-  private departamento_siglas: string;
-  private progreso: boolean;
-  private sobrescribir: boolean;
+  selectedFile: File;
+  departamento_siglas: string;
+  progreso: boolean;
+  sobrescribir: boolean;
 
   constructor(private profesoresService: ProfesoresService,
     private http: HttpClient, private avisosService: AvisosService) {

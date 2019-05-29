@@ -55,7 +55,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addTokenToRequest(request: HttpRequest<any>, token: string) : HttpRequest<any> {
-    const url = 'http://docenciafdi.me';
+    const url = 'http://dev.docenciafdi.me';
     return request.clone({ url: url + request.url, setHeaders: { Authorization: `Bearer ${token}`}});
   }
 

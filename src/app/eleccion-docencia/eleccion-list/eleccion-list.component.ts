@@ -47,7 +47,7 @@ export class EleccionListComponent implements OnInit {
   profesores: Profesor[];
   creditos: number;
   creditosDeuda: number;
-  @ViewChild(SearchSidenavComponent) child: SearchSidenavComponent;
+  @ViewChild(SearchSidenavComponent) sidenav: SearchSidenavComponent;
   searchVals: {
     nombre: string
   };
@@ -151,7 +151,7 @@ export class EleccionListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.exit) {
+      if (result && result.exit) {
         this.eleccion.mensaje = result.message || this.eleccion.mensaje || null;
         this.eleccion.confirmada = result.confirm;
         this.profesor.docencia_confirmada = result.confirm;
