@@ -495,7 +495,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   onSelectAsignatura(asignatura, { selected }) {
-    if (this.asignaturaDisponible(asignatura)) {
+    if (this.asignaturaDisponible(asignatura) && !(this.profesor.docencia && this.profesor.docencia_confirmada && !this.admin)) {
       if (selected) {
         this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
         this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
@@ -512,7 +512,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   onSelectDesdoble(asignatura, { selected }) {
-    if (this.asignaturaDisponible(asignatura.desdobles[0])) {
+    if (this.asignaturaDisponible(asignatura.desdobles[0]) && !(this.profesor.docencia && this.profesor.docencia_confirmada && !this.admin)) {
       if (selected) {
         this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
         this.asignaturas.map(asignaturaMap => {

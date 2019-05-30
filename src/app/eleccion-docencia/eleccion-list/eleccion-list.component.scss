@@ -304,6 +304,9 @@ input[type=number]::-webkit-outer-spin-button {
     border: solid #ddd;
     border-width: 0 2px;
     text-align: center;
+    &.pda {
+        border: none;
+    }
 }
 
 .filterIcon {

@@ -12,8 +12,9 @@
 <div class="total-container">
     <mat-sidenav-container>
         <mat-sidenav #sidenav [autoFocus]="false" [mode]="over" position="end" class="sidenav">
-            <app-search-sidenav [sidenav]="sidenav" [researchEvent]="researchEvent" (updateLoading)="updateLoading($event)"
-                (updateAsignaturas)="updateAsignaturas($event)"></app-search-sidenav>
+            <app-search-sidenav [sidenav]="sidenav" [researchEvent]="researchEvent"
+                (updateLoading)="updateLoading($event)" (updateAsignaturas)="updateAsignaturas($event)">
+            </app-search-sidenav>
         </mat-sidenav>
         <mat-sidenav-content>
             <mat-toolbar *ngIf="admin">
@@ -87,15 +88,16 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Deuda utilizada</mat-label>
                                 <div class="number-input deuda">
-                                    <button (click)="deudaInput.stepDown(); changeDeudaVal(deudaInput)"></button>
+                                    <button (click)="deudaInput.stepDown(); changeDeudaVal(deudaInput)"
+                                        [disabled]="profesor.docencia && profesor.docencia_confirmada && !admin"></button>
                                     <input #deudaInput type="number" value="0"
                                         max="{{profesor.deuda.hace_uno +profesor.deuda.hace_dos +profesor.deuda.hace_tres +profesor.deuda.hace_cuatro}}"
-                                        min=0 matInput id="deudaInput"
-                                        (keyup)="changeDeudaVal(deudaInput)" [(ngModel)]="creditosDeuda" (change)="changeDeudaVal(deudaInput)"
-                                        step="0.01">
+                                        min=0 matInput id="deudaInput" (keyup)="changeDeudaVal(deudaInput)"
+                                        [(ngModel)]="creditosDeuda" (change)="changeDeudaVal(deudaInput)" step="0.01"
+                                        [disabled]="profesor.docencia && profesor.docencia_confirmada && !admin">
 
-                                    <button (click)="deudaInput.stepUp(); changeDeudaVal(deudaInput)"
-                                        class="plus"></button>
+                                    <button (click)="deudaInput.stepUp(); changeDeudaVal(deudaInput)" class="plus"
+                                        [disabled]="profesor.docencia && profesor.docencia_confirmada && !admin"></button>
                                 </div>
                                 <mat-hint>Deuda disponible:
                                     {{profesor.deuda.hace_uno +profesor.deuda.hace_dos +profesor.deuda.hace_tres +profesor.deuda.hace_cuatro}}
@@ -106,10 +108,8 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>PDA utilizada</mat-label>
                                 <div class="number-input deuda">
-                                    <button disabled></button>
                                     <input type="number" value="{{profesor.pda}}" matInput
-                                        (keydown)="onPreventKey($event)" disabled>
-                                    <button class="plus" disabled></button>
+                                        (keydown)="onPreventKey($event)" class="pda" disabled>
                                 </div>
                                 <mat-hint>PDA disponible:
                                     {{profesor.pda}}
@@ -123,8 +123,10 @@
 
             </mat-card>
 
-            <button [ngClass]="{'mat-fab-bottom-right3': (this.admin || this.tuTurno), 'mat-fab-bottom-right2': !(this.admin || this.tuTurno)}" mat-fab (click)="restaurarEleccion()"
-                matTooltip="Volver a la última elección guardada" [disabled]="loading">
+            <button
+                [ngClass]="{'mat-fab-bottom-right3': (this.admin || this.tuTurno), 'mat-fab-bottom-right2': !(this.admin || this.tuTurno)}"
+                mat-fab (click)="restaurarEleccion()" matTooltip="Volver a la última elección guardada"
+                [disabled]="loading">
                 <mat-icon>undo</mat-icon>
             </button>
 
@@ -132,8 +134,9 @@
                 matTooltip="Borrar la docencia y guardar" [disabled]="loading || eleccion.id === undefined">
                 <mat-icon>delete</mat-icon>
             </button>
-            <button class="mat-fab-bottom-right1" *ngIf="this.admin || this.tuTurno" mat-fab (click)="clearEleccion();updateEleccion(true)"
-                matTooltip="Limpiar los selecionados" [disabled]="loading">
+            <button class="mat-fab-bottom-right1" *ngIf="this.admin || this.tuTurno" mat-fab
+                (click)="clearEleccion();updateEleccion(true)" matTooltip="Limpiar los selecionados"
+                [disabled]="loading">
                 <mat-icon>clear</mat-icon>
             </button>
 
@@ -149,15 +152,17 @@
                         <h2>Asignaturas</h2>
                     </div>
                     <mat-selection-list class="asignaturas">
-
                         <div *ngFor="let asignatura of asignaturas">
                             <!-- <div class="asignatura-no-disponible" *ngIf="!admin && !asignaturaDisponible(asignatura)">HIOSJLHDKJBKLCBVlksdvcbdlkscvsdlk</div>   -->
                             <!-- Asignatura no divisible -->
                             <mat-list-option #opt (click)="onSelectAsignatura(asignatura, opt)"
                                 [selected]="asignatura.selected" *ngIf="!asignatura.divisible"
-                                [disabled]="!asignatura.disponible"
-                                [ngClass]="{'disabled': !asignatura.disponible, 'selected': asignatura.selected, 'non-selected': !asignatura.selected}"
-                                id="asignatura{{asignatura.id}}">
+                                [disabled]="!asignatura.disponible || ( profesor.docencia && profesor.docencia_confirmada && !admin )"
+                                [ngClass]="{
+                                    'disabled': !asignatura.disponible || ( profesor.docencia && profesor.docencia_confirmada && !admin ), 
+                                    'selected': asignatura.selected, 
+                                    'non-selected': !asignatura.selected
+                                }" id="asignatura{{asignatura.id}}">
                                 <h3 mat-line class="wrapedText">
                                     <a target="_blank" routerLink="/asignaturas/{{asignatura.id}}"
                                         matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
@@ -183,8 +188,11 @@
                             </mat-list-option>
 
                             <!-- Asignatura divisible -->
-                            <mat-list-item #opt *ngIf="asignatura.divisible"
-                                [ngClass]="{'disabled': !asignatura.disponible, 'selected': cred.valueAsNumber > 0, 'non-selected': !cred.valueAsNumber}">
+                            <mat-list-item #opt *ngIf="asignatura.divisible" [ngClass]="{
+                                    'disabled': !asignatura.disponible || ( profesor.docencia && profesor.docencia_confirmada && !admin ), 
+                                    'selected': cred.valueAsNumber > 0, 
+                                    'non-selected': !cred.valueAsNumber
+                                }">
                                 <h3 mat-line class="wrapedText">
                                     <a target="_blank" routerLink="/asignaturas/{{asignatura.id}}"
                                         matTooltip="[{{asignatura.siglas}}] {{asignatura.nombre}}">
@@ -208,13 +216,16 @@
                                     </strong>{{asignatura.maxCreditos}}/{{asignatura.creditos}}
                                 </p>
                                 <div class="number-input">
-                                    <button (click)="cred.stepDown(); changeCreditVal(cred, asignatura)"></button>
+                                    <button (click)="cred.stepDown(); changeCreditVal(cred, asignatura)"
+                                        [disabled]="!asignatura.disponible || ( profesor.docencia && profesor.docencia_confirmada && !admin )">
+                                    </button>
                                     <input #cred id="divisible{{asignatura.id}}" class="divisible" type="number"
                                         (change)="changeCreditVal(cred, asignatura)"
                                         (keyup)="changeCreditVal(cred, asignatura)" min=0 step="0.01"
-                                        max={{asignatura.maxCreditos}} [disabled]="!asignatura.disponible">
-                                    <button (click)="cred.stepUp(); changeCreditVal(cred, asignatura)"
-                                        class="plus"></button>
+                                        max={{asignatura.maxCreditos}}
+                                        [disabled]="!asignatura.disponible || ( profesor.docencia && profesor.docencia_confirmada && !admin )">
+                                    <button (click)="cred.stepUp(); changeCreditVal(cred, asignatura)" class="plus"
+                                        [disabled]="!asignatura.disponible || ( profesor.docencia && profesor.docencia_confirmada && !admin )"></button>
                                 </div>
                                 <mat-divider></mat-divider>
                             </mat-list-item>
@@ -223,9 +234,12 @@
                             <mat-list-option *ngIf="asignatura.desdobles.length > 0" #optDesdobles
                                 (click)="onSelectDesdoble(asignatura, optDesdobles)"
                                 [selected]="asignatura.desdobles[0].selected"
-                                [disabled]="!asignatura.desdobles[0].disponible"
-                                [ngClass]="{'disabled': !asignatura.desdobles[0].disponible, 'selected': asignatura.desdobles[0].selected, 'non-selected': !asignatura.desdobles[0].selected}"
-                                id="desdoble{{asignatura.id}}">
+                                [disabled]="!asignatura.desdobles[0].disponible || ( profesor.docencia && profesor.docencia_confirmada && !admin )"
+                                [ngClass]="{
+                                    'disabled': !asignatura.desdobles[0].disponible || ( profesor.docencia && profesor.docencia_confirmada && !admin ), 
+                                    'selected': asignatura.desdobles[0].selected, 
+                                    'non-selected': !asignatura.desdobles[0].selected
+                                }" id="desdoble{{asignatura.id}}">
                                 <!-- <div class="asignatura-no-disponible" *ngIf="!admin && !asignaturaDisponible(asignatura.desdobles[0])">vdvdfvdfsvsdvsdvsdvs</div>    -->
                                 <h3 class="wrapedText">
                                     <span class="customChip accent">Desdoble
