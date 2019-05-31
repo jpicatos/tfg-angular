@@ -41,7 +41,19 @@ export class ImportarAsignaturasComponent implements OnInit {
       this.asignaturasService.importar(this.selectedFile,
         this.departamento_siglas,
         this.departamento_nombre, this.anyo, this.sobrescribir)
-        .subscribe(event => this.ficheroSubido(event),
+        .subscribe(event => {
+          this.ficheroSubido(event);
+
+          if (this.sobrescribir) {
+            let currentUser = localStorage.getItem("currentUser");
+            let currentUserRefresh = localStorage.getItem("currentUserRefresh");
+
+            localStorage.clear();
+
+            localStorage.setItem("currentUser", currentUser);
+            localStorage.setItem("currentUserRefresh", currentUserRefresh);
+          }
+        },
           error => this.mostrarError());
 
       this.progreso = true;

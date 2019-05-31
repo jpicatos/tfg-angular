@@ -43,7 +43,7 @@ export class AsignaturasService {
   }
 
   updateCalendario(calendario): Observable<Calendario> {
-    return this.http.put<Calendario>(this.calendariosUrl + calendario.id+ '/', calendario)
+    return this.http.put<Calendario>(this.calendariosUrl + calendario.id + '/', calendario)
   }
 
   deleteCalendario(calendario): Observable<Calendario> {
@@ -99,7 +99,16 @@ export class AsignaturasService {
 
   deleteAsignatura(id: number): void {
     this.http.delete<Asignatura>(this.asignaturasUrl + id)
-      .subscribe(asignatura => { this.router.navigate(['/asignaturas']); });
+      .subscribe(asignatura => {
+        let currentUser = localStorage.getItem("currentUser");
+        let currentUserRefresh = localStorage.getItem("currentUserRefresh");
+
+        localStorage.clear();
+
+        localStorage.setItem("currentUser", currentUser);
+        localStorage.setItem("currentUserRefresh", currentUserRefresh);
+        this.router.navigate(['/asignaturas']);
+      });
   }
 
   deleteHorario(idAsignatura: number, idHorario: number): void {
