@@ -104,7 +104,18 @@ export class EleccionListComponent implements OnInit {
         this.profesoresService.getProfesores()
           .subscribe((profesores) => {
             this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
-            this.profesor = profesores.find(profe => profe.usuario.id === id) || this.profesores[0];
+            this.profesor = profesores.find(profe => profe.usuario.id === id);
+            var profesorLocal = this.getLocalStorage("lastProfesor")
+            if(this.profesor){
+              localStorage.setItem("lastProfesor", this.profesor.usuario.id.toString())
+            }
+            else if (profesorLocal){
+              var profesorLocalParsed = JSON.parse(profesorLocal);
+              this.profesor = profesores.find(profe => profe.usuario.id === profesorLocalParsed);
+            }
+            else{
+              this.profesor = this.profesores[0]
+            }
             this.getAsignaturas();
           })
       }
@@ -127,6 +138,7 @@ export class EleccionListComponent implements OnInit {
       this.globalConfigService.calculateTurno(this.globalConfigService.getDepartamento(), profesor).subscribe(turno => {
         turno ? this.tuTurno = true : this.tuTurno = false;
       })
+      localStorage.setItem("lastProfesor", this.profesor.usuario.id.toString())
       this.cleanSearch()
       this.asignaturasService.getAsignaturas()
         .subscribe((asignaturas) => {
