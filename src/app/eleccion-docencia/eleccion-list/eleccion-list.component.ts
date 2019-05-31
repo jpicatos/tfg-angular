@@ -96,6 +96,7 @@ export class EleccionListComponent implements OnInit {
     this.getInitialUserData();
 
   }
+
   getInitialUserData() {
     this.globalConfigService.updateAll(this.profesor).subscribe(() => {
       this.admin = this.globalConfigService.isAdmin();
@@ -104,7 +105,18 @@ export class EleccionListComponent implements OnInit {
         this.profesoresService.getProfesores()
           .subscribe((profesores) => {
             this.profesores = profesores.filter(profe => !profe.usuario.is_staff);
-            this.profesor = profesores.find(profe => profe.usuario.id === id) || this.profesores[0];
+            this.profesor = profesores.find(profe => profe.usuario.id === id);
+            var profesorLocal = this.getLocalStorage("lastProfesor")
+            if (this.profesor) {
+              localStorage.setItem("lastProfesor", this.profesor.usuario.id.toString())
+            }
+            else if (profesorLocal) {
+              var profesorLocalParsed = JSON.parse(profesorLocal);
+              this.profesor = profesores.find(profe => profe.usuario.id === profesorLocalParsed);
+            }
+            else {
+              this.profesor = this.profesores[0]
+            }
             this.getAsignaturas();
           })
       }
@@ -127,6 +139,7 @@ export class EleccionListComponent implements OnInit {
       this.globalConfigService.calculateTurno(this.globalConfigService.getDepartamento(), profesor).subscribe(turno => {
         turno ? this.tuTurno = true : this.tuTurno = false;
       })
+      localStorage.setItem("lastProfesor", this.profesor.usuario.id.toString())
       this.cleanSearch()
       this.asignaturasService.getAsignaturas()
         .subscribe((asignaturas) => {
@@ -495,7 +508,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   onSelectAsignatura(asignatura, { selected }) {
-    if (this.asignaturaDisponible(asignatura)) {
+    if (this.asignaturaDisponible(asignatura) && !(this.profesor.docencia && this.profesor.docencia_confirmada && !this.admin)) {
       if (selected) {
         this.asignaturasSelected = [...this.asignaturasSelected, asignatura];
         this.asignaturas[this.asignaturas.indexOf(asignatura)].selected = true;
@@ -512,7 +525,7 @@ export class EleccionListComponent implements OnInit {
   }
 
   onSelectDesdoble(asignatura, { selected }) {
-    if (this.asignaturaDisponible(asignatura.desdobles[0])) {
+    if (this.asignaturaDisponible(asignatura.desdobles[0]) && !(this.profesor.docencia && this.profesor.docencia_confirmada && !this.admin)) {
       if (selected) {
         this.desdoblesSelected = [...this.desdoblesSelected, asignatura];
         this.asignaturas.map(asignaturaMap => {

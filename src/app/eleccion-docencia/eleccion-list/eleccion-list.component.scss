@@ -1,6 +1,5 @@
 @import "../../../scss/variables.scss";
 @import "../../../scss/styles.scss";
-
 .mwlResizable {
     box-sizing: border-box; // required for the enableGhostResize option to work
     min-width: min-content;
@@ -13,7 +12,6 @@ mat-list-option {
     &.disabled {
         opacity: 0.4;
         background: none;
-
         &:hover {
             background: none;
         }
@@ -62,11 +60,9 @@ mat-list-option {
     padding: 1px 1px 1px 10px;
     z-index: 1;
     cursor: pointer;
-
     mat-icon {
         margin-right: 20px;
     }
-
     &.black {
         color: white;
     }
@@ -85,17 +81,14 @@ mat-list-option {
 .left-minimiced {
     .list-column {
         width: 50px;
-
         .left-minimice {
             transform: rotate(90deg);
             padding: 0;
         }
-
         .asignaturas {
             display: none;
         }
     }
-
     .state-column {
         width: -webkit-fill-available;
     }
@@ -104,24 +97,20 @@ mat-list-option {
 .right-minimiced {
     .state-column {
         width: 50px;
-
         .left-minimice {
             transform: rotate(90deg);
             padding: 0;
         }
-
         h2 {
             width: 300px;
             position: absolute;
             margin: auto;
             left: 40px;
         }
-
         #stateContent {
             display: none;
         }
     }
-
     .list-column {
         width: -webkit-fill-available;
     }
@@ -134,6 +123,7 @@ mat-list-option {
 .errores {
     margin-top: 10px;
 }
+
 .mat-fab-bottom-right4 {
     z-index: 1000;
     top: auto !important;
@@ -177,24 +167,20 @@ mat-list-option {
 .customChip {
     font-size: 16px;
     font-weight: 500;
-
     &.accent {
         background-color: #990033;
         color: #fff;
     }
-
     &.primary {
         background-color: #e0e0e0;
         color: rgba(0, 0, 0, 0.87);
     }
-
     &.withIcon {
         display: inline-flex !important;
         align-items: center;
         padding: 1px;
         padding-right: 2px;
         width: fit-content;
-
         mat-icon {
             margin-right: 5px;
             font-size: inherit;
@@ -202,7 +188,6 @@ mat-list-option {
             width: unset;
         }
     }
-
 }
 
 .sidenav {
@@ -229,7 +214,6 @@ mat-list-option {
     align-items: center;
     justify-items: center;
     margin: auto;
-
     mat-form-field {
         margin-left: 10px;
     }
@@ -251,11 +235,15 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .number-input {
-
     border: 2px solid #ddd;
     display: inline-flex;
-
     &.deuda {
+        width: 100%;
+        input {
+            width: 106px;
+        }
+    }
+    &.pda-number-input {
         width: 100%;
     }
 }
@@ -304,6 +292,9 @@ input[type=number]::-webkit-outer-spin-button {
     border: solid #ddd;
     border-width: 0 2px;
     text-align: center;
+    &.pda {
+        border: none;
+    }
 }
 
 .filterIcon {
@@ -312,7 +303,6 @@ input[type=number]::-webkit-outer-spin-button {
     right: 40px;
     z-index: 800;
     background-color: white;
-
     div {
         background-image: url('./../../../assets/filter-icon.png');
         background-repeat: no-repeat;
@@ -371,23 +361,19 @@ mat-option {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     span {
         display: flex;
         align-items: center;
-
         mat-icon {
             margin-right: 5px;
         }
     }
-
     .cred-select {
         border: 2px solid #ddd;
         text-align: center;
         padding: 9px;
         margin-top: 5px;
         font-weight: bold;
-
         span {
             display: inline;
             color: $accent;
@@ -407,7 +393,6 @@ mat-option {
     text-align: center;
     padding: 9px;
     font-weight: bold;
-
     span {
         display: inline;
         color: $accent;

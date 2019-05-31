@@ -31,7 +31,7 @@ export class ProfesoresService {
       profesor.usuario.id = id;
       profesor.usuario.is_staff = true;
       profesor.usuario.last_name = "administrador";
-      observer.next(profesor); 
+      observer.next(profesor);
       observer.complete();
     })
   }
@@ -65,7 +65,15 @@ export class ProfesoresService {
 
   deleteProfesor(id: number): void {
     this.http.delete<Profesor>(this.profesoresUrl + id + '/')
-      .subscribe(profesor => { this.router.navigate(['/profesores']); });
+      .subscribe(profesor => {
+        let lastProfesor = localStorage.getItem("lastProfesor");
+        if (lastProfesor && parseInt(lastProfesor) == id) {
+          localStorage.removeItem(id.toString());
+          localStorage.removeItem("lastProfesor");
+        }
+
+        this.router.navigate(['/profesores']);
+      });
   }
 
   getCategoria(cate: string): Observable<Categoria> {

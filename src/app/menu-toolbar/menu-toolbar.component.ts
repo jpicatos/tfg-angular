@@ -33,7 +33,7 @@ export class MenuToolbarComponent implements OnInit {
     this.profesoresLength = true;
     this.profesoresService.getProfesores().subscribe(profesores => {
       var profes = profesores.filter(profe => !profe.usuario.is_staff);
-      if(!profes.length){
+      if (!profes.length) {
         this.profesoresLength = false;
       }
     })
@@ -61,7 +61,7 @@ export class MenuToolbarComponent implements OnInit {
       this.loading = true;
       this.admin = this.globalConfigService.isAdmin();
       var userid = this.globalConfigService.userId();
-      userid === 1? this.miCuenta = false : this.miCuenta = true;
+      userid === 1 ? this.miCuenta = false : this.miCuenta = true;
       this.tuTurno = false;
       this.globalConfigService.saveTurno(false);
       this.globalConfigService.loadDepartamento().subscribe(departamento => {
@@ -113,7 +113,7 @@ export class MenuToolbarComponent implements OnInit {
   endLoading() {
     setTimeout(() => {
       this.loading = false;
-    }, 3000);
+    }, 2000);
   }
 
 }

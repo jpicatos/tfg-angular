@@ -36,7 +36,18 @@ export class ImportarProfesoresComponent implements OnInit {
   importar() {
     if (this.selectedFile && this.departamento_siglas) {
       this.profesoresService.importar(this.selectedFile, this.departamento_siglas, this.sobrescribir)
-        .subscribe(event => this.ficheroSubido(event),
+        .subscribe(event => {
+          this.ficheroSubido(event);
+          if (this.sobrescribir) {
+            let currentUser = localStorage.getItem("currentUser");
+            let currentUserRefresh = localStorage.getItem("currentUserRefresh");
+
+            localStorage.clear();
+
+            localStorage.setItem("currentUser", currentUser);
+            localStorage.setItem("currentUserRefresh", currentUserRefresh);
+          }
+        },
           error => this.mostrarError());
 
       this.progreso = true;
