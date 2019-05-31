@@ -257,7 +257,14 @@ input[type=number]::-webkit-outer-spin-button {
 
     &.deuda {
         width: 100%;
+        input{
+            width: 106px;
+        }
     }
+    &.pda-number-input{
+        width: 100%;
+    }
+
 }
 
 .number-input,
